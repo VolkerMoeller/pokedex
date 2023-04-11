@@ -1,0 +1,64 @@
+body {
+    margin: 0px;
+    font-family: 'Noto Sans';
+    background-color: rgba(0, 0, 0, 0.04);
+    /* background-color: rgba(255, 0, 0, 0.2); */
+}
+
+h1 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.pokedexBgn {
+    background-color: white;
+}
+
+.pokedex-top {
+    display: flex;
+    flex-direction: column;
+    /* background-color: rgba(0, 0, 0, 0.2); */
+    background-color: rgba(255, 0, 100, 0.4);
+    color: white;
+    letter-spacing: 0.125px;
+    height: 50vh;
+    padding: 16px;
+    margin-top: 48px;
+    margin-right: 48px;
+    margin-left: 48px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+#pokeImg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#pokeImg img {
+    height: 240px;
+    object-fit: contain;
+}
+
+.pokedex-bottom{
+    background-color: white;
+    margin-top: -30px;
+    margin-left: 48px;
+    margin-right: 48px;
+    padding: 16px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding-top: 48px;
+}
+
+.pokedex-slots {
+    display: flex;
+}
+
+.slot {
+    background-color: rgba(255, 0, 100, 0.4);
+    padding: 8px;
+    margin-right: 8px;
+    border-radius: 15px 15px 15px 15px; 
+}
