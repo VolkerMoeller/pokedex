@@ -2,7 +2,6 @@ body {
     margin: 0px;
     font-family: 'Noto Sans';
     background-color: rgba(0, 0, 0, 0.04);
-    /* background-color: rgba(255, 0, 0, 0.2); */
 }
 
 h1 {
@@ -17,9 +16,7 @@ h1 {
 .pokedex-top {
     display: flex;
     flex-direction: column;
-    /* background-color: rgba(0, 0, 0, 0.2); */
-    background-color: rgba(255, 0, 100, 0.4);
-    color: white;
+    color: rgba(0, 0, 0, 1.0);
     letter-spacing: 0.125px;
     height: 50vh;
     padding: 16px;
@@ -28,6 +25,22 @@ h1 {
     margin-left: 48px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
+}
+
+.bgn-color-type-grass {
+    background-color: rgba(100, 255, 0, 0.4);
+}
+
+.bgn-color-type-ground {
+    background-color: rgba(255, 0, 100, 0.4);
+}
+
+.bgn-color-type-electric {
+    background-color: rgba(255, 255, 0, 0.4);
+}
+
+.bgn-color-type-water {
+    background-color: rgba(100, 255, 255, 0.4);
 }
 
 #pokeImg {
@@ -41,7 +54,7 @@ h1 {
     object-fit: contain;
 }
 
-.pokedex-bottom{
+.pokedex-bottom {
     background-color: white;
     margin-top: -30px;
     margin-left: 48px;
@@ -60,5 +73,21 @@ h1 {
     background-color: rgba(255, 0, 100, 0.4);
     padding: 8px;
     margin-right: 8px;
-    border-radius: 15px 15px 15px 15px; 
+    border-radius: 15px 15px 15px 15px;
+}
+
+.bgn-slot-type-grass {
+    background-color: rgba(100, 255, 0, 0.4);
+}
+
+.bgn-slot-type-ground {
+    background-color: rgba(255, 0, 100, 0.4);
+}
+
+.bgn-slot-type-electric {
+    background-color: rgba(255, 255, 0, 0.4);
+}
+
+.bgn-slot-type-water {
+    background-color: rgba(100, 255, 255, 0.4);
 }
