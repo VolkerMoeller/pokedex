@@ -26,15 +26,13 @@ function getNextPokemon() {
     nextPokeNr++;
     if (nextPokeNr >= pokemons.length) {
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%)';
-        loadPokemonBy(nextPokeNr); 
-    } 
+        loadPokemonBy(nextPokeNr);
+    }
     else {
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%)';
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
-        // lastPokeNr--;
-        // currentPokeNr--;
-        // nextPokeNr--;  
     }
+
 }
 
 
@@ -81,7 +79,7 @@ function stylePokedexBgnTop(i) {
 
 
 function setBgnByType(pokeType, i) {
-    document.getElementById('pokedex-top' + i).classList.add('bgn-color-type-' + pokeType);
+    document.getElementById('pokedex-top' + i).classList.add('bgn-type-' + pokeType);
 }
 
 
@@ -115,8 +113,8 @@ function addCurrentPokemon() {
 function generateHTMLPokedex(i) {
     return `
         <div id="pokedex${i}" class="pokedex">
-            <div id="pokedex-top${i}" class="pokedex-top">SERVER LÄDT
-                <div>
+            <div id="pokedex-top${i}" class="pokedex-top">
+                <div class="pokedex-above">
                     <div id="pokedex-name${i}">
                     </div>
                     <div id="pokedex-id${i}">
@@ -138,13 +136,20 @@ function renderPokedexTop(i) {
     let pokeId = pokemons[i]['pokeIds'];
     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${pokeId}</div>`;
     let pokeSlot1 = pokemons[i]['pokeSlot1'];
-    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot">${pokeSlot1}</div>`;
+    let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
+    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
     let pokeImg = pokemons[i]['pokeImg'];
     document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
     if (pokemons[i]['pokeSlot2'] == 'none') {
     } else {
         let pokeSlot2 = pokemons[i]['pokeSlot2'];
-        document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot">${pokeSlot2}</div>`;
+        let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
+        document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
+    }
+    if (pokeSlot1 == 'electric') {
+        document.getElementById('pokedex-name' + i).classList.add('color-black');
+        document.getElementById('pokedex-id' + i).classList.add('color-black');
+        document.getElementById('pokedex-slots' + i).classList.add('color-black');
     }
 }
 
