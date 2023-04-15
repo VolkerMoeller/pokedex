@@ -8,35 +8,24 @@ let pokemons = [
         "pokeWeight": [],
     }
 ];
-let currentPokemon = [];
-let currentPokeNr = 0;
-let lastPokeNr = currentPokeNr - 1;
-let nextPokeNr = currentPokeNr + 1;
 
+let currentPokemon = [];
+let timeOutNext = 0;
+let currentShownPokemonNr = 1;
+let currentPokeNr;
 
 function initPokemon() {
-    document.getElementById('pokedex-all').innerHTML = '';
-    loadPokemonBy(nextPokeNr);
+    getFivePokemon();
 }
 
 
-function getNextPokemon() {
-    currentPokeNr++;
-    lastPokeNr++;
-    nextPokeNr++;
-    if (nextPokeNr >= pokemons.length) {
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%)';
-        loadPokemonBy(nextPokeNr); 
-    } 
-    else {
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%)';
-        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
-        // lastPokeNr--;
-        // currentPokeNr--;
-        // nextPokeNr--;  
+function getFivePokemon() {
+    currentPokeNr = pokemons.length;
+    for (let i = 0; i < 5; i++) {
+        loadPokemonBy(currentPokeNr);
+        currentPokeNr++;
     }
 }
-
 
 
 async function loadPokemonBy(currentPokeNr) {
@@ -45,33 +34,47 @@ async function loadPokemonBy(currentPokeNr) {
     let responseAsJSON = await response.json();
     currentPokemon = responseAsJSON;
     // console.log('CurrentPokemon:', currentPokemon);
-    addCurrentPokemon()
-    renderPokedex(currentPokeNr);
+    addCurrentPokemon();
+    sortPokemons();
+    setTimeout(function () { renderPokedex(); }, timeOutNext);
 }
 
-
-function renderPokedex(i) {
-    document.getElementById('pokedex-all').innerHTML += generateHTMLPokedex(i);
-    renderPokedexTop(i);
-    stylePokedexBgnTop(i);
-    renderPokedexBottom(i);
-}
-
-
-function showNextPokedex() {
-    getNextPokemon();
-}
-
-function showLastPokedex() {
-    if (currentPokeNr > 0) {
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%)';
-        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%)';
-        currentPokeNr--;
-        lastPokeNr--;
-        nextPokeNr--;
+function showPokedex() {
+    let currentPokemonId = document.getElementById('pokedex' + currentShownPokemonNr);
+    if (currentPokemonId) {
+        document.getElementById('pokedex' + currentShownPokemonNr).classList.remove('display-none');
+    } else {
+        console.log('keine weiteren Pokemons');
+        currentShownPokemonNr = 1;
     }
 }
 
+function sortPokemons() {
+    pokemons.sort(function (a, b) { return a.pokeIds - b.pokeIds });
+}
+
+function renderPokedex() {
+    document.getElementById('pokedex-all').innerHTML = '';
+    for (let i = 0; i < pokemons.length; i++) {
+        document.getElementById('pokedex-all').innerHTML += generateHTMLPokedex(i);
+        renderPokedexTop(i);
+        stylePokedexBgnTop(i);
+        renderPokedexBottom(i);
+    }
+    if (pokemons.length >= 5) {
+        timeOutNext = 4000;
+    }
+}
+
+function startPokedex() {
+    showPokedex();
+}
+
+function showNextPokedex() {
+    document.getElementById('pokedex' + currentShownPokemonNr).classList.add('display-none');
+    currentShownPokemonNr++;
+    showPokedex();
+}
 
 function stylePokedexBgnTop(i) {
     let pokeType = document.getElementById('base-type' + i).innerHTML;
@@ -79,12 +82,30 @@ function stylePokedexBgnTop(i) {
 
 }
 
-
 function setBgnByType(pokeType, i) {
     document.getElementById('pokedex-top' + i).classList.add('bgn-color-type-' + pokeType);
 }
 
 
+
+function generateHTMLPokedex(i) {
+    return `
+    <div id="pokedex${i}" class="pokedex display-none">
+        <div id="pokedex-top${i}" class="pokedex-top">
+            <div>
+                <div id="pokedex-name${i}">
+                </div>
+                <div id="pokedex-id${i}">
+                </div>
+            </div>
+            <div id="pokedex-slots${i}" class="pokedex-slots">
+            </div>
+        </div>
+        <div id="pokedex-bottom${i}" class="pokedex-bottom">
+        </div>  
+    </div> 
+        `
+}
 
 
 function addCurrentPokemon() {
@@ -112,26 +133,6 @@ function addCurrentPokemon() {
 }
 
 
-function generateHTMLPokedex(i) {
-    return `
-        <div id="pokedex${i}" class="pokedex">
-            <div id="pokedex-top${i}" class="pokedex-top">SERVER LÄDT
-                <div>
-                    <div id="pokedex-name${i}">
-                    </div>
-                    <div id="pokedex-id${i}">
-                    </div>
-                </div>
-                <div id="pokedex-slots${i}" class="pokedex-slots">
-                </div>
-            </div>
-            <div id="pokedex-bottom${i}" class="pokedex-bottom">
-            </div>  
-        </div> 
-            `
-}
-
-
 function renderPokedexTop(i) {
     let pokeName = pokemons[i]['pokeNames'];
     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeName}</h1>`;
@@ -153,4 +154,9 @@ function renderPokedexTop(i) {
 function renderPokedexBottom(i) {
     let pokeWeight = pokemons[i]['pokeWeight'];
     document.getElementById('pokedex-bottom' + i).innerHTML += `Gewicht: ${pokeWeight}`;
+}
+
+
+function nextFivePokemon() {
+    getFivePokemon();
 }
