@@ -8,10 +8,26 @@ let pokemons = [
         "pokeWeight": [],
     }
 ];
+
+
+let pokemonsSearched = [
+    {
+        "pokeIds": [],
+        "pokeNames": [],
+        "pokeSlot1": [],
+        "pokeSlot2": [],
+        "pokeImg": [],
+        "pokeWeight": [],
+    }
+];
+
+
 let currentPokemon = [];
 let currentPokeNr = 0;
 let lastPokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
+
+let searchingPoke = false;
 
 
 function initPokemon() {
@@ -26,10 +42,12 @@ function getNextPokemon() {
     nextPokeNr++;
     if (nextPokeNr >= pokemons.length) {
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%)';
+        document.getElementById('pokedex' + currentPokeNr).style = 'z-index: -1';
         loadPokemonBy(nextPokeNr);
     }
     else {
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%)';
+        document.getElementById('pokedex' + currentPokeNr).style = 'z-index: -1';
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
     }
 
@@ -42,10 +60,11 @@ async function loadPokemonBy(currentPokeNr) {
     let response = await fetch(url);
     let responseAsJSON = await response.json();
     currentPokemon = responseAsJSON;
-    // console.log('CurrentPokemon:', currentPokemon);
-    addCurrentPokemon()
+    addCurrentPokemon();
     renderPokedex(currentPokeNr);
 }
+
+
 
 
 function renderPokedex(i) {
@@ -64,6 +83,7 @@ function showLastPokedex() {
     if (currentPokeNr > 0) {
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%)';
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%)';
+        document.getElementById('pokedex' + nextPokeNr).style = 'z-index: -1';
         currentPokeNr--;
         lastPokeNr--;
         nextPokeNr--;
@@ -81,8 +101,6 @@ function stylePokedexBgnTop(i) {
 function setBgnByType(pokeType, i) {
     document.getElementById('pokedex-top' + i).classList.add('bgn-type-' + pokeType);
 }
-
-
 
 
 function addCurrentPokemon() {
@@ -110,22 +128,30 @@ function addCurrentPokemon() {
 }
 
 
+
 function generateHTMLPokedex(i) {
     return `
-        <div id="pokedex${i}" class="pokedex">
-            <div id="pokedex-top${i}" class="pokedex-top">
-                <div class="pokedex-above">
-                    <div id="pokedex-name${i}">
-                    </div>
-                    <div id="pokedex-id${i}">
-                    </div>
-                </div>
-                <div id="pokedex-slots${i}" class="pokedex-slots">
-                </div>
+    <div id="pokedex${i}" class="pokedex">
+    <div id="pokedex-top${i}" class="pokedex-top">
+    <div id="pokedex-nav" class="pokedex-nav">
+    <button onclick="showLastPokedex()"><</button>
+    <div id="search" class= "search">
+    <input id="search-nr${i}" placeholder="Nr."><button onclick="getSearchedPokemonBy(${i})">Suche</button>
+    </div>
+    <button onclick="showNextPokedex()">></button>
+    </div>
+    <div class="pokedex-above">
+            <div id="pokedex-name${i}">
+            </div>
+            <div id="pokedex-id${i}">
+            </div>
+            </div>
+            <div id="pokedex-slots${i}" class="pokedex-slots">
+            </div>
             </div>
             <div id="pokedex-bottom${i}" class="pokedex-bottom">
             </div>  
-        </div> 
+            </div> 
             `
 }
 
@@ -151,11 +177,47 @@ function renderPokedexTop(i) {
         document.getElementById('pokedex-id' + i).classList.add('color-black');
         document.getElementById('pokedex-slots' + i).classList.add('color-black');
     }
+    if (pokeSlot1 == 'ice') {
+        document.getElementById('pokedex-name' + i).classList.add('color-black');
+        document.getElementById('pokedex-id' + i).classList.add('color-black');
+        document.getElementById('pokedex-slots' + i).classList.add('color-black');
+    }
 }
-
 
 
 function renderPokedexBottom(i) {
     let pokeWeight = pokemons[i]['pokeWeight'];
     document.getElementById('pokedex-bottom' + i).innerHTML += `Gewicht: ${pokeWeight}`;
+}
+
+
+function getSearchedPokemonBy(i) {
+    searchingPoke = true;
+    let searchNumber = +document.getElementById('search-nr' + i).value
+    if (checkIfPokemonInArray(searchNumber) == true) {
+        showSearchedPokemonBy(searchNumber);
+    } else {
+        // loadPokemonBy(searchNumber);
+    };
+
+}
+
+
+function checkIfPokemonInArray(searchNumber) {
+    for (let i = 0; i < pokemons.length; i++) {
+        if (pokemons[i]['pokeIds'].includes(searchNumber) == true) {
+            return pokemons[i]['pokeIds'].includes(searchNumber)
+        };
+    }
+}
+
+function showSearchedPokemonBy(i) {
+    let pokeNrToHide = currentPokeNr + 1
+    document.getElementById('pokedex' + pokeNrToHide).style = 'transform: translateX(-100%)';
+    document.getElementById('pokedex' + pokeNrToHide).style = 'z-index: -1';
+    document.getElementById('pokedex' + i).style = 'transform: translateX(0%)';
+    document.getElementById('pokedex' + i).style = 'z-index: 1';
+    currentPokeNr = i - 1;
+    lastPokeNr = currentPokeNr - 1;
+    nextPokeNr = currentPokeNr + 1;
 }
