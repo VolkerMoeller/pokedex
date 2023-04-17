@@ -9,8 +9,7 @@ let pokemons = [
     }
 ];
 
-
-let pokemonsSearched = [
+let pokemonsLoaded = [
     {
         "pokeIds": [],
         "pokeNames": [],
@@ -26,6 +25,8 @@ let currentPokemon = [];
 let currentPokeNr = 0;
 let lastPokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
+
+let searchPokeNr = 0;
 
 let searchingPoke = false;
 
@@ -50,10 +51,7 @@ function getNextPokemon() {
         document.getElementById('pokedex' + currentPokeNr).style = 'z-index: -1';
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
     }
-
 }
-
-
 
 async function loadPokemonBy(currentPokeNr) {
     let url = `https://pokeapi.co/api/v2/pokemon/${currentPokeNr}`;
@@ -61,10 +59,12 @@ async function loadPokemonBy(currentPokeNr) {
     let responseAsJSON = await response.json();
     currentPokemon = responseAsJSON;
     addCurrentPokemon();
-    renderPokedex(currentPokeNr);
+    if (searchingPoke == true) {
+        pokemonsLoaded.sort(function (a, b) { return a.pokeIds - b.pokeIds });
+    } else {
+        renderPokedex(currentPokeNr);
+    }
 }
-
-
 
 
 function renderPokedex(i) {
@@ -115,16 +115,30 @@ function addCurrentPokemon() {
         pokeSlot2 = 'none';
     }
     let pokeWeight = currentPokemon['weight'];
-    pokemons.push(
-        {
-            "pokeIds": [pokeId],
-            "pokeNames": [pokeName],
-            "pokeSlot1": [pokeSlot1],
-            "pokeSlot2": [pokeSlot2],
-            "pokeImg": [pokeImg],
-            "pokeWeight": [pokeWeight],
-        }
-    )
+
+    if (searchingPoke == true) {
+        pokemonsLoaded.push(
+            {
+                "pokeIds": [pokeId],
+                "pokeNames": [pokeName],
+                "pokeSlot1": [pokeSlot1],
+                "pokeSlot2": [pokeSlot2],
+                "pokeImg": [pokeImg],
+                "pokeWeight": [pokeWeight],
+            }
+        )
+    } else {
+        pokemons.push(
+            {
+                "pokeIds": [pokeId],
+                "pokeNames": [pokeName],
+                "pokeSlot1": [pokeSlot1],
+                "pokeSlot2": [pokeSlot2],
+                "pokeImg": [pokeImg],
+                "pokeWeight": [pokeWeight],
+            }
+        )
+    }
 }
 
 
@@ -193,13 +207,53 @@ function renderPokedexBottom(i) {
 
 function getSearchedPokemonBy(i) {
     searchingPoke = true;
-    let searchNumber = +document.getElementById('search-nr' + i).value
+    searchNumber = +document.getElementById('search-nr' + i).value
     if (checkIfPokemonInArray(searchNumber) == true) {
         showSearchedPokemonBy(searchNumber);
     } else {
-        // loadPokemonBy(searchNumber);
+        searchingPoke == true;
+        loadAllPokemonBetween(searchNumber);
     };
+}
 
+
+async function loadAllPokemonBetween(searchPokeNr) {
+    // let beginPokeNr = currentPokeNr + 2;
+    let beginPokeNr = pokemons.length;
+    let endPokeNr = searchPokeNr + 1;
+    for (let i = beginPokeNr; i < endPokeNr; i++) {
+        await loadPokemonBy(i);
+    }
+    for (let i = 1; i < pokemonsLoaded.length; i++) {
+        pokemons.push(
+            {
+                "pokeIds": [pokemonsLoaded[i]['pokeIds'][0]],
+                "pokeNames": [pokemonsLoaded[i]['pokeNames'][0]],
+                "pokeSlot1": [pokemonsLoaded[i]['pokeSlot1'][0]],
+                "pokeSlot2": [pokemonsLoaded[i]['pokeSlot2'][0]],
+                "pokeImg": [pokemonsLoaded[i]['pokeImg'][0]],
+                "pokeWeight": [pokemonsLoaded[i]['pokeWeight'][0]],
+            }
+        )
+    }
+    for (let i = beginPokeNr; i < pokemons.length; i++) {
+        searchingPoke = false;
+        renderPokedex(i);
+        pokemonsLoaded = [
+            {
+                "pokeIds": [],
+                "pokeNames": [],
+                "pokeSlot1": [],
+                "pokeSlot2": [],
+                "pokeImg": [],
+                "pokeWeight": [],
+            }
+        ];;
+    }
+
+    currentPokeNr = pokemons.length - 2;
+    nextPokeNr = currentPokeNr + 1;
+    lastPokeNr = currentPokeNr - 1;
 }
 
 
@@ -210,6 +264,7 @@ function checkIfPokemonInArray(searchNumber) {
         };
     }
 }
+
 
 function showSearchedPokemonBy(i) {
     let pokeNrToHide = currentPokeNr + 1
