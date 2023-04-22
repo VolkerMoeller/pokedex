@@ -20,6 +20,7 @@ let pokesLoaded = [
     }
 ];
 
+let functionRunning = false;
 
 let currentPoke = [];
 
@@ -35,22 +36,84 @@ let searchPokeNr = 0;
 
 let searchingPoke = false;
 
+let amountPokes = 1010;
+let amountLoadedPokes = 0;
 
-function initPokemon() {
+let redundancy = false;
+
+
+async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
     showNextCountPokes();
 }
 
 
 async function showNextCountPokes() {
-    await promiseGet();
-    await promiseSort();
-    await promisePush();
-    resetPokesLoaded();
-    renderPokes();
-    updateParam();
-    showCurrentPoke(currentPokeNr);
+    if (!functionRunning) {
+        functionRunning = true;
+        await promiseGet();
+        await promiseSort();
+        await promiseCheck();
+        if (redundancy == true) {
+            await promiseReset();
+            return;
+        } else {
+            let promises = [promisePush(), promiseReset(), promiseRender(), promiseUpdate(), promiseShow(currentPokeNr)];
+            await Promise.all(promises);
+        }
+        amountLoadedPokes = pokes.length - 1;
+        console.log('amountLoadedPokes: ' + amountLoadedPokes);
+        renderAmountLaodedPokes();
+        redundancy == false;
+    }
+    functionRunning = false;
 }
+
+
+function renderAmountLaodedPokes() {
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = amountLoadedPokes;
+}
+
+async function doGet() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await promiseGet();
+        doCheck();
+    }
+    functionRunning = false;
+}
+
+
+async function doSort() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await promiseSort();
+        doCheck();
+    }
+    functionRunning = false;
+}
+
+
+async function doCheck() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await promiseCheck();
+        doPush();
+    }
+    functionRunning = false;
+}
+
+
+async function doPush() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await promisePush();
+        doReset();
+    }
+    functionRunning = false;
+}
+
 
 async function promiseGet() {
     let promise1 = new Promise((resolve, reject) => {
@@ -78,11 +141,65 @@ async function promisePush() {
     console.log(result3);
 }
 
+async function promiseReset() {
+    let promise4 = new Promise((resolve, reject) => {
+        resolve(resetPokesLoaded());
+    });
+    let result4 = await promise4;
+    console.log(result4);
+}
+
+
+async function promiseRender() {
+    let promise5 = new Promise((resolve, reject) => {
+        resolve(renderPokes());
+    });
+    let result5 = await promise5;
+    console.log(result5);
+}
+
+
+async function promiseUpdate() {
+    let promise6 = new Promise((resolve, reject) => {
+        resolve(updateParam());
+    });
+    let result6 = await promise6;
+    console.log(result6);
+}
+
+
+async function promiseShow() {
+    let promise7 = new Promise((resolve, reject) => {
+        resolve(showCurrentPoke(currentPokeNr));
+    });
+    let result7 = await promise7;
+    console.log(result7);
+}
+
+
+async function promiseCheck() {
+    let promise8 = new Promise((resolve, reject) => {
+        resolve(checkRedundancy());
+    });
+    let result8 = await promise8;
+    console.log(result8);
+}
+
+
+async function promiseWait() {
+    let promise9 = new Promise((resolve, reject) => {
+        setTimeout(() => resolve('wait done'), 2000);
+    });
+    let result9 = await promise9;
+    console.log(result9);
+}
+
 
 function renderPokes() {
     for (let i = beginPokeNr; i <= endPokeNr; i++) {
         renderPoke(i);
     }
+    return 'render done'
 }
 
 
@@ -91,15 +208,16 @@ async function getNextCountPokes() {
         await loadCurrentPoke(i);
         addToPokesLoaded();
     }
-    return 'getNextCountPokes end';
+    return 'get done';
 }
 
 
 async function sortPokesLoaded() {
     pokesLoaded.splice(0, 1);
     pokesLoaded.sort(function (a, b) { return a.pokeId - b.pokeId });
-    return 'sortPokesLoaded end';
+    return 'sort done';
 }
+
 
 async function pushPokesLoadedToPokes() {
     for (let i = 0; i < pokesLoaded.length; i++) {
@@ -114,13 +232,16 @@ async function pushPokesLoadedToPokes() {
             }
         );
     }
-    return 'pushPokesLoadedToPokes end';
+    return 'push done';
 }
+
 
 function updateParam() {
     beginPokeNr = pokes.length;
     endPokeNr = beginPokeNr + count;
+    return 'update done';
 }
+
 
 async function loadCurrentPoke(i) {
     let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
@@ -131,28 +252,23 @@ async function loadCurrentPoke(i) {
 }
 
 
-
-
-
-
 function checkRedundancy() {
-    for (let i = 0; i < pokesLoaded.length; i++) {
-        let checkId = pokesLoaded[i]['pokeId'][0];
-        for (let j = 1; j < pokes.length; j++) {
-            let present = pokes[j]['pokeId'].indexOf(checkId);
-            // wenn gefunden, dann ist die Position (das Ergebnis) hier immer Null! 
-            if (present == 0) {
-                // enstsprechendes poke in pokeLoaded finden und löschen
-                for (k = 0; k < pokesLoaded.length; k++) {
-                    let presentLoaded = pokesLoaded[k]['pokeId'].indexOf(checkId);
-                    if (presentLoaded == 0) {
-                        console.log('redundandPoke: ' + checkId + 'Position in Loaded = ' + k);
-                        pokesLoaded.splice(i, 1);
-                    }
-                }
-            }
-        }
+    // console.log('pokes.length: ' + pokes.length);
+    // console.log('pokesLoaded.length: ' + pokesLoaded.length);
+    let startValue = pokes.length - 1;
+    // console.log('startValue: ' + startValue);
+    let reference = startValue + pokesLoaded.length;
+    // console.log('reference: ' + reference);
+    let lastPokeIdOfLoaded = pokesLoaded[pokesLoaded.length - 1]['pokeId'][0];
+    // console.log('lastPokeIdLoaded: ' + lastPokeIdOfLoaded);
+    if (reference == lastPokeIdOfLoaded) {
+        // console.log('Hurray');
+        redundancy = false;
+    } else {
+        // console.log('Mist');
+        redundancy = true;
     }
+    return 'check done';
 }
 
 
@@ -167,6 +283,7 @@ function resetPokesLoaded() {
             "pokeWeight": [],
         }
     ];
+    return 'reset done'
 }
 
 
@@ -174,9 +291,10 @@ function showCurrentPoke(currentPokeNr) {
     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
     document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
     if (currentPokeNr == 1) {
-        return;
+        return 'show done';
     } else {
         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
+        return 'show done';
     }
 }
 
@@ -189,14 +307,22 @@ function renderPoke(i) {
 }
 
 
-function showPokeNext() {
-    if (beginPokeNr < 1315 && nextPokeNr < pokes.length) {
+function showPokeNext(i) {
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
+    showNextCountPokes()
+    currentPokeNr = i;
+    beforePokeNr = currentPokeNr - 1;
+    nextPokeNr = currentPokeNr + 1;
+    if (beginPokeNr < amountPokes && nextPokeNr < pokes.length) {
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%);';
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
+        if (currentPokeNr == !1) {
+            document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-200%)';
+        }
         currentPokeNr = currentPokeNr + 1;
         beforePokeNr = currentPokeNr - 1;
-        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%)';
         nextPokeNr = currentPokeNr + 1;
+        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%)';
     } else {
         return;
     }
@@ -204,6 +330,8 @@ function showPokeNext() {
 
 
 function showPokeBefore() {
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
+    showNextCountPokes()
     if (currentPokeNr == 1) {
         return;
     } else {
@@ -218,6 +346,22 @@ function showPokeBefore() {
     }
 }
 
+function showPokeFirst(i) {
+    currentPoke = i;
+    if (currentPokeNr == 1) {
+        return;
+    } else {
+        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(200%);';
+        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
+        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(200%);';
+        currentPokeNr = 1;
+        beforePokeNr = currentPokeNr - 1;
+        nextPokeNr = currentPokeNr + 1;
+        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
+        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
+        // document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
+    }
+}
 
 function stylePokeBgnTop(i) {
     let pokeType = document.getElementById('base-type' + i).innerHTML;
@@ -263,10 +407,13 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
 function generateHTMLPokedex(i) {
     return `
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
+    <div id="amount-pokes-loaded${i}">Server lädt weitere</div>
     <div id="pokedex-top${i}" class="pokedex-top">
-        <button onclick="showNextCountPokes()">getNextCountPokes</button>
     <div id="pokedex-nav" class="pokedex-nav">
-                <button onclick="showPokeBefore(${i})"><</button>
+    <div class="first-buttons">
+    <button onclick="showPokeFirst(${i})"><<</button>
+    <button onclick="showPokeBefore(${i})"><</button>
+    </div>
                 <div id="search" class= "search">
                     <input id="search-nr${i}" placeholder="Nr.">
                     <button onclick="getSearchedPokemonBy(${i})">Suche</button>
