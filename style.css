@@ -13,6 +13,10 @@ body {
     display: none;
 }
 
+.display-flex {
+    display: flex;
+}
+
 .overlay {
     position: absolute;
     top: 0px;

@@ -29,7 +29,7 @@ let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
 
 let beginPokeNr = 1;
-let count = 5;
+let count = 7;
 let endPokeNr = beginPokeNr + count;
 
 let searchPokeNr = 0;
@@ -40,6 +40,10 @@ let amountPokes = 1010;
 let amountLoadedPokes = 0;
 
 let redundancy = false;
+
+let currentPokeNrLeft200
+let beforePokeNrLeft200
+let nextPokeNrLeft200
 
 
 async function initPokemon() {
@@ -62,7 +66,7 @@ async function showNextCountPokes() {
             await Promise.all(promises);
         }
         amountLoadedPokes = pokes.length - 1;
-        console.log('amountLoadedPokes: ' + amountLoadedPokes);
+        // console.log('amountLoadedPokes: ' + amountLoadedPokes);
         renderAmountLaodedPokes();
         redundancy == false;
     }
@@ -72,7 +76,11 @@ async function showNextCountPokes() {
 
 function renderAmountLaodedPokes() {
     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = amountLoadedPokes;
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = generateHTMLAmountLoadedPokes();
+}
+
+function generateHTMLAmountLoadedPokes() {
+    return amountLoadedPokes + ' von 1010 geladen';
 }
 
 async function doGet() {
@@ -120,7 +128,8 @@ async function promiseGet() {
         resolve(getNextCountPokes());
     });
     let result1 = await promise1;
-    console.log(result1);
+    return result1;
+    // console.log(result1);
 }
 
 
@@ -129,7 +138,8 @@ async function promiseSort() {
         resolve(sortPokesLoaded());
     });
     let result2 = await promise2;
-    console.log(result2);
+    return result2;
+    // console.log(result2);
 }
 
 
@@ -138,7 +148,8 @@ async function promisePush() {
         resolve(pushPokesLoadedToPokes());
     });
     let result3 = await promise3;
-    console.log(result3);
+    return result3;
+    // console.log(result3);
 }
 
 async function promiseReset() {
@@ -146,7 +157,8 @@ async function promiseReset() {
         resolve(resetPokesLoaded());
     });
     let result4 = await promise4;
-    console.log(result4);
+    return result4;
+    // console.log(result4);
 }
 
 
@@ -155,7 +167,8 @@ async function promiseRender() {
         resolve(renderPokes());
     });
     let result5 = await promise5;
-    console.log(result5);
+    return result5;
+    // console.log(result5);
 }
 
 
@@ -164,7 +177,8 @@ async function promiseUpdate() {
         resolve(updateParam());
     });
     let result6 = await promise6;
-    console.log(result6);
+    return result6;
+    // console.log(result6);
 }
 
 
@@ -173,7 +187,8 @@ async function promiseShow() {
         resolve(showCurrentPoke(currentPokeNr));
     });
     let result7 = await promise7;
-    console.log(result7);
+    return result7;
+    // console.log(result7);
 }
 
 
@@ -182,7 +197,8 @@ async function promiseCheck() {
         resolve(checkRedundancy());
     });
     let result8 = await promise8;
-    console.log(result8);
+    return result8;
+    // console.log(result8);
 }
 
 
@@ -191,7 +207,8 @@ async function promiseWait() {
         setTimeout(() => resolve('wait done'), 2000);
     });
     let result9 = await promise9;
-    console.log(result9);
+    return result9;
+    // console.log(result9);
 }
 
 
@@ -407,7 +424,7 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
 function generateHTMLPokedex(i) {
     return `
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
-    <div id="amount-pokes-loaded${i}">Server lädt weitere</div>
+    <div id="amount-pokes-loaded${i}">App lädt weitere ...</div>
     <div id="pokedex-top${i}" class="pokedex-top">
     <div id="pokedex-nav" class="pokedex-nav">
     <div class="first-buttons">
@@ -416,7 +433,7 @@ function generateHTMLPokedex(i) {
     </div>
                 <div id="search" class= "search">
                     <input id="search-nr${i}" placeholder="Nr.">
-                    <button onclick="getSearchedPokemonBy(${i})">Suche</button>
+                    <button onclick="showPokeBy(${i})">Suche</button>
                 </div>
                 <button onclick="showPokeNext(${i})">></button>
             </div>
@@ -468,4 +485,122 @@ function renderPokeTop(i) {
 function renderPokeBottom(i) {
     let pokeWeight = pokes[i]['pokeWeight'];
     document.getElementById('pokedex-bottom' + i).innerHTML += `Gewicht: ${pokeWeight}`;
+}
+
+
+function showPokeBy(i) {
+    showNextCountPokes();
+    let searchId = +document.getElementById('search-nr' + i).value;
+    if (searchId == i || searchId == 0 || searchId > pokes.length) {
+        return;
+    }
+    if (searchId == i + 1) {
+        // showRightPoke
+    }
+    if (searchId > i + 1) {
+        // showSomewhereRight
+        // checkOutByX(-200, currentPokeNr, beforePokeNr, nextPokeNr);
+        shiftBeforePokes(searchId);
+        updatePokeNrsWith(searchId);
+        if (currentPokeNr > 1) {
+            document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
+        }
+        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
+        if (nextPokeNr < pokes.length) {
+            document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
+        }
+        // noticePokeNrsOnLeft200(i);
+        // hidePokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200);
+        // checkOutByX(200, currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200);        
+        // showPokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200);
+        
+    }
+    if (searchId < i - 1) {
+        // showSomewhereLeft
+        shiftNextPokes(searchId);
+        updatePokeNrsWith(searchId);
+        if (currentPokeNr > 1) {
+            document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
+        }
+        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
+        if (nextPokeNr < pokes.length) {
+            document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
+        }
+    }
+    if (searchId == i - 1) {
+        // showLeftPoke
+    }
+}
+
+
+// function hidePokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200) {
+//     document.getElementById('pokedex' + currentPokeNrLeft200).classList.add('display-none');
+//     if (beforePokeNrLeft200) {
+//         document.getElementById('pokedex' + beforePokeNrLeft200).classList.add('display-none');
+//     }
+//     document.getElementById('pokedex' + nextPokeNrLeft200).classList.add('display-none');
+// }
+
+// function showPokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200) {
+//     document.getElementById('pokedex' + currentPokeNrLeft200).classList.remove('display-none');
+//     if (beforePokeNrLeft200) {
+//         document.getElementById('pokedex' + beforePokeNrLeft200).classList.remove('display-none');
+//     }    
+//     document.getElementById('pokedex' + nextPokeNrLeft200).classList.remove('display-none');
+// }
+
+
+function noticePokeNrsOnLeft200(i) {
+    currentPokeNrLeft200 = i;
+    beforePokeNrLeft200 = currentPokeNrLeft200 - 1;
+    nextPokeNrLeft200 = currentPokeNrLeft200 + 1;
+}
+
+
+function updatePokeNrsWith(i) {
+    currentPokeNr = i;
+    beforePokeNr = currentPokeNr - 1;
+    nextPokeNr = currentPokeNr + 1;
+}
+
+
+function checkOutByX(i, currentPoke, beforePoke, nextPoke) {
+    if (beforePoke) {
+        document.getElementById('pokedex' + beforePoke).style = `transform: translateX(${i}%);`;
+    }
+    document.getElementById('pokedex' + currentPoke).style = `transform: translateX(${i}%);`;
+    document.getElementById('pokedex' + nextPoke).style = `transform: translateX(${i}%);`;
+}
+
+
+function checkOutRight200() {
+    if (beforePokeNr) {
+        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(200%);';
+    }
+    document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(200%);';
+    document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
+}
+
+
+function shiftBeforePokes(searchId) {
+    let position = -200;
+    let startNr = currentPokeNr;
+    let endNr = searchId;
+    for (let i = startNr; i <= endNr; i++) {
+        shiftPokeToXByNr(i, position);
+    }
+
+
+}
+function shiftNextPokes(searchId) {
+    let position = +200;
+    let startNr = currentPokeNr;
+    let endNr = searchId;
+    for (let i = startNr; i >= endNr; i--) {
+        shiftPokeToXByNr(i, position);
+    }
+}
+
+function shiftPokeToXByNr(pokeNr, position) {
+    document.getElementById('pokedex' + pokeNr).style = `transform: translateX(${position}%);`;
 }
