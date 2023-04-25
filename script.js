@@ -29,7 +29,7 @@ let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
 
 let beginPokeNr = 1;
-let count = 7;
+let count = 3;
 let endPokeNr = beginPokeNr + count;
 
 let searchPokeNr = 0;
@@ -49,8 +49,15 @@ let nextPokeNrLeft200
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
     showNextCountPokes();
+
 }
 
+async function get40Pokes() {
+    for (let i = 0; i < 10; i++) {
+        await showNextCountPokes();
+        await promiseWait();
+    }
+}
 
 async function showNextCountPokes() {
     if (!functionRunning) {
@@ -68,6 +75,7 @@ async function showNextCountPokes() {
         amountLoadedPokes = pokes.length - 1;
         // console.log('amountLoadedPokes: ' + amountLoadedPokes);
         renderAmountLaodedPokes();
+        // updateProgress();
         redundancy == false;
     }
     functionRunning = false;
@@ -203,11 +211,11 @@ async function promiseCheck() {
 
 
 async function promiseWait() {
-    let promise9 = new Promise((resolve, reject) => {
-        setTimeout(() => resolve('wait done'), 2000);
+    let promise = new Promise((resolve, reject) => {
+        setTimeout(() => resolve('wait done'), 550);
     });
-    let result9 = await promise9;
-    return result9;
+    let result = await promise;
+    return result;
     // console.log(result9);
 }
 
@@ -270,19 +278,12 @@ async function loadCurrentPoke(i) {
 
 
 function checkRedundancy() {
-    // console.log('pokes.length: ' + pokes.length);
-    // console.log('pokesLoaded.length: ' + pokesLoaded.length);
     let startValue = pokes.length - 1;
-    // console.log('startValue: ' + startValue);
     let reference = startValue + pokesLoaded.length;
-    // console.log('reference: ' + reference);
     let lastPokeIdOfLoaded = pokesLoaded[pokesLoaded.length - 1]['pokeId'][0];
-    // console.log('lastPokeIdLoaded: ' + lastPokeIdOfLoaded);
     if (reference == lastPokeIdOfLoaded) {
-        // console.log('Hurray');
         redundancy = false;
     } else {
-        // console.log('Mist');
         redundancy = true;
     }
     return 'check done';
@@ -325,8 +326,9 @@ function renderPoke(i) {
 
 
 function showPokeNext(i) {
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
-    showNextCountPokes()
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = 'App tut nix ...';
+    showNextCountPokes();
+    // get120Pokes();
     currentPokeNr = i;
     beforePokeNr = currentPokeNr - 1;
     nextPokeNr = currentPokeNr + 1;
@@ -347,8 +349,8 @@ function showPokeNext(i) {
 
 
 function showPokeBefore() {
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
-    showNextCountPokes()
+    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = 'App tut nix ...';
+    showNextCountPokes();
     if (currentPokeNr == 1) {
         return;
     } else {
@@ -376,7 +378,6 @@ function showPokeFirst(i) {
         nextPokeNr = currentPokeNr + 1;
         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
-        // document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
     }
 }
 
@@ -424,31 +425,40 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
 function generateHTMLPokedex(i) {
     return `
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
-    <div id="amount-pokes-loaded${i}">App lädt weitere ...</div>
     <div id="pokedex-top${i}" class="pokedex-top">
     <div id="pokedex-nav" class="pokedex-nav">
     <div class="first-buttons">
     <button onclick="showPokeFirst(${i})"><<</button>
     <button onclick="showPokeBefore(${i})"><</button>
     </div>
-                <div id="search" class= "search">
-                    <input id="search-nr${i}" placeholder="Nr.">
-                    <button onclick="showPokeBy(${i})">Suche</button>
-                </div>
-                <button onclick="showPokeNext(${i})">></button>
-            </div>
+    <div id="search" class= "search">
+    <input id="search-nr${i}" placeholder="Nr.">
+    <button onclick="showPokeBy(${i})">Suche</button>
+    </div>
+    <button onclick="showPokeNext(${i})">></button>
+    </div>
+    <div id="amount-pokes-loaded${i}">App wartet ...</div>
+    <!-- 
+    <div id="progress-bar${i}" class="progress-bar">
+    <div id="progress${i}" class="progress">
+    </div>
+    </div> 
+    <div>
+    <button onclick="get40Pokes()">+40 ...</button>
+    </div>
+    -->
         <div class="pokedex-above">
-            <div id="pokedex-name${i}">
-            </div>
+        <div id="pokedex-name${i}" class="pokedex-name">
+        </div>
             <div id="pokedex-id${i}">
             </div>
             </div>
             <div id="pokedex-slots${i}" class="pokedex-slots">
             </div>
-        </div>
+            </div>
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
         </div>  
-    </div> 
+        </div> 
     `
 }
 
@@ -513,7 +523,7 @@ function showPokeBy(i) {
         // hidePokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200);
         // checkOutByX(200, currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200);        
         // showPokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200);
-        
+
     }
     if (searchId < i - 1) {
         // showSomewhereLeft
@@ -582,16 +592,18 @@ function checkOutRight200() {
 }
 
 
-function shiftBeforePokes(searchId) {
+async function shiftBeforePokes(searchId) {
     let position = -200;
     let startNr = currentPokeNr;
     let endNr = searchId;
     for (let i = startNr; i <= endNr; i++) {
-        shiftPokeToXByNr(i, position);
+        await shiftPokeToXByNr(i, position);
     }
 
 
 }
+
+
 function shiftNextPokes(searchId) {
     let position = +200;
     let startNr = currentPokeNr;
@@ -601,6 +613,256 @@ function shiftNextPokes(searchId) {
     }
 }
 
-function shiftPokeToXByNr(pokeNr, position) {
+async function shiftPokeToXByNr(pokeNr, position) {
     document.getElementById('pokedex' + pokeNr).style = `transform: translateX(${position}%);`;
+}
+
+
+function updateProgress() {
+    let progressWidth = pokes.length / amountPokes * 100;
+    document.getElementById('progress' + currentPokeNr).style = `width: ${progressWidth}%`;
+}
+
+
+function checkOutRight200() {
+    if (beforePokeNr) {
+        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(200%);';
+    }
+    document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(200%);';
+    document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
+}
+
+
+// sliderOneRight
+
+
+async function sliderOneRight() {
+    let endNr = pokes.length - 1;
+    if (currentPokeNr < endNr) {
+        await cardSlideLeft();
+        await updatePokeCaseLeft();
+        await cardHideLeft();
+        await cardSlideToDeck();
+        // let promises = [cardSlideLeft(), updatePokeCaseLeft(), cardHideLeft(), cardSlideToDeck()];
+        // await Promise.all(promises);
+        await promiseWait();
+        await cardDisplayRight200();
+    }
+}
+
+
+async function cardSlideLeft() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(slideLeft());
+    });
+    let result = await promise;
+    return result;
+
+}
+
+
+async function updatePokeCaseLeft() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(pokeCaseLeft());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+async function cardHideLeft() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(hideLeft());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+
+async function updatePokeCaseLeft() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(pokeCaseLeft());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+async function cardSlideToDeck() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(slideToDeck());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+async function cardDisplayRight200() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(displayRight200());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+function slideLeft() {
+    if (beforePokeNr) {
+        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-200%);';
+    }
+    document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%);';
+    document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%);';
+    nextPokeNr++;
+    if (nextPokeNr < pokes.length) {
+        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
+    }
+}
+
+
+function hideLeft() {
+    let left200PokeNr = beforePokeNr - 1;
+    if (left200PokeNr >= 1) {
+        document.getElementById('pokedex' + left200PokeNr).classList.add('display-none');
+    }
+}
+
+
+function pokeCaseLeft() {
+    currentPokeNr++;
+    // nextPokeNr++; bereits bei slideLeft erfolgt
+    beforePokeNr++;
+}
+
+
+function slideToDeck() {
+    let left200PokeNr = beforePokeNr - 1;
+    if (left200PokeNr >= 1) {
+        document.getElementById('pokedex' + left200PokeNr).style = 'transform: translateX(200%);';
+    }
+}
+
+
+function displayRight200() {
+    let left200PokeNr = beforePokeNr - 1;
+    if (left200PokeNr >= 1) {
+        document.getElementById('pokedex' + left200PokeNr).classList.remove('display-none');
+    }
+}
+
+
+// sliderOneLeft
+
+
+async function sliderOneLeft() {
+    let endNr = 1;
+    if (currentPokeNr > endNr) {
+        await cardSlideRight();
+        await updatePokeCaseRight();
+        await cardHideRight();
+        await cardSlideToFirstPosition();
+        // let promises = [cardSlideLeft(), updatePokeCaseLeft(), cardHideLeft(), cardSlideToDeck()];
+        // await Promise.all(promises);
+        await promiseWait();
+        await cardDisplayFirstPosition();
+    }
+}
+
+
+async function cardSlideRight() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(slideRight());
+    });
+    let result = await promise;
+    return result;
+
+}
+
+
+async function updatePokeCaseRight() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(pokeCaseRight());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+async function cardHideRight() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(hideRight());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+
+async function updatePokeCaseLeft() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(pokeCaseLeft());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+async function cardSlideToFirstPosition() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(slideToFirstPosition());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+async function cardDisplayFirstPosition() {
+    let promise = new Promise((resolve, reject) => {
+        resolve(displayFirstPosition());
+    });
+    let result = await promise;
+    return result;
+}
+
+
+function slideRight() {
+    if (nextPokeNr < pokes.length) {
+        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
+    }
+    document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(100%);';
+    document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(0%);';
+
+    // if (beforePokeNr > 1) {
+    //     document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
+    // }
+}
+
+
+function hideRight() {
+    // let right200PokeNr = beforePokeNr;
+    if (beforePokeNr >= 1) {
+        document.getElementById('pokedex' + beforePokeNr).classList.add('display-none');
+    }
+}
+
+
+function pokeCaseRight() {
+    currentPokeNr--;
+    nextPokeNr--;
+    beforePokeNr--;
+}
+
+
+function slideToFirstPosition() {
+    // let left200PokeNr = beforePokeNr - 1;
+    if (beforePokeNr >= 1) {
+        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
+    }
+}
+
+
+function displayFirstPosition() {
+    if (beforePokeNr >= 1) {
+        document.getElementById('pokedex' + beforePokeNr).classList.remove('display-none');
+    }
 }

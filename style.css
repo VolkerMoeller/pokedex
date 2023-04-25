@@ -38,13 +38,13 @@ h1 {
     align-items: center;
     height: 100vh;
     width: 480px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .pokedex {
     position: absolute;
     width: 480px;
-    transition: transform 225ms ease-in-out;
+    transition: transform 375ms ease-in-out;
 }
 
 .pokedex-nav {
@@ -149,4 +149,21 @@ h1 {
 
 .color-black {
     color: black !important;
+}
+
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    min-height: 7px;
+    background-color: rgb(119, 119, 119);
+}
+
+.progress {
+    height: 100%;
+    background-color: white;
+}
+
+.pokedex-name::first-letter {
+text-transform: capitalize;
 }
