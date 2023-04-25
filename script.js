@@ -75,7 +75,7 @@ async function showNextCountPokes() {
         amountLoadedPokes = pokes.length - 1;
         // console.log('amountLoadedPokes: ' + amountLoadedPokes);
         renderAmountLaodedPokes();
-        // updateProgress();
+        updateProgress();
         redundancy == false;
     }
     functionRunning = false;
@@ -88,7 +88,7 @@ function renderAmountLaodedPokes() {
 }
 
 function generateHTMLAmountLoadedPokes() {
-    return amountLoadedPokes + ' von 1010 geladen';
+    return 'Es wurden ' + amountLoadedPokes + ' von 1010 geladen';
 }
 
 async function doGet() {
@@ -325,61 +325,45 @@ function renderPoke(i) {
 }
 
 
-function showPokeNext(i) {
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = 'App tut nix ...';
-    showNextCountPokes();
-    // get120Pokes();
-    currentPokeNr = i;
-    beforePokeNr = currentPokeNr - 1;
-    nextPokeNr = currentPokeNr + 1;
-    if (beginPokeNr < amountPokes && nextPokeNr < pokes.length) {
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%);';
-        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
-        if (currentPokeNr == !1) {
-            document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-200%)';
-        }
-        currentPokeNr = currentPokeNr + 1;
-        beforePokeNr = currentPokeNr - 1;
-        nextPokeNr = currentPokeNr + 1;
-        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%)';
-    } else {
-        return;
-    }
-}
+// function showPokeNext(i) {
+//     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = 'App tut nix ...';
+//     showNextCountPokes();
+//     currentPokeNr = i;
+//     beforePokeNr = currentPokeNr - 1;
+//     nextPokeNr = currentPokeNr + 1;
+//     if (beginPokeNr < amountPokes && nextPokeNr < pokes.length) {
+//         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%);';
+//         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%)';
+//         if (currentPokeNr == !1) {
+//             document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-200%)';
+//         }
+//         currentPokeNr = currentPokeNr + 1;
+//         beforePokeNr = currentPokeNr - 1;
+//         nextPokeNr = currentPokeNr + 1;
+//         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%)';
+//     } else {
+//         return;
+//     }
+// }
 
 
-function showPokeBefore() {
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = 'App tut nix ...';
-    showNextCountPokes();
-    if (currentPokeNr == 1) {
-        return;
-    } else {
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(100%)';
-        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(0%)';
-        if (nextPokeNr < pokes.length) {
-            document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%)';
-        }
-        currentPokeNr = currentPokeNr - 1;
-        beforePokeNr = currentPokeNr - 1;
-        nextPokeNr = currentPokeNr + 1;
-    }
-}
+// function showPokeBefore() {
+//     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = 'App tut nix ...';
+//     showNextCountPokes();
+//     if (currentPokeNr == 1) {
+//         return;
+//     } else {
+//         document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(100%)';
+//         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(0%)';
+//         if (nextPokeNr < pokes.length) {
+//             document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%)';
+//         }
+//         currentPokeNr = currentPokeNr - 1;
+//         beforePokeNr = currentPokeNr - 1;
+//         nextPokeNr = currentPokeNr + 1;
+//     }
+// }
 
-function showPokeFirst(i) {
-    currentPoke = i;
-    if (currentPokeNr == 1) {
-        return;
-    } else {
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(200%);';
-        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
-        document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(200%);';
-        currentPokeNr = 1;
-        beforePokeNr = currentPokeNr - 1;
-        nextPokeNr = currentPokeNr + 1;
-        document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
-        document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
-    }
-}
 
 function stylePokeBgnTop(i) {
     let pokeType = document.getElementById('base-type' + i).innerHTML;
@@ -429,24 +413,20 @@ function generateHTMLPokedex(i) {
     <div id="pokedex-nav" class="pokedex-nav">
     <div class="first-buttons">
     <button onclick="showPokeFirst(${i})"><<</button>
-    <button onclick="showPokeBefore(${i})"><</button>
+    <button onclick="sliderOneLeft()"><</button>
     </div>
     <div id="search" class= "search">
     <input id="search-nr${i}" placeholder="Nr.">
     <button onclick="showPokeBy(${i})">Suche</button>
     </div>
-    <button onclick="showPokeNext(${i})">></button>
+    <button onclick="sliderOneRight()">></button>
+    <button onclick="showNextCountPokes()">+4</button>
     </div>
-    <div id="amount-pokes-loaded${i}">App wartet ...</div>
-    <!-- 
+    <div id="amount-pokes-loaded${i}">Serveranfrage läuft ...</div>
     <div id="progress-bar${i}" class="progress-bar">
     <div id="progress${i}" class="progress">
     </div>
     </div> 
-    <div>
-    <button onclick="get40Pokes()">+40 ...</button>
-    </div>
-    -->
         <div class="pokedex-above">
         <div id="pokedex-name${i}" class="pokedex-name">
         </div>
@@ -543,23 +523,6 @@ function showPokeBy(i) {
 }
 
 
-// function hidePokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200) {
-//     document.getElementById('pokedex' + currentPokeNrLeft200).classList.add('display-none');
-//     if (beforePokeNrLeft200) {
-//         document.getElementById('pokedex' + beforePokeNrLeft200).classList.add('display-none');
-//     }
-//     document.getElementById('pokedex' + nextPokeNrLeft200).classList.add('display-none');
-// }
-
-// function showPokesByNrs(currentPokeNrLeft200, beforePokeNrLeft200, nextPokeNrLeft200) {
-//     document.getElementById('pokedex' + currentPokeNrLeft200).classList.remove('display-none');
-//     if (beforePokeNrLeft200) {
-//         document.getElementById('pokedex' + beforePokeNrLeft200).classList.remove('display-none');
-//     }    
-//     document.getElementById('pokedex' + nextPokeNrLeft200).classList.remove('display-none');
-// }
-
-
 function noticePokeNrsOnLeft200(i) {
     currentPokeNrLeft200 = i;
     beforePokeNrLeft200 = currentPokeNrLeft200 - 1;
@@ -648,6 +611,7 @@ async function sliderOneRight() {
         await promiseWait();
         await cardDisplayRight200();
     }
+    showNextCountPokes();
 }
 
 
@@ -751,7 +715,16 @@ function displayRight200() {
 }
 
 
+async function showFirstPoke() {
+    let start = currentPokeNr;
+    for (let i = start; i > 0; i--) {
+        await sliderOneLeft();        
+    }
+}
+
+
 // sliderOneLeft
+
 
 
 async function sliderOneLeft() {
@@ -766,6 +739,7 @@ async function sliderOneLeft() {
         await promiseWait();
         await cardDisplayFirstPosition();
     }
+    renderAmountLaodedPokes();
 }
 
 
@@ -831,15 +805,10 @@ function slideRight() {
     }
     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(100%);';
     document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(0%);';
-
-    // if (beforePokeNr > 1) {
-    //     document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
-    // }
 }
 
 
 function hideRight() {
-    // let right200PokeNr = beforePokeNr;
     if (beforePokeNr >= 1) {
         document.getElementById('pokedex' + beforePokeNr).classList.add('display-none');
     }
@@ -854,7 +823,6 @@ function pokeCaseRight() {
 
 
 function slideToFirstPosition() {
-    // let left200PokeNr = beforePokeNr - 1;
     if (beforePokeNr >= 1) {
         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
     }
