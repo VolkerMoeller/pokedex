@@ -9,17 +9,7 @@ function savePokesSavedToPokes() {
         localStorage.setItem('pokes', pokesText);   
     }
 
-
-
-
-// function loadSaved() {
-//     let pokesAsText = localStorage.getItem('pokesSaved');
-//     if (pokesAsText) {
-//         pokesSaved = JSON.parse(pokesAsText);
-//     }
-// }
-
-
+    
 function save() {
         let pokesText = JSON.stringify(pokes);
         localStorage.setItem('pokes', pokesText);   

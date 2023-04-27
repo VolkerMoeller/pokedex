@@ -21,17 +21,6 @@ let pokesLoaded = [
 ];
 
 
-let pokesSaved = [
-    {
-        "pokeId": [],
-        "pokeName": [],
-        "pokeSlot1": [],
-        "pokeSlot2": [],
-        "pokeImg": [],
-        "pokeWeight": [],
-    }
-];
-
 let functionRunning = false;
 let currentPoke = [];
 let currentPokeNr = 1;
@@ -55,7 +44,7 @@ let currentWait = 550;
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
     load();
-    if (pokes.length > 1 ) {
+    if (pokes.length > 1) {
         await loadAndShowSavedPokes();
     }
     await showNextCountPokes();
@@ -392,42 +381,56 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
 
 
 function generateHTMLPokedex(i) {
-    return `
+    return /*html*/`
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
-    <div id="pokedex-top${i}" class="pokedex-top">
-    <div id="pokedex-nav" class="pokedex-nav">
-    <div class="first-buttons">
-    <button onclick="showFirstPoke()"><<</button>
-    <button onclick="sliderOneLeft()"><</button>
-    </div>
-    <div id="search" class= "search">
-    <input id="search-nr${i}" placeholder="Nr.">
-    <button onclick="showPokeBy(${i})">Suche</button>
-    </div>
-    <button onclick="sliderOneRight()">></button>
-    <button onclick="showLastPoke()">>></button>
-    </div>
-    <div class="loadLine">
-    <div id="amount-pokes-loaded${i}">...</div>
-    <button onclick="showNextCountPokes()">+4</button>
-    </div>
-    <div id="progress-bar${i}" class="progress-bar">
-    <div id="progress${i}" class="progress">
-    </div>
-    </div> 
-        <div class="pokedex-above">
-        <div id="pokedex-name${i}" class="pokedex-name">
-        </div>
-            <div id="pokedex-id${i}" class="pokedex-id">
+        <div id="pokedex-top${i}" class="pokedex-top">
+            <div id="pokedex-nav" class="pokedex-nav">
+                <div class="left-buttons">
+                    <button onclick="showFirstPoke()"><<</button>
+                    <button onclick="sliderOneLeft()"><</button>
+                </div>
+                <div id="search" class= "search">
+                    <input id="search-nr${i}" placeholder="Nr.">
+                    <button onclick="showPokeByInit(${i})">Suche</button>
+                </div>
+                <div class="right-buttons">
+                    <button onclick="sliderOneRight()">></button>
+                    <button onclick="showLastPoke()">>></button>
+                </div>
             </div>
+            <div class="loadLine">
+                <div id="amount-pokes-loaded${i}">...
+                </div>
+                <button onclick="showNextCountPokes()">+4</button>
+            </div>
+            <div id="progress-bar${i}" class="progress-bar">
+                <div id="progress${i}" class="progress">
+                </div>
+            </div>
+            <div id="searchByNameLine${i}">
+                <span>Suche nach </span>
+                <input id="search-name${i}" placeholder="Name" onkeydown="searchPokeByName(${i})">
+            </div>   
+            <div class="pokedex-above">
+                <div id="pokedex-name${i}" class="pokedex-name">
+                </div>
+                <div id="pokedex-id${i}" class="pokedex-id">
+                </div>
             </div>
             <div id="pokedex-slots${i}" class="pokedex-slots">
             </div>
-            </div>
+        </div>
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
         </div>  
-        </div> 
+    </div> 
     `
+}
+
+
+function format3LeftHandZeros(value) {
+    value = value.toString();
+    let formatValue = value.padStart(4, '0');
+    return formatValue;
 }
 
 
@@ -435,7 +438,8 @@ function renderPokeTop(i) {
     let pokeName = pokes[i]['pokeName'];
     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeName}</h1>`;
     let pokeId = pokes[i]['pokeId'];
-    document.getElementById('pokedex-id' + i).innerHTML += `<div># ${pokeId}</div>`;
+    let formatPokeId = format3LeftHandZeros(pokeId);
+    document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
     let pokeSlot1 = pokes[i]['pokeSlot1'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
@@ -451,11 +455,15 @@ function renderPokeTop(i) {
         document.getElementById('pokedex-name' + i).classList.add('color-black');
         document.getElementById('pokedex-id' + i).classList.add('color-black');
         document.getElementById('pokedex-slots' + i).classList.add('color-black');
+        document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
+        document.getElementById('searchByNameLine' + i).classList.add('color-black');
     }
     if (pokeSlot1 == 'ice') {
         document.getElementById('pokedex-name' + i).classList.add('color-black');
         document.getElementById('pokedex-id' + i).classList.add('color-black');
         document.getElementById('pokedex-slots' + i).classList.add('color-black');
+        document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
+        document.getElementById('searchByNameLine' + i).classList.add('color-black');
     }
 }
 
@@ -465,9 +473,12 @@ function renderPokeBottom(i) {
     document.getElementById('pokedex-bottom' + i).innerHTML += `Gewicht: ${pokeWeight}`;
 }
 
-
-function showPokeBy(i) {
+function showPokeByInit(i) {
     let searchId = +document.getElementById('search-nr' + i).value;
+    showPokeBy(searchId, i);
+}
+
+function showPokeBy(searchId, i) {
     if (searchId == i || searchId == 0 || searchId > pokes.length) {
         return;
     }
@@ -748,7 +759,7 @@ async function showPokeSomewhereRight(i) {
     let start = currentPokeNr;
     currentWait = 0;
     addTransitionToAll();
-    for (let j = start; j <= i; j++) {
+    for (let j = start; j < i; j++) {
         hideAll();
         await sliderOneRight();
     }
@@ -919,4 +930,27 @@ function removeCurrentTransition() {
     if (nextPokeNr < pokes.length) {
         document.getElementById('pokedex' + nextPokeNr).classList.remove(`transition${millisec}`);
     }
+}
+
+
+function searchPokeByName(i) {
+    let searchName = document.getElementById('search-name' + i).value;
+    searchName = searchName.toLowerCase();
+    console.log('Gesuchter Name: ' + searchName);
+    searchIndexOfName(searchName);
+    showPokeBy(searchIndexOfName(searchName), currentPokeNr);
+}
+
+function searchIndexOfName(searchName) {
+    for (let i = 0; i < pokes.length; i++) {
+        let loadedPokeName = pokes[i]['pokeName'][0];
+        if (searchName == loadedPokeName) {
+            let index = i;
+            console.log(index);
+            return index;
+        }
+    }
+
+
+
 }
