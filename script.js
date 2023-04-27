@@ -20,6 +20,18 @@ let pokesLoaded = [
     }
 ];
 
+
+let pokesSaved = [
+    {
+        "pokeId": [],
+        "pokeName": [],
+        "pokeSlot1": [],
+        "pokeSlot2": [],
+        "pokeImg": [],
+        "pokeWeight": [],
+    }
+];
+
 let functionRunning = false;
 let currentPoke = [];
 let currentPokeNr = 1;
@@ -42,8 +54,21 @@ let currentWait = 550;
 
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
-    showNextCountPokes();
+    await loadAndShowSavedPokes();
+    await showNextCountPokes();
+}
 
+async function loadAndShowSavedPokes() {
+    load();
+    // beginPokeNr = 1;
+    // let count = 3;
+    endPokeNr = pokes.length - 1;
+    let promises = [promiseReset(), promiseRender(), promiseUpdate(), promiseShow(currentPokeNr)];
+    await Promise.all(promises);
+    endPokeNr = beginPokeNr + count;
+    amountLoadedPokes = pokes.length - 1;
+    renderAmountLaodedPokes();
+    updateProgress();
 }
 
 
@@ -65,11 +90,10 @@ async function showNextCountPokes() {
             await promiseReset();
             return;
         } else {
-            let promises = [promisePush(), promiseReset(), promiseRender(), promiseUpdate(), promiseShow(currentPokeNr)];
+            let promises = [load(), promisePush(), save(), promiseReset(), promiseRender(), promiseUpdate(), promiseShow(currentPokeNr)];
             await Promise.all(promises);
         }
         amountLoadedPokes = pokes.length - 1;
-        // console.log('amountLoadedPokes: ' + amountLoadedPokes);
         renderAmountLaodedPokes();
         updateProgress();
         redundancy == false;
@@ -155,7 +179,7 @@ async function promisePush() {
     });
     let result3 = await promise3;
     return result3;
-    // console.log(result3);
+    console.log(result3);
 }
 
 async function promiseReset() {
@@ -511,6 +535,7 @@ function shiftNextPokes(searchId) {
         shiftPokeToXByNr(i, position);
     }
 }
+
 
 async function shiftPokeToXByNr(pokeNr, position) {
     document.getElementById('pokedex' + pokeNr).style = `transform: translateX(${position}%);`;
