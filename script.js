@@ -54,7 +54,10 @@ let currentWait = 550;
 
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
-    await loadAndShowSavedPokes();
+    load();
+    if (pokes.length > 1 ) {
+        await loadAndShowSavedPokes();
+    }
     await showNextCountPokes();
 }
 
@@ -415,7 +418,7 @@ function generateHTMLPokedex(i) {
         <div class="pokedex-above">
         <div id="pokedex-name${i}" class="pokedex-name">
         </div>
-            <div id="pokedex-id${i}">
+            <div id="pokedex-id${i}" class="pokedex-id">
             </div>
             </div>
             <div id="pokedex-slots${i}" class="pokedex-slots">
