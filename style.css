@@ -6,11 +6,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .display-none {
-    display: none;
+    display: none !important;
 }
 
 .display-flex {
@@ -22,7 +22,7 @@ body {
     top: 0px;
     left: 0px;
     right: 0px;
-    height: 100vh;
+    /* height: 100vh; */
     background-color: rgb(219, 219, 219);
 }
 
@@ -36,14 +36,16 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
     width: 480px;
-    overflow: hidden;
+    overflow-x: clip;
+    /* overflow: hidden; */
 }
 
 .pokedex {
     position: absolute;
-    width: 480px;
+    top: 0px;
+    /* width: 480px; */
     transition: transform 225ms ease-in-out;
 }
 
@@ -165,7 +167,7 @@ h1 {
 .slot {
     padding: 8px;
     margin-right: 8px;
-    border-radius: 15px 15px 15px 15px;
+    border-radius: 10px 10px 10px 10px;
 }
 
 .color-black {
@@ -186,7 +188,7 @@ h1 {
 }
 
 .pokedex-name::first-letter {
-text-transform: capitalize;
+    text-transform: capitalize;
 }
 
 .loadLine {
@@ -203,5 +205,52 @@ text-transform: capitalize;
 }
 
 .right-buttons {
+    display: flex;
+}
+
+/* .bottom-nav {
+    margin-top: 48px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom-nav-slide {
+    width: 25%;
+    text-align: center;
+} */
+
+.navigation {
+    margin-top: 48px;
+    /* padding-right: 16px; */
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.navigation button {
+    border: none;
+    border-radius: 10px;
+    /* background-color: rgba(66, 0, 151, 0.7); */
+    cursor: pointer;
+    height: 54px;
+    width: 86px;
+    color: white;
+    /* color: rgba(0, 0, 0, 1.0); */
+    font-size: 16px;
+    /* font-weight: bold; */
+    letter-spacing: 0.25px;
+}
+
+/* .navigation button:hover {
+    background-color: rgba(119, 119, 119, 0.95);
+    
+} */
+
+.bgn-slide-active {
+    background-color: aqua !important;
+}
+
+.cards {
+    margin-top: 48px;
     display: flex;
 }

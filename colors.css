@@ -143,3 +143,151 @@
 .bgn-type-water {
     background-color: rgba(134, 168, 254);
 }
+
+
+
+.bgn-hover-type-bug {
+    background-color: rgba(28, 75, 39, 0.8);
+}
+
+.bgn-hover-type-dark {
+    background-color: rgba(4, 7, 4, 0.7);
+}
+
+.bgn-hover-type-dragon {
+    background-color: rgba(96, 202, 215, 0.7);
+}
+
+.bgn-hover-type-electric {
+    background-color: rgba(251, 251, 112, 0.7);
+}
+
+.bgn-hover-type-fairy {
+    background-color: rgba(234, 19, 105, 0.7);
+}
+
+.bgn-hover-type-fighting {
+    background-color: rgba(239, 97, 56, 0.7);
+}
+
+.bgn-hover-type-fire {
+    background-color: rgba(253, 76, 90, 0.7);
+}
+
+.bgn-hover-type-flying {
+    background-color: rgba(147, 178, 199, 0.7);
+}
+
+.bgn-hover-type-ghost {
+    background-color: rgba(144, 103, 144, 0.7);
+}
+
+.bgn-hover-type-grass {
+    background-color: rgba(39, 203, 79, 0.7);
+}
+
+.bgn-hover-type-ground {
+    background-color: rgba(110, 73, 31, 0.7);
+}
+
+.bgn-hover-type-ice {
+    background-color: rgba(215, 241, 250, 0.7);
+}
+
+.bgn-hover-type-normal {
+    background-color: rgba(202, 152, 167, 0.7);
+}
+
+.bgn-hover-type-poison {
+    background-color: rgba(155, 105, 217, 0.7);
+}
+
+.bgn-hover-type-psychic {
+    background-color: rgba(248, 28, 145, 0.7);
+}
+
+.bgn-hover-type-rock {
+    background-color: rgba(139, 62, 33, 0.7);
+}
+
+.bgn-hover-type-steel {
+    background-color: rgba(66, 189, 148, 0.7);
+}
+
+.bgn-hover-type-water {
+    background-color: rgba(134, 168, 254, 0.7);
+}
+
+
+
+/* .bgn-hover-type-bug {
+    background-color: rgba(28, 75, 39, 0.7);
+}
+
+.bgn-hover-type-dark {
+    background-color: rgba(4, 7, 4, 0.7);
+}
+
+.bgn-hover-type-dragon {
+    background-color: rgba(96, 202, 215, 0.7);
+}
+
+.bgn-hover-type-electric {
+    background-color: rgba(251, 251, 112, 0.7);
+}
+
+.bgn-hover-type-fairy {
+    background-color: rgba(234, 19, 105, 0.7);
+}
+
+.bgn-hover-type-fighting {
+    background-color: rgba(239, 97, 56, 0.7);
+}
+
+.bgn-hover-type-fire {
+    background-color: rgba(253, 76, 90, 0.7);
+}
+
+.bgn-hover-type-flying {
+    background-color: rgba(147, 178, 199, 0.7);
+}
+
+.bgn-hover-type-ghost {
+    background-color: rgba(144, 103, 144, 0.7);
+}
+
+.bgn-hover-type-grass {
+    background-color: rgba(39, 203, 79, 0.7);
+}
+
+.bgn-hover-type-ground {
+    background-color: rgba(110, 73, 31, 0.7);
+}
+
+.bgn-hover-type-ice {
+    background-color: rgba(215, 241, 250, 0.7);
+}
+
+.bgn-hover-type-normal {
+    background-color: rgba(202, 152, 167, 0.7);
+}
+
+.bgn-hover-type-poison {
+    background-color: rgba(155, 105, 217, 0.7);
+}
+
+.bgn-hover-type-psychic {
+    background-color: rgba(248, 28, 145, 0.7);
+}
+
+.bgn-hover-type-rock {
+    background-color: rgba(139, 62, 33, 0.7);
+}
+
+.bgn-hover-type-steel {
+    background-color: rgba(66, 189, 148, 0.7);
+}
+
+.bgn-hover-type-water {
+    background-color: rgba(134, 168, 254, 0.7);
+} */

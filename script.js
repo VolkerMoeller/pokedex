@@ -39,6 +39,7 @@ let beforePokeNrLeft200
 let nextPokeNrLeft200
 let millisec = 0;
 let currentWait = 550;
+// let currentCardId = 1;
 
 
 async function initPokemon() {
@@ -336,6 +337,7 @@ function renderPoke(i) {
     renderPokeTop(i);
     renderPokeBottom(i);
     stylePokeBgnTop(i);
+    renderPokeBottomNavigation(i);
 }
 
 
@@ -380,51 +382,7 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
 }
 
 
-function generateHTMLPokedex(i) {
-    return /*html*/`
-    <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
-        <div id="pokedex-top${i}" class="pokedex-top">
-            <div id="pokedex-nav" class="pokedex-nav">
-                <div class="left-buttons">
-                    <button onclick="showFirstPoke()"><<</button>
-                    <button onclick="sliderOneLeft()"><</button>
-                </div>
-                <div id="search" class= "search">
-                    <input id="search-nr${i}" placeholder="Nr.">
-                    <button onclick="showPokeByInit(${i})">Suche</button>
-                </div>
-                <div class="right-buttons">
-                    <button onclick="sliderOneRight()">></button>
-                    <button onclick="showLastPoke()">>></button>
-                </div>
-            </div>
-            <div class="loadLine">
-                <div id="amount-pokes-loaded${i}">...
-                </div>
-                <button onclick="showNextCountPokes()">+4</button>
-            </div>
-            <div id="progress-bar${i}" class="progress-bar">
-                <div id="progress${i}" class="progress">
-                </div>
-            </div>
-            <div id="searchByNameLine${i}">
-                <span>Suche nach </span>
-                <input id="search-name${i}" placeholder="Name" onkeydown="searchPokeByName(${i})">
-            </div>   
-            <div class="pokedex-above">
-                <div id="pokedex-name${i}" class="pokedex-name">
-                </div>
-                <div id="pokedex-id${i}" class="pokedex-id">
-                </div>
-            </div>
-            <div id="pokedex-slots${i}" class="pokedex-slots">
-            </div>
-        </div>
-        <div id="pokedex-bottom${i}" class="pokedex-bottom">
-        </div>  
-    </div> 
-    `
-}
+
 
 
 function format3LeftHandZeros(value) {
@@ -468,9 +426,32 @@ function renderPokeTop(i) {
 }
 
 
+function renderPokeBottomNavigation(i) {
+    let pokeSlot1 = pokes[i]['pokeSlot1'][0];
+    let bgnSlotType = 'bgn-type-' + pokeSlot1;
+    for (let k = 1; k <= 4; k++) {
+        document.getElementById('btn-card' + k + i).classList.add(`${bgnSlotType}`);
+    }
+}
+
+
 function renderPokeBottom(i) {
     let pokeWeight = pokes[i]['pokeWeight'];
     document.getElementById('pokedex-bottom' + i).innerHTML += `Gewicht: ${pokeWeight}`;
+}
+
+
+function hoverNavigationOver(j, i) {
+    let pokeSlot1 = pokes[i]['pokeSlot1'][0];
+    let bgnHoverType = 'bgn-hover-type-' + pokeSlot1;
+    document.getElementById('btn-card' + j + i).classList.add(`${bgnHoverType}`);
+}
+
+
+function hoverNavigationOut(j, i) {
+    let pokeSlot1 = pokes[i]['pokeSlot1'][0];
+    let bgnHoverType = 'bgn-hover-type-' + pokeSlot1;
+    document.getElementById('btn-card' + j + i).classList.remove(`${bgnHoverType}`);
 }
 
 function showPokeByInit(i) {
@@ -954,3 +935,57 @@ function searchIndexOfName(searchName) {
 
 
 }
+
+
+function showCurrentCardById(i, j) {
+    setAllCardsToDefault();
+    setCurrentCardToActiv(i);
+    setCurrentSlideOnActiv(j);
+}
+
+
+function setAllCardsToDefault() {
+    for (let j = 1; j <= 4; j++) {
+        let cardToHide = 'card' + j + currentPokeNr;
+        document.getElementById(cardToHide).classList.add('display-none');
+        // document.getElementById(cardToHide).classList.remove('active-card');
+    }
+}
+
+
+function setCurrentCardToActiv(i) {
+    let cardToShow = i;
+    document.getElementById(cardToShow).classList.remove('display-none');
+    // document.getElementById(cardToShow).classList.add('active-card');
+}
+
+
+
+function setCurrentSlideOnActiv(j) {
+    setAllSliderToDefault();
+    let pokeSlot1 = pokes[currentPokeNr]['pokeSlot1'][0];
+    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
+    let bgnDefaultType = 'bgn-type-' + pokeSlot1;
+    let currentSlide = j;
+    document.getElementById(currentSlide).classList.remove(`${bgnDefaultType}`);
+    document.getElementById(currentSlide).classList.add(`${bgnActiveType}`);
+}
+
+function setAllSliderToDefault() {
+    let pokeSlot1 = pokes[currentPokeNr]['pokeSlot1'][0];
+    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
+    let bgnDefaultType = 'bgn-type-' + pokeSlot1;
+    let bgnHoverType = 'bgn-hover-type-' + pokeSlot1;
+    for (let i = 1; i <= 4; i++) {
+        let sliderId = 'btn-card' + i + currentPokeNr; 
+        document.getElementById(sliderId).classList.remove(`${bgnActiveType}`);
+        document.getElementById(sliderId).classList.remove(`${bgnHoverType}`);
+        document.getElementById(sliderId).classList.add(`${bgnDefaultType}`);
+    }
+}
+
+
+// let pokeSlot1 = pokes[i]['pokeSlot1'][0];
+// let bgnHoverType = 'bgn-hover-type-' + pokeSlot1;
+// document.getElementById('btn-card' + j + i).classList.add(`${bgnHoverType}`);
+
