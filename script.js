@@ -415,6 +415,9 @@ function renderPokeTop(i) {
         document.getElementById('pokedex-slots' + i).classList.add('color-black');
         document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
         document.getElementById('searchByNameLine' + i).classList.add('color-black');
+        for (let j = 1; j <= 4; j++) {
+            document.getElementById('btn-card' + j + i).classList.add('color-black');
+        }
     }
     if (pokeSlot1 == 'ice') {
         document.getElementById('pokedex-name' + i).classList.add('color-black');
@@ -422,6 +425,9 @@ function renderPokeTop(i) {
         document.getElementById('pokedex-slots' + i).classList.add('color-black');
         document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
         document.getElementById('searchByNameLine' + i).classList.add('color-black');
+        for (let j = 1; j <= 4; j++) {
+            document.getElementById('btn-card' + j + i).classList.add('color-black');
+        }
     }
 }
 
@@ -429,9 +435,13 @@ function renderPokeTop(i) {
 function renderPokeBottomNavigation(i) {
     let pokeSlot1 = pokes[i]['pokeSlot1'][0];
     let bgnSlotType = 'bgn-type-' + pokeSlot1;
+    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
     for (let k = 1; k <= 4; k++) {
         document.getElementById('btn-card' + k + i).classList.add(`${bgnSlotType}`);
     }
+    document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
+    document.getElementById('btn-card' + 1 + i).classList.add(`${bgnActiveType}`);
+
 }
 
 
@@ -977,7 +987,7 @@ function setAllSliderToDefault() {
     let bgnDefaultType = 'bgn-type-' + pokeSlot1;
     let bgnHoverType = 'bgn-hover-type-' + pokeSlot1;
     for (let i = 1; i <= 4; i++) {
-        let sliderId = 'btn-card' + i + currentPokeNr; 
+        let sliderId = 'btn-card' + i + currentPokeNr;
         document.getElementById(sliderId).classList.remove(`${bgnActiveType}`);
         document.getElementById(sliderId).classList.remove(`${bgnHoverType}`);
         document.getElementById(sliderId).classList.add(`${bgnDefaultType}`);
