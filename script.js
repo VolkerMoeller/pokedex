@@ -6,6 +6,7 @@ let pokes = [
         "pokeSlot2": [],
         "pokeImg": [],
         "pokeWeight": [],
+        "pokeSpecie": [],
     }
 ];
 
@@ -17,6 +18,7 @@ let pokesLoaded = [
         "pokeSlot2": [],
         "pokeImg": [],
         "pokeWeight": [],
+        "pokeSpecie": [],
     }
 ];
 
@@ -40,6 +42,7 @@ let nextPokeNrLeft200
 let millisec = 0;
 let currentWait = 550;
 // let currentCardId = 1;
+let currentSpecie = [];
 
 
 async function initPokemon() {
@@ -269,6 +272,7 @@ async function pushPokesLoadedToPokes() {
                 "pokeSlot2": [pokesLoaded[i]['pokeSlot2'][0]],
                 "pokeImg": [pokesLoaded[i]['pokeImg'][0]],
                 "pokeWeight": [pokesLoaded[i]['pokeWeight'][0]],
+                "pokeSpecie": [pokesLoaded[i]['pokeSpecie'][0]],
             }
         );
     }
@@ -288,7 +292,18 @@ async function loadCurrentPoke(i) {
     let response = await fetch(url);
     let responseAsJSON = await response.json();
     currentPoke = responseAsJSON;
+    console.log(currentPoke);
     return currentPoke;
+}
+
+
+async function loadCurrentSpecie(i) {
+    let url = pokes[i]['pokeSpecie'][0];
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentSpecie = responseAsJSON;
+    console.log(currentSpecie);
+    return currentSpecie;
 }
 
 
@@ -314,6 +329,7 @@ function resetPokesLoaded() {
             "pokeSlot2": [],
             "pokeImg": [],
             "pokeWeight": [],
+            "pokeSpecie": [],
         }
     ];
     return 'reset done'
@@ -364,11 +380,12 @@ function addToPokesLoaded() {
         pokeSlot2 = 'none';
     }
     let pokeWeight = currentPoke['weight'];
-    pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight);
+    let pokeSpecie = currentPoke['species']['url'];
+    pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie);
 }
 
 
-function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight) {
+function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie) {
     pokesLoaded.push(
         {
             "pokeId": [pokeId],
@@ -377,12 +394,10 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
             "pokeSlot2": [pokeSlot2],
             "pokeImg": [pokeImg],
             "pokeWeight": [pokeWeight],
+            "pokeSpecie": [pokeSpecie],
         }
     )
 }
-
-
-
 
 
 function format3LeftHandZeros(value) {
