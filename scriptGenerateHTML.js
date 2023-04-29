@@ -54,7 +54,6 @@ function generateHTMLPokedex(i) {
             </div>
         </div>
         <div id="card1${i}" class="cards">
-            <div>ContentAbout</div>
         </div>
         <div id="card2${i}" class="cards display-none">
             <div>ContentBaseStats</div>

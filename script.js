@@ -7,6 +7,7 @@ let pokes = [
         "pokeImg": [],
         "pokeWeight": [],
         "pokeSpecie": [],
+        "pokeFlavors": [],
     }
 ];
 
@@ -19,6 +20,7 @@ let pokesLoaded = [
         "pokeImg": [],
         "pokeWeight": [],
         "pokeSpecie": [],
+        "pokeFlavors": [],
     }
 ];
 
@@ -68,14 +70,6 @@ async function loadAndShowSavedPokes() {
 }
 
 
-async function get40Pokes() {
-    for (let i = 0; i < 10; i++) {
-        await showNextCountPokes();
-        await promiseWait();
-    }
-}
-
-
 async function showNextCountPokes() {
     if (!functionRunning) {
         functionRunning = true;
@@ -95,12 +89,6 @@ async function showNextCountPokes() {
         redundancy == false;
     }
     functionRunning = false;
-}
-
-
-function renderAmountLaodedPokes() {
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = generateHTMLAmountLoadedPokes();
 }
 
 
@@ -273,6 +261,7 @@ async function pushPokesLoadedToPokes() {
                 "pokeImg": [pokesLoaded[i]['pokeImg'][0]],
                 "pokeWeight": [pokesLoaded[i]['pokeWeight'][0]],
                 "pokeSpecie": [pokesLoaded[i]['pokeSpecie'][0]],
+                "pokeFlavors": [pokesLoaded[i]['pokeFlavors'][0]],
             }
         );
     }
@@ -292,7 +281,7 @@ async function loadCurrentPoke(i) {
     let response = await fetch(url);
     let responseAsJSON = await response.json();
     currentPoke = responseAsJSON;
-    console.log(currentPoke);
+    // console.log(currentPoke);
     return currentPoke;
 }
 
@@ -330,6 +319,7 @@ function resetPokesLoaded() {
             "pokeImg": [],
             "pokeWeight": [],
             "pokeSpecie": [],
+            "pokeFlavors": [],
         }
     ];
     return 'reset done'
@@ -345,21 +335,6 @@ function showCurrentPoke(currentPokeNr) {
         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
         return 'show done';
     }
-}
-
-
-function renderPoke(i) {
-    document.getElementById('pokedex-all').innerHTML += generateHTMLPokedex(i);
-    renderPokeTop(i);
-    renderPokeBottom(i);
-    stylePokeBgnTop(i);
-    renderPokeBottomNavigation(i);
-}
-
-
-function stylePokeBgnTop(i) {
-    let pokeType = document.getElementById('base-type' + i).innerHTML;
-    setBgnByType(pokeType, i);
 }
 
 
@@ -381,11 +356,12 @@ function addToPokesLoaded() {
     }
     let pokeWeight = currentPoke['weight'];
     let pokeSpecie = currentPoke['species']['url'];
-    pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie);
+    let pokeFlavors = '';
+    pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie, pokeFlavors);
 }
 
 
-function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie) {
+function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie, pokeFlavors) {
     pokesLoaded.push(
         {
             "pokeId": [pokeId],
@@ -395,6 +371,7 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
             "pokeImg": [pokeImg],
             "pokeWeight": [pokeWeight],
             "pokeSpecie": [pokeSpecie],
+            "pokeFlavors": [pokeFlavors],
         }
     )
 }
@@ -404,65 +381,6 @@ function format3LeftHandZeros(value) {
     value = value.toString();
     let formatValue = value.padStart(4, '0');
     return formatValue;
-}
-
-
-function renderPokeTop(i) {
-    let pokeName = pokes[i]['pokeName'];
-    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeName}</h1>`;
-    let pokeId = pokes[i]['pokeId'];
-    let formatPokeId = format3LeftHandZeros(pokeId);
-    document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
-    let pokeSlot1 = pokes[i]['pokeSlot1'];
-    let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
-    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
-    let pokeImg = pokes[i]['pokeImg'];
-    document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
-    if (pokes[i]['pokeSlot2'] == 'none') {
-    } else {
-        let pokeSlot2 = pokes[i]['pokeSlot2'];
-        let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-        document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
-    }
-    if (pokeSlot1 == 'electric') {
-        document.getElementById('pokedex-name' + i).classList.add('color-black');
-        document.getElementById('pokedex-id' + i).classList.add('color-black');
-        document.getElementById('pokedex-slots' + i).classList.add('color-black');
-        document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-        document.getElementById('searchByNameLine' + i).classList.add('color-black');
-        for (let j = 1; j <= 4; j++) {
-            document.getElementById('btn-card' + j + i).classList.add('color-black');
-        }
-    }
-    if (pokeSlot1 == 'ice') {
-        document.getElementById('pokedex-name' + i).classList.add('color-black');
-        document.getElementById('pokedex-id' + i).classList.add('color-black');
-        document.getElementById('pokedex-slots' + i).classList.add('color-black');
-        document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-        document.getElementById('searchByNameLine' + i).classList.add('color-black');
-        for (let j = 1; j <= 4; j++) {
-            document.getElementById('btn-card' + j + i).classList.add('color-black');
-        }
-    }
-}
-
-
-function renderPokeBottomNavigation(i) {
-    let pokeSlot1 = pokes[i]['pokeSlot1'][0];
-    let bgnSlotType = 'bgn-type-' + pokeSlot1;
-    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
-    for (let k = 1; k <= 4; k++) {
-        document.getElementById('btn-card' + k + i).classList.add(`${bgnSlotType}`);
-    }
-    document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
-    document.getElementById('btn-card' + 1 + i).classList.add(`${bgnActiveType}`);
-
-}
-
-
-function renderPokeBottom(i) {
-    let pokeWeight = pokes[i]['pokeWeight'];
-    document.getElementById('pokedex-bottom' + i).innerHTML += `Gewicht: ${pokeWeight}`;
 }
 
 

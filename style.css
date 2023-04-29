@@ -251,6 +251,9 @@ h1 {
 }
 
 .cards {
-    margin-top: 48px;
+    margin-top: 16px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
 }
