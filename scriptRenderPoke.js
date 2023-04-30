@@ -66,7 +66,6 @@ function renderPokeBottomNavigation(i) {
 
 
 async function renderPokeBottom(i) {
-    await loadCurrentSpecie(i);
     renderPokeCardAbout(i);
 }
 
@@ -78,14 +77,25 @@ function stylePokeBgnTop(i) {
 
 
 async function renderPokeCardAbout(i) {
+    await loadCurrentSpecie(i);
     let pokeGenera = currentSpecie['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
+
     let pokeFlavor = currentSpecie['flavor_text_entries'];
     await searchGermanText(pokeFlavor, i);
     let pokeFlavor1st = pokes[i]['pokeFlavors'][1];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Beschreibung: </b>${pokeFlavor1st}</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor1st}</div>`;
     let pokeWeight = pokes[i]['pokeWeight'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
+
+    // let pokeAbility = pokes[i]['pokeAbilities'];
+    await loadCurrentAbility(i);
+    let pokeAbility = currentAbility['names'][4]['name'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeiten: </b>${pokeAbility}</div>`;
+    let pokeAbilityFlavor = currentAbility['flavor_text_entries'];
+    searchGermanTextAbilityFlavor(pokeAbilityFlavor, i);
+    let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][1]
+    document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor2nd}</div>`;
 }
 
 
@@ -96,9 +106,25 @@ async function searchGermanText(pokeFlavor, i) {
     }
 }
 
+
 function pushFlavor(language, i, j, pokeFlavor) {
     if (language == 'de') {
         let flavorText = pokeFlavor[j]['flavor_text'];
         pokes[i]['pokeFlavors'].push(flavorText);
+    }
+}
+
+async function searchGermanTextAbilityFlavor(pokeAbilityFlavor, i) {
+    for (let j = 0; j < pokeAbilityFlavor.length; j++) {
+        let language = pokeAbilityFlavor[j]['language']['name'];
+        pushAbilityFlavor(language, i, j, pokeAbilityFlavor);
+    }
+}
+
+
+function pushAbilityFlavor(language, i, j, pokeAbilityFlavor) {
+    if (language == 'de') {
+        let flavorText = pokeAbilityFlavor[j]['flavor_text'];
+        pokes[i]['pokeAbilityFlavors'].push(flavorText);
     }
 }

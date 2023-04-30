@@ -45,7 +45,7 @@ h1 {
 .pokedex {
     position: absolute;
     top: 0px;
-    /* width: 480px; */
+    width: 480px;
     transition: transform 225ms ease-in-out;
 }
 

@@ -8,6 +8,9 @@ let pokes = [
         "pokeWeight": [],
         "pokeSpecie": [],
         "pokeFlavors": [],
+        "pokeAbilityURL": [],
+        "pokeAbilities": [],
+        "pokeAbilityFlavors": [],
     }
 ];
 
@@ -21,6 +24,9 @@ let pokesLoaded = [
         "pokeWeight": [],
         "pokeSpecie": [],
         "pokeFlavors": [],
+        "pokeAbilities": [],
+        "pokeAbilityURL": [],
+        "pokeAbilityFlavors": [],
     }
 ];
 
@@ -45,6 +51,8 @@ let millisec = 0;
 let currentWait = 550;
 // let currentCardId = 1;
 let currentSpecie = [];
+let currentAbility = [];
+let currentIndex = '';
 
 
 async function initPokemon() {
@@ -262,6 +270,9 @@ async function pushPokesLoadedToPokes() {
                 "pokeWeight": [pokesLoaded[i]['pokeWeight'][0]],
                 "pokeSpecie": [pokesLoaded[i]['pokeSpecie'][0]],
                 "pokeFlavors": [pokesLoaded[i]['pokeFlavors'][0]],
+                "pokeAbilities": [pokesLoaded[i]['pokeAbilities'][0]],
+                "pokeAbilityURL": [pokesLoaded[i]['pokeAbilityURL'][0]],
+                "pokeAbilityFlavors": [pokesLoaded[i]['pokeAbilityFlavors'][0]],
             }
         );
     }
@@ -296,6 +307,16 @@ async function loadCurrentSpecie(i) {
 }
 
 
+async function loadCurrentAbility(i) {
+    let url = pokes[i]['pokeAbilityURL'][0];
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentAbility = responseAsJSON;
+    console.log(currentAbility);
+    return currentAbility;
+}
+
+
 function checkRedundancy() {
     let startValue = pokes.length - 1;
     let reference = startValue + pokesLoaded.length;
@@ -320,6 +341,9 @@ function resetPokesLoaded() {
             "pokeWeight": [],
             "pokeSpecie": [],
             "pokeFlavors": [],
+            "pokeAbilities": [],
+            "pokeAbilityURL": [],
+            "pokeAbilityFlavors": [],
         }
     ];
     return 'reset done'
@@ -357,11 +381,14 @@ function addToPokesLoaded() {
     let pokeWeight = currentPoke['weight'];
     let pokeSpecie = currentPoke['species']['url'];
     let pokeFlavors = '';
-    pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie, pokeFlavors);
+    let pokeAbilities = currentPoke['abilities'][0]['ability']['name'];
+    let pokeAbilityURL = currentPoke['abilities'][0]['ability']['url'];
+    let pokeAbilityFlavors = '';
+    pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie, pokeFlavors, pokeAbilities, pokeAbilityURL, pokeAbilityFlavors);
 }
 
 
-function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie, pokeFlavors) {
+function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeSpecie, pokeFlavors, pokeAbilities, pokeAbilityURL, pokeAbilityFlavors) {
     pokesLoaded.push(
         {
             "pokeId": [pokeId],
@@ -372,6 +399,10 @@ function pushToPokesLoaded(pokeId, pokeName, pokeImg, pokeSlot1, pokeSlot2, poke
             "pokeWeight": [pokeWeight],
             "pokeSpecie": [pokeSpecie],
             "pokeFlavors": [pokeFlavors],
+            "pokeAbilities": [pokeAbilities],
+            "pokeAbilityURL": [pokeAbilityURL],
+            "pokeAbilityFlavors": [pokeAbilityFlavors],
+            
         }
     )
 }
