@@ -1,11 +1,3 @@
-function renderAmountLoadedPokes() {
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
-    document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = generateHTMLAmountLoadedPokes();
-    document.getElementById('loadingPokedex').innerHTML = '';
-    document.getElementById('loadingPokedex').innerHTML = generateHTMLAmountLoadingPokedex();
-}
-
-
 function renderPoke(i) {
     document.getElementById('pokedex-all').innerHTML += generateHTMLPokedex(i);
     renderPokeTop(i);
@@ -17,8 +9,6 @@ function renderPoke(i) {
 
 
 function renderPokeTop(i) {
-    // let pokeName = pokes[i]['pokeName'];
-    // document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeName}</h1>`;
     let pokeId = pokes[i]['pokeId'];
     let formatPokeId = format3LeftHandZeros(pokeId);
     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
@@ -82,7 +72,11 @@ function stylePokeBgnTop(i) {
 }
 
 
-
+function format3LeftHandZeros(value) {
+    value = value.toString();
+    let formatValue = value.padStart(4, '0');
+    return formatValue;
+}
 
 async function renderPokeCardAbout(i) {
     await loadCurrentSpecie(i);

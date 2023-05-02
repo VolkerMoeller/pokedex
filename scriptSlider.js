@@ -23,8 +23,7 @@ async function sliderOneRight() {
         let promise = [slideLeft(), pokeCaseLeft(), hideLeft(), slideToDeck(), promiseWait(), displayRight200()];
         await Promise.all(promise);
     }
-    renderAmountLoadedPokes();
-    updateProgress();
+    updateAmountPokesAndProgress();
 }
 
 
@@ -62,8 +61,7 @@ async function sliderOneLeft() {
         let promise = [slideRight(), pokeCaseRight(), hideRight(), slideToFirstPosition(), promiseWait(), displayFirstPosition()];
         await Promise.all(promise);
     }
-    renderAmountLoadedPokes();
-    updateProgress();
+    updateAmountPokesAndProgress();
 }
 
 

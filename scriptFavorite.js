@@ -8,3 +8,13 @@ function setFavorite(i) {
         document.getElementById(`fill1${i}`).classList.remove('display-none');
     }
 }
+
+
+function addFavorite(i) {
+    pokesFavorites.push(i);
+    console.log(pokesFavorites);
+}
+
+function removeFavorite(i) {
+    console.log('removeFavorites');
+}

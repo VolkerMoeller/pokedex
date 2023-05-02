@@ -34,6 +34,7 @@ let pokesLoaded = [
     }
 ];
 
+let pokesFavorites = [];
 
 let functionRunning = false;
 let currentPoke = [];
@@ -67,6 +68,7 @@ async function initPokemon() {
         await loadAndShowSavedPokes();
     }
     await showNextCountPokes();
+    updateAmountPokesAndProgress();
 }
 
 
@@ -77,12 +79,6 @@ async function loadAndShowSavedPokes() {
     await Promise.all(promises);
     setGlobalValuesAfterPromisesSavedPokes();
     updateAmountPokesAndProgress();
-}
-
-
-function updateAmountPokesAndProgress() {
-    renderAmountLoadedPokes();
-    updateProgress();
 }
 
 
@@ -125,6 +121,7 @@ async function showNextCountPokes() {
         redundancy == false;
     }
     functionRunning = false;
+    updateAmountPokesAndProgress()
 }
 
 
@@ -134,7 +131,6 @@ async function promiseWait(currentWait) {
     });
     let result = await promise;
     return result;
-    // console.log(result9);
 }
 
 
@@ -142,7 +138,7 @@ function renderPokes() {
     for (let i = beginPokeNr; i <= endPokeNr; i++) {
         renderPoke(i);
     }
-    return 'render done'
+    // return 'render done'
 }
 
 
@@ -151,14 +147,14 @@ async function getNextCountPokes() {
         await loadCurrentPoke(i);
         addToPokesLoaded();
     }
-    return 'get done';
+    // return 'get done';
 }
 
 
 async function sortPokesLoaded() {
     pokesLoaded.splice(0, 1);
     pokesLoaded.sort(function (a, b) { return a.pokeId - b.pokeId });
-    return 'sort done';
+    // return 'sort done';
 }
 
 
@@ -182,14 +178,14 @@ async function pushPokesLoadedToPokes() {
             }
         );
     }
-    return 'push done';
+    // return 'push done';
 }
 
 
 function updateParam() {
     beginPokeNr = pokes.length;
     endPokeNr = beginPokeNr + count;
-    return 'update done';
+    // return 'update done';
 }
 
 
@@ -232,7 +228,7 @@ function checkRedundancy() {
     } else {
         redundancy = true;
     }
-    return 'check done';
+    // return 'check done';
 }
 
 
@@ -254,7 +250,7 @@ function resetPokesLoaded() {
             "pokeAbilityFlavors": [],
         }
     ];
-    return 'reset done'
+    // return 'reset done'
 }
 
 
@@ -262,10 +258,10 @@ function showCurrentPoke(currentPokeNr) {
     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(0%);';
     document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
     if (currentPokeNr == 1) {
-        return 'show done';
+        return;
     } else {
         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
-        return 'show done';
+        // return 'show done';
     }
 }
 
@@ -320,19 +316,6 @@ function pushToPokesLoaded(pokeId, pokeName, pokeNameGerman, pokeImg, pokeSlot1,
 }
 
 
-function format3LeftHandZeros(value) {
-    value = value.toString();
-    let formatValue = value.padStart(4, '0');
-    return formatValue;
-}
-
-
-function showPokeByInit(i) {
-    let searchId = +document.getElementById('search-nr' + i).value;
-    showPokeBy(searchId, i);
-}
-
-
 // function noticePokeNrsOnLeft200(i) {
 //     currentPokeNrLeft200 = i;
 //     beforePokeNrLeft200 = currentPokeNrLeft200 - 1;
@@ -347,13 +330,13 @@ function showPokeByInit(i) {
 // }
 
 
-function checkOutByX(i, currentPoke, beforePoke, nextPoke) {
-    if (beforePoke) {
-        document.getElementById('pokedex' + beforePoke).style = `transform: translateX(${i}%);`;
-    }
-    document.getElementById('pokedex' + currentPoke).style = `transform: translateX(${i}%);`;
-    document.getElementById('pokedex' + nextPoke).style = `transform: translateX(${i}%);`;
-}
+// function checkOutByX(i, currentPoke, beforePoke, nextPoke) {
+//     if (beforePoke) {
+//         document.getElementById('pokedex' + beforePoke).style = `transform: translateX(${i}%);`;
+//     }
+//     document.getElementById('pokedex' + currentPoke).style = `transform: translateX(${i}%);`;
+//     document.getElementById('pokedex' + nextPoke).style = `transform: translateX(${i}%);`;
+// }
 
 
 // function checkOutRight200() {
@@ -365,29 +348,29 @@ function checkOutByX(i, currentPoke, beforePoke, nextPoke) {
 // }
 
 
-async function shiftBeforePokes(searchId) {
-    let position = -200;
-    let startNr = currentPokeNr;
-    let endNr = searchId;
-    for (let i = startNr; i <= endNr; i++) {
-        await shiftPokeToXByNr(i, position);
-    }
-}
+// async function shiftBeforePokes(searchId) {
+//     let position = -200;
+//     let startNr = currentPokeNr;
+//     let endNr = searchId;
+//     for (let i = startNr; i <= endNr; i++) {
+//         await shiftPokeToXByNr(i, position);
+//     }
+// }
 
 
-function shiftNextPokes(searchId) {
-    let position = +200;
-    let startNr = currentPokeNr;
-    let endNr = searchId;
-    for (let i = startNr; i >= endNr; i--) {
-        shiftPokeToXByNr(i, position);
-    }
-}
+// function shiftNextPokes(searchId) {
+//     let position = +200;
+//     let startNr = currentPokeNr;
+//     let endNr = searchId;
+//     for (let i = startNr; i >= endNr; i--) {
+//         shiftPokeToXByNr(i, position);
+//     }
+// }
 
 
-async function shiftPokeToXByNr(pokeNr, position) {
-    document.getElementById('pokedex' + pokeNr).style = `transform: translateX(${position}%);`;
-}
+// async function shiftPokeToXByNr(pokeNr, position) {
+//     document.getElementById('pokedex' + pokeNr).style = `transform: translateX(${position}%);`;
+// }
 
 
 

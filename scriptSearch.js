@@ -48,3 +48,9 @@ async function showLastPoke() {
     await Promise.all(promise2nd);
     currentWait = 550;
 }
+
+
+function showPokeByNr(i) {
+    let searchId = +document.getElementById('search-nr' + i).value;
+    showPokeBy(searchId, i);
+}

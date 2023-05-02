@@ -9,7 +9,7 @@ function generateHTMLPokedex(i) {
                 </div>
                 <div id="search" class= "search">
                     <input id="search-nr${i}" placeholder="Nr.">
-                    <button onclick="showPokeByInit(${i})">Suche</button>
+                    <button onclick="showPokeByNr(${i})">Suche</button>
                 </div>
                 <div class="right-buttons">
                     <button onclick="sliderOneRight()">></button>
@@ -73,13 +73,4 @@ function generateHTMLPokedex(i) {
         </div>  
     </div> 
     `
-}
-
-
-function generateHTMLAmountLoadedPokes() {
-    return 'Es wurden ' + amountLoadedPokes + ' von 1010 geladen';
-}
-
-function generateHTMLAmountLoadingPokedex() {
-    return 'Es wurden ' + amountRenderdPokes + ' von ' + amountOfPokesToLoad + ' geladen';
 }

@@ -15,7 +15,7 @@ function save() {
     localStorage.setItem('pokes', pokesText);
 }
 
-// 
+
 async function load() {
     let pokesAsText = localStorage.getItem('pokes');
     if (pokesAsText) {
