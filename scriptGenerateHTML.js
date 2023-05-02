@@ -35,7 +35,13 @@ function generateHTMLPokedex(i) {
                 <div id="pokedex-id${i}" class="pokedex-id">
                 </div>
             </div>
-            <div id="pokedex-slots${i}" class="pokedex-slots">
+            <div class="slot-line">
+                <div id="pokedex-slots${i}" class="pokedex-slots">
+                </div>
+                <div class="favorite">
+                    <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img src="./img/favorite_FILL0.png"></button></div>
+                    <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img src="./img/favorite_FILL1.png"></button></div>
+                </div>
             </div>
         </div>
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
@@ -67,4 +73,13 @@ function generateHTMLPokedex(i) {
         </div>  
     </div> 
     `
+}
+
+
+function generateHTMLAmountLoadedPokes() {
+    return 'Es wurden ' + amountLoadedPokes + ' von 1010 geladen';
+}
+
+function generateHTMLAmountLoadingPokedex() {
+    return 'Es wurden ' + amountRenderdPokes + ' von ' + amountOfPokesToLoad + ' geladen';
 }

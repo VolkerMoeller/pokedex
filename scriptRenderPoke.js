@@ -1,6 +1,8 @@
-function renderAmountLaodedPokes() {
+function renderAmountLoadedPokes() {
     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = generateHTMLAmountLoadedPokes();
+    document.getElementById('loadingPokedex').innerHTML = '';
+    document.getElementById('loadingPokedex').innerHTML = generateHTMLAmountLoadingPokedex();
 }
 
 
@@ -10,18 +12,22 @@ function renderPoke(i) {
     renderPokeBottom(i);
     stylePokeBgnTop(i);
     renderPokeBottomNavigation(i);
+    amountRenderdPokes = amountRenderdPokes + 1;
 }
 
 
 function renderPokeTop(i) {
-    let pokeName = pokes[i]['pokeName'];
-    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeName}</h1>`;
+    // let pokeName = pokes[i]['pokeName'];
+    // document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeName}</h1>`;
     let pokeId = pokes[i]['pokeId'];
     let formatPokeId = format3LeftHandZeros(pokeId);
     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
     let pokeSlot1 = pokes[i]['pokeSlot1'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
+    let bgnType = 'bgn-type-' + pokeSlot1;
     document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
+    document.getElementById('btn-fill0' + i).classList.add(`${bgnType}`);
+    document.getElementById('btn-fill1' + i).classList.add(`${bgnType}`);
     let pokeImg = pokes[i]['pokeImg'];
     document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
     if (pokes[i]['pokeSlot2'] == 'none') {
@@ -76,10 +82,17 @@ function stylePokeBgnTop(i) {
 }
 
 
+
+
 async function renderPokeCardAbout(i) {
     await loadCurrentSpecie(i);
     let pokeGenera = currentSpecie['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
+    // and German-Name
+    let pokeNamesGerman = currentSpecie['names'];
+    await searchGermanName(pokeNamesGerman, i);
+    let pokeNameGerman = pokes[i]['pokeNameGerman'][1];
+    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
 
     let pokeFlavor = currentSpecie['flavor_text_entries'];
     await searchGermanText(pokeFlavor, i);
@@ -87,14 +100,15 @@ async function renderPokeCardAbout(i) {
     document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor1st}</div>`;
     let pokeWeight = pokes[i]['pokeWeight'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
+    let pokeHeight = pokes[i]['pokeHeight'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
 
-    // let pokeAbility = pokes[i]['pokeAbilities'];
     await loadCurrentAbility(i);
     let pokeAbility = currentAbility['names'][4]['name'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeiten: </b>${pokeAbility}</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${pokeAbility}</div>`;
     let pokeAbilityFlavor = currentAbility['flavor_text_entries'];
     searchGermanTextAbilityFlavor(pokeAbilityFlavor, i);
-    let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][1]
+    let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][1];
     document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor2nd}</div>`;
 }
 
@@ -107,10 +121,26 @@ async function searchGermanText(pokeFlavor, i) {
 }
 
 
+async function searchGermanName(pokeNamesGerman, i) {
+    for (let j = 0; j < pokeNamesGerman.length; j++) {
+        let language = pokeNamesGerman[j]['language']['name'];
+        pushGermanName(language, i, j, pokeNamesGerman);
+    }
+}
+
+
 function pushFlavor(language, i, j, pokeFlavor) {
     if (language == 'de') {
         let flavorText = pokeFlavor[j]['flavor_text'];
         pokes[i]['pokeFlavors'].push(flavorText);
+    }
+}
+
+
+function pushGermanName(language, i, j, pokeNamesGerman) {
+    if (language == 'de') {
+        let germanName = pokeNamesGerman[j]['name'];
+        pokes[i]['pokeNameGerman'].push(germanName);
     }
 }
 
