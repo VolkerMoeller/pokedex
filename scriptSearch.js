@@ -50,7 +50,7 @@ async function showLastPoke() {
 }
 
 
-function showPokeByNr(i) {
+function showByNr(i) {
     let searchId = +document.getElementById('search-nr' + i).value;
     showPokeBy(searchId, i);
 }

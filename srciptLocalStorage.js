@@ -22,3 +22,17 @@ async function load() {
         pokes = JSON.parse(pokesAsText);
     }
 }
+
+
+function saveFavorites() {
+    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
+    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
+}
+
+
+async function loadFavorites() {
+    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
+    if (pokesFavoritesAsText) {
+        pokes = JSON.parse(pokesFavoritesAsText);
+    }
+}
