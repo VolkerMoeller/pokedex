@@ -179,9 +179,11 @@ h1 {
     align-items: center;
     min-height: 7px;
     background-color: rgb(119, 119, 119);
+    border-radius: 5px;
 }
 
 .progress {
+    border-radius: 5px;
     height: 100%;
     background-color: white;
 }
@@ -283,4 +285,32 @@ h1 {
     margin: 0px;
     padding: 0px;
     /* border-radius: 100%; */
+}
+
+.stats-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progess-stats-line {
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    height: 7px;
+    width: 48%;
+    background-color: rgb(119, 119, 119, 0.2);
+}
+
+.progress-stats {
+    border-radius: 5px;
+    height: 7px;
+    background-color: red;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    width: 48%;
 }

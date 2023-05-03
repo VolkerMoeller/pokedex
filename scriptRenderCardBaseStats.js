@@ -1,62 +1,35 @@
+let baseStatName = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+let baseStatId = ['pokeKpId','pokeAttackId','pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
+
+
 async function renderPokeCardBaseStats(i) {
     await loadCurrentPoke(i);
-    let pokeKp = currentPoke['stats'][0]['base_stat'];
-    document.getElementById('card2' + i).innerHTML += `<div>Kraftpunkte: <b>${pokeKp}</b></div>`;
-    let pokeAttack = currentPoke['stats'][1]['base_stat'];
-    document.getElementById('card2' + i).innerHTML += `<div>Angriff: <b>${pokeAttack}</b></div>`;
-    let pokeDefense = currentPoke['stats'][2]['base_stat'];
-    document.getElementById('card2' + i).innerHTML += `<div>Veteidigung: <b>${pokeDefense}</b></div>`;
-    let pokeSpecAttack = currentPoke['stats'][3]['base_stat'];
-    document.getElementById('card2' + i).innerHTML += `<div>Spezialangriff: <b>${pokeSpecAttack}</b></div>`;
-    let pokeSpecDefense = currentPoke['stats'][4]['base_stat'];
-    document.getElementById('card2' + i).innerHTML += `<div>Spezialverteidigung: <b>${pokeSpecDefense}</b></div>`;
-    let pokeSpeed = currentPoke['stats'][5]['base_stat'];
-    document.getElementById('card2' + i).innerHTML += `<div>Initiative: <b>${pokeSpeed}</b></div>`;
+    for (let j = 0; j < baseStatName.length; j++) {
+        let value = currentPoke['stats'][j]['base_stat'];
+        let valuePerCent = perCent(value);
+        let id = baseStatId[j] + i;
+        renderStatsAndProgressLine(i, baseStatName[j], value, valuePerCent, id);   
+    }
 }
 
 
-// async function searchGermanText(pokeFlavor, i) {
-//     for (let j = 0; j < pokeFlavor.length; j++) {
-//         let language = pokeFlavor[j]['language']['name'];
-//         pushFlavor(language, i, j, pokeFlavor);
-//     }
-// }
+function renderStatsAndProgressLine(i, name, value, valuePerCent, id) {
+    renderStatsLine(i, name, value, id);
+    renderProgressLine(valuePerCent, id);
+}
 
 
-// async function searchGermanName(pokeNamesGerman, i) {
-//     for (let j = 0; j < pokeNamesGerman.length; j++) {
-//         let language = pokeNamesGerman[j]['language']['name'];
-//         pushGermanName(language, i, j, pokeNamesGerman);
-//     }
-// }
+function renderStatsLine(i, name, absoluteValue, id) {
+    document.getElementById('card2' + i).innerHTML += `<div class="stats-line"><div class="stat"><div>${name}: </div><div><b>${absoluteValue}</b></div></div><div class="progess-stats-line" id="${id}"></div></div>`;
+}
 
 
-// function pushFlavor(language, i, j, pokeFlavor) {
-//     if (language == 'de') {
-//         let flavorText = pokeFlavor[j]['flavor_text'];
-//         pokes[i]['pokeFlavors'].push(flavorText);
-//     }
-// }
+function perCent(value) {
+    let valuePerCent = value / 255 * 100;
+    return valuePerCent;
+}
 
 
-// function pushGermanName(language, i, j, pokeNamesGerman) {
-//     if (language == 'de') {
-//         let germanName = pokeNamesGerman[j]['name'];
-//         pokes[i]['pokeNameGerman'].push(germanName);
-//     }
-// }
-
-// async function searchGermanTextAbilityFlavor(pokeAbilityFlavor, i) {
-//     for (let j = 0; j < pokeAbilityFlavor.length; j++) {
-//         let language = pokeAbilityFlavor[j]['language']['name'];
-//         pushAbilityFlavor(language, i, j, pokeAbilityFlavor);
-//     }
-// }
-
-
-// function pushAbilityFlavor(language, i, j, pokeAbilityFlavor) {
-//     if (language == 'de') {
-//         let flavorText = pokeAbilityFlavor[j]['flavor_text'];
-//         pokes[i]['pokeAbilityFlavors'].push(flavorText);
-//     }
-// }
+function renderProgressLine(value, id) {
+    document.getElementById(id).innerHTML += `<div class="progress-stats" style="width: ${value}%"></div>`;
+}
