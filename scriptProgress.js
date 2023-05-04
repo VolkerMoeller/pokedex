@@ -3,6 +3,7 @@ function updateAmountPokesAndProgress() {
     updateProgress();
 }
 
+
 function renderAmountLoadedPokes() {
     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = '';
     document.getElementById('amount-pokes-loaded' + currentPokeNr).innerHTML = generateHTMLAmountLoadedPokes();

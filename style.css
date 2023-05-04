@@ -95,7 +95,7 @@ h1 {
     flex-direction: column;
     color: white;
     letter-spacing: 0.125px;
-    height: 50vh;
+    height: 60vh;
     padding: 16px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
@@ -178,14 +178,14 @@ h1 {
     display: flex;
     align-items: center;
     min-height: 7px;
-    background-color: rgb(119, 119, 119);
+    background-color: rgb(119, 119, 119, 0.5);
     border-radius: 5px;
 }
 
 .progress {
     border-radius: 5px;
-    height: 100%;
-    background-color: white;
+    height: 7px;
+    background-color: khaki;
 }
 
 .pokedex-name::first-letter {
@@ -208,17 +208,6 @@ h1 {
 .right-buttons {
     display: flex;
 }
-
-/* .bottom-nav {
-    margin-top: 48px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.bottom-nav-slide {
-    width: 25%;
-    text-align: center;
-} */
 
 .navigation {
     margin-top: 48px;
@@ -314,3 +303,15 @@ h1 {
     justify-content: space-between;
     width: 48%;
 }
+
+.pokedex-control {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: solid 5px khaki;
+    border-radius: 10px;
+}
+
+/* .pokedex-nav {
+    margin-bottom: 5px;
+} */

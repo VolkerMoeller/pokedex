@@ -13,6 +13,8 @@ let pokes = [
         "pokeAbilityURL": [],
         "pokeAbilities": [],
         "pokeAbilityFlavors": [],
+        "pokeMoveURL": [],
+        "pokeMoveName": [],
     }
 ];
 
@@ -31,6 +33,8 @@ let pokesLoaded = [
         "pokeAbilities": [],
         "pokeAbilityURL": [],
         "pokeAbilityFlavors": [],
+        "pokeMoveURL": [],
+        "pokeMoveName": [],
     }
 ];
 
@@ -176,6 +180,8 @@ async function pushPokesLoadedToPokes() {
                 "pokeAbilityURL": [pokesLoaded[i]['pokeAbilityURL'][0]],
                 "pokeAbilityFlavors": [pokesLoaded[i]['pokeAbilityFlavors'][0]],
                 "pokeNameGerman": [pokesLoaded[i]['pokeNameGerman'][0]],
+                "pokeMoveURL": [pokesLoaded[i]['pokeMoveURL'][0]],
+                "pokeMoveName": [pokesLoaded[i]['pokeMoveName'][0]],
             }
         );
     }
@@ -195,7 +201,6 @@ async function loadCurrentPoke(i) {
     let response = await fetch(url);
     let responseAsJSON = await response.json();
     currentPoke = responseAsJSON;
-    // console.log(currentPoke);
     return currentPoke;
 }
 
@@ -249,6 +254,8 @@ function resetPokesLoaded() {
             "pokeAbilities": [],
             "pokeAbilityURL": [],
             "pokeAbilityFlavors": [],
+            "pokeMoveURL": [],
+            "pokeMoveName": [],
         }
     ];
     // return 'reset done'
@@ -291,11 +298,13 @@ function addToPokesLoaded() {
     let pokeAbilities = currentPoke['abilities'][0]['ability']['name'];
     let pokeAbilityURL = currentPoke['abilities'][0]['ability']['url'];
     let pokeAbilityFlavors = '';
-    pushToPokesLoaded(pokeId, pokeName, pokeNameGerman, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeHeight, pokeSpecie, pokeFlavors, pokeAbilities, pokeAbilityURL, pokeAbilityFlavors);
+    let pokeMoveURL = '';
+    let pokeMoveName = '';
+    pushToPokesLoaded(pokeId, pokeName, pokeNameGerman, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeHeight, pokeSpecie, pokeFlavors, pokeAbilities, pokeAbilityURL, pokeAbilityFlavors, pokeMoveURL, pokeMoveName);
 }
 
 
-function pushToPokesLoaded(pokeId, pokeName, pokeNameGerman, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeHeight, pokeSpecie, pokeFlavors, pokeAbilities, pokeAbilityURL, pokeAbilityFlavors) {
+function pushToPokesLoaded(pokeId, pokeName, pokeNameGerman, pokeImg, pokeSlot1, pokeSlot2, pokeWeight, pokeHeight, pokeSpecie, pokeFlavors, pokeAbilities, pokeAbilityURL, pokeAbilityFlavors, pokeMoveURL, pokeMoveName) {
     pokesLoaded.push(
         {
             "pokeId": [pokeId],
@@ -311,96 +320,9 @@ function pushToPokesLoaded(pokeId, pokeName, pokeNameGerman, pokeImg, pokeSlot1,
             "pokeAbilities": [pokeAbilities],
             "pokeAbilityURL": [pokeAbilityURL],
             "pokeAbilityFlavors": [pokeAbilityFlavors],
+            "pokeMoveURL": [pokeMoveURL],
+            "pokeMoveName": [pokeMoveName],
 
         }
     )
 }
-
-
-// function noticePokeNrsOnLeft200(i) {
-//     currentPokeNrLeft200 = i;
-//     beforePokeNrLeft200 = currentPokeNrLeft200 - 1;
-//     nextPokeNrLeft200 = currentPokeNrLeft200 + 1;
-// }
-
-
-// function updatePokeNrsWith(i) {
-//     currentPokeNr = i;
-//     beforePokeNr = currentPokeNr - 1;
-//     nextPokeNr = currentPokeNr + 1;
-// }
-
-
-// function checkOutByX(i, currentPoke, beforePoke, nextPoke) {
-//     if (beforePoke) {
-//         document.getElementById('pokedex' + beforePoke).style = `transform: translateX(${i}%);`;
-//     }
-//     document.getElementById('pokedex' + currentPoke).style = `transform: translateX(${i}%);`;
-//     document.getElementById('pokedex' + nextPoke).style = `transform: translateX(${i}%);`;
-// }
-
-
-// function checkOutRight200() {
-//     if (beforePokeNr) {
-//         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(200%);';
-//     }
-//     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(200%);';
-//     document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
-// }
-
-
-// async function shiftBeforePokes(searchId) {
-//     let position = -200;
-//     let startNr = currentPokeNr;
-//     let endNr = searchId;
-//     for (let i = startNr; i <= endNr; i++) {
-//         await shiftPokeToXByNr(i, position);
-//     }
-// }
-
-
-// function shiftNextPokes(searchId) {
-//     let position = +200;
-//     let startNr = currentPokeNr;
-//     let endNr = searchId;
-//     for (let i = startNr; i >= endNr; i--) {
-//         shiftPokeToXByNr(i, position);
-//     }
-// }
-
-
-// async function shiftPokeToXByNr(pokeNr, position) {
-//     document.getElementById('pokedex' + pokeNr).style = `transform: translateX(${position}%);`;
-// }
-
-
-
-
-
-// function checkOutRight200() {
-//     if (beforePokeNr) {
-//         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(200%);';
-//     }
-//     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(200%);';
-//     document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
-// }
-
-
-// async function updatePokeCaseLeft() {
-//     let promise = new Promise((resolve, reject) => {
-//         resolve(pokeCaseLeft());
-//     });
-//     let result = await promise;
-//     return result;
-// }
-
-
-// function addCurrentTransition() {
-//     document.getElementById('pokedex' + currentPokeNr).classList.add(`transition${millisec}`);
-//     if (beforePokeNr >= 1) {
-//         document.getElementById('pokedex' + beforePokeNr).classList.add(`transition${millisec}`);
-//     }
-//     if (nextPokeNr < pokes.length) {
-//         document.getElementById('pokedex' + nextPokeNr).classList.add(`transition${millisec}`);
-//     }
-// }

@@ -2,6 +2,7 @@ function generateHTMLPokedex(i) {
     return /*html*/`
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
         <div id="pokedex-top${i}" class="pokedex-top">
+        <div id="pokedex-control" class="pokedex-control">
             <div id="pokedex-nav" class="pokedex-nav">
                 <div class="left-buttons">
                     <button onclick="showFirstPoke()"><<</button>
@@ -28,7 +29,8 @@ function generateHTMLPokedex(i) {
             <div id="searchByNameLine${i}">
                 <span>Suche nach </span>
                 <input id="search-name${i}" placeholder="Name" onkeydown="searchPokeByName(${i})">
-            </div>   
+            </div> 
+        </div>
             <div class="pokedex-above">
                 <div id="pokedex-name${i}" class="pokedex-name">
                 </div>

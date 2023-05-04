@@ -15,13 +15,11 @@ function setFavorite(i) {
 function addFavorite(i) {
     pokesFavorites.push(i);
     pokesFavorites.sort(function(a, b){return a-b});
-    console.log(pokesFavorites);
     saveFavorites();
 }
 
 function removeFavorite(i) {
     let index = pokesFavorites.indexOf(i);
     pokesFavorites.splice(index,1);
-    console.log(pokesFavorites);
     saveFavorites();
 }
