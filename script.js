@@ -94,7 +94,6 @@ function setGlobalValuesBeforePromisesSavedPokes() {
 
 
 function setGlobalValuesAfterPromisesSavedPokes() {
-    // Info: beginPokeNr = 1; count = 3; -> endPokeNr = 4;
     endPokeNr = beginPokeNr + count;
     amountLoadedPokes = pokes.length - 1;
 }
@@ -143,7 +142,6 @@ function renderPokes() {
     for (let i = beginPokeNr; i <= endPokeNr; i++) {
         renderPoke(i);
     }
-    // return 'render done'
 }
 
 
@@ -152,14 +150,12 @@ async function getNextCountPokes() {
         await loadCurrentPoke(i);
         addToPokesLoaded();
     }
-    // return 'get done';
 }
 
 
 async function sortPokesLoaded() {
     pokesLoaded.splice(0, 1);
     pokesLoaded.sort(function (a, b) { return a.pokeId - b.pokeId });
-    // return 'sort done';
 }
 
 
@@ -185,14 +181,12 @@ async function pushPokesLoadedToPokes() {
             }
         );
     }
-    // return 'push done';
 }
 
 
 function updateParam() {
     beginPokeNr = pokes.length;
     endPokeNr = beginPokeNr + count;
-    // return 'update done';
 }
 
 
@@ -210,7 +204,6 @@ async function loadCurrentSpecie(i) {
     let response = await fetch(url);
     let responseAsJSON = await response.json();
     currentSpecie = responseAsJSON;
-    // console.log(currentSpecie);
     return currentSpecie;
 }
 
@@ -220,7 +213,6 @@ async function loadCurrentAbility(i) {
     let response = await fetch(url);
     let responseAsJSON = await response.json();
     currentAbility = responseAsJSON;
-    // console.log(currentAbility);
     return currentAbility;
 }
 
@@ -234,7 +226,6 @@ function checkRedundancy() {
     } else {
         redundancy = true;
     }
-    // return 'check done';
 }
 
 
@@ -258,7 +249,6 @@ function resetPokesLoaded() {
             "pokeMoveName": [],
         }
     ];
-    // return 'reset done'
 }
 
 
@@ -269,7 +259,6 @@ function showCurrentPoke(currentPokeNr) {
         return;
     } else {
         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
-        // return 'show done';
     }
 }
 

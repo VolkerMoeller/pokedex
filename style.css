@@ -6,7 +6,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* height: 100vh; */
 }
 
 .display-none {
@@ -22,7 +21,6 @@ body {
     top: 0px;
     left: 0px;
     right: 0px;
-    /* height: 100vh; */
     background-color: rgb(219, 219, 219);
 }
 
@@ -36,7 +34,6 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* height: 100vh; */
     width: 480px;
     overflow-x: clip;
 }
@@ -211,7 +208,6 @@ h1 {
 
 .navigation {
     margin-top: 48px;
-    /* padding-right: 16px; */
     display: flex;
     justify-content: space-between;
     gap: 8px;
@@ -220,21 +216,13 @@ h1 {
 .navigation button {
     border: none;
     border-radius: 10px;
-    /* background-color: rgba(66, 0, 151, 0.7); */
     cursor: pointer;
     height: 54px;
     width: 86px;
     color: white;
-    /* color: rgba(0, 0, 0, 1.0); */
     font-size: 16px;
-    /* font-weight: bold; */
     letter-spacing: 0.25px;
 }
-
-/* .navigation button:hover {
-    background-color: rgba(119, 119, 119, 0.95);
-    
-} */
 
 .bgn-slide-active {
     background-color: aqua !important;
@@ -256,24 +244,19 @@ h1 {
 .favorite {
     display: flex;
     align-items: center;
-
-    /* overflow: hidden; */
 }
 
 .favorite img {
     height: 24px;
     width: 24px;
-    /* object-fit: contain; */
 }
 
 .btn-fav {
     display: flex;
     border: none;
     cursor: pointer;
-    /* background-color: violet; */
     margin: 0px;
     padding: 0px;
-    /* border-radius: 100%; */
 }
 
 .stats-line {
@@ -311,7 +294,3 @@ h1 {
     border: solid 5px khaki;
     border-radius: 10px;
 }
-
-/* .pokedex-nav {
-    margin-bottom: 5px;
-} */
