@@ -30,7 +30,7 @@ async function renderPokeCardAbout(i) {
 async function searchGermanText(pokeFlavor, i) {
     for (let j = 0; j < pokeFlavor.length; j++) {
         let language = pokeFlavor[j]['language']['name'];
-        pushFlavor(language, i, j, pokeFlavor);
+        await pushFlavor(language, i, j, pokeFlavor);
     }
 }
 
@@ -38,12 +38,12 @@ async function searchGermanText(pokeFlavor, i) {
 async function searchGermanName(pokeNamesGerman, i) {
     for (let j = 0; j < pokeNamesGerman.length; j++) {
         let language = pokeNamesGerman[j]['language']['name'];
-        pushGermanName(language, i, j, pokeNamesGerman);
+        await pushGermanName(language, i, j, pokeNamesGerman);
     }
 }
 
 
-function pushFlavor(language, i, j, pokeFlavor) {
+async function pushFlavor(language, i, j, pokeFlavor) {
     if (language == 'de') {
         let flavorText = pokeFlavor[j]['flavor_text'];
         pokes[i]['pokeFlavors'].push(flavorText);
@@ -51,7 +51,7 @@ function pushFlavor(language, i, j, pokeFlavor) {
 }
 
 
-function pushGermanName(language, i, j, pokeNamesGerman) {
+async function pushGermanName(language, i, j, pokeNamesGerman) {
     if (language == 'de') {
         let germanName = pokeNamesGerman[j]['name'];
         pokes[i]['pokeNameGerman'].push(germanName);
