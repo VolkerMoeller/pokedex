@@ -1,4 +1,5 @@
 let currentMoveInfo = [];
+let germanText = '';
 
 async function renderPokeCardMoves(i) {
     await loadCurrentPoke(i);
@@ -8,7 +9,8 @@ async function renderPokeCardMoves(i) {
         await loadMoveInfo(moveURL);
         // console.log('i: ', i, 'j: ', j, ' ', currentMoveInfo);
         let moveNames = currentMoveInfo['names'];
-        await searchGermanMoveName(moveNames, i, j);
+        let moveText = currentMoveInfo['flavor_text_entries']
+        await searchGermanMoveName(moveNames, moveText, i, j);
     }
 }
 
@@ -21,23 +23,31 @@ async function loadMoveInfo(url) {
 }
 
 
-async function searchGermanMoveName(moveNames, i, j) {
+async function searchGermanMoveName(moveNames, moveText, i, j) {
     for (let k = 0; k < moveNames.length; k++) {
+        let count = j + 1;
         let language = moveNames[k]['language']['name'];
         // console.log(language, i, j, k);
-        await getGermanMoveName(moveNames, language, i, k);
-
+        await getGermanMoveName(moveNames, language, i, j, k, count);
     }
+    for (let m = 0; m < moveText.length; m++) {
+        let languageTxt = moveText[m]['language']['name'];
+        await getGermanMoveText(moveText, languageTxt, i, j, m, count);
+    }
+    document.getElementById('card4' + i).innerHTML += `<div>${germanText}</div>`;
 }
 
 
-async function getGermanMoveName(moveNames, language, i, k){
+async function getGermanMoveName(moveNames, language, i, j, k, count) {
     if (language == 'de') {
         let germanName = moveNames[k]['name'];
-        // console.log(language, i, j, k, germanName);
-        // return germanName;
-        document.getElementById('card4' + i).innerHTML += `<div>${germanName}</div>`;
-
+        document.getElementById('card4' + i).innerHTML += `<div id="moveId${i}${j}"><b>${count} ${germanName}</b></div>`;
     }
+}
 
+async function getGermanMoveText(moveText, languageTxt, i, j, m) {
+        if (languageTxt == 'de') {
+            germanText = moveText[m]['flavor_text'];
+            return germanText;
+        }
 }
