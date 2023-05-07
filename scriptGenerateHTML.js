@@ -66,10 +66,8 @@ function generateHTMLPokedex(i) {
         <div id="card2${i}" class="cards display-none">
         </div>
         <div id="card3${i}" class="cards display-none">
-            <div>ContentEvolution</div>
         </div>
         <div id="card4${i}" class="cards display-none">
-            <div></div>
         </div>
         </div>  
     </div> 

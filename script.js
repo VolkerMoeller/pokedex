@@ -63,7 +63,8 @@ let currentAbility = [];
 let currentIndex = '';
 let amountOfPokesToLoad = 1;
 let amountRenderdPokes = 0;
-
+let currentEvolution = [];
+let currentGermanStartPokeName = [];
 
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
@@ -214,6 +215,22 @@ async function loadCurrentAbility(i) {
     let responseAsJSON = await response.json();
     currentAbility = responseAsJSON;
     return currentAbility;
+}
+
+
+async function loadCurrentEvolution(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentEvolution = responseAsJSON;
+    return currentEvolution;
+}
+
+
+async function loadGermanStartPokeName(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentGermanStartPokeName = responseAsJSON;
+    return currentGermanStartPokeName;
 }
 
 
