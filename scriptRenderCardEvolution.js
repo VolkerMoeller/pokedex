@@ -13,7 +13,27 @@ async function renderPokeCardEvolution(i) {
     // console.log(i, ' ', currentEvolution);
     // document.getElementById('card3' + i).innerHTML += startPokeName;
     await getNamePokeStart(currentEvolution, i);  
+    await getEvolut(currentEvolution, i);
 }
+
+
+async function getEvolut (currentEvolution, i) {
+    await checkIfEvolut(currentEvolution, i);
+}
+
+
+async function checkIfEvolut(currentEvolution, i){
+    // console.log('hier');
+    let evolut = currentEvolution['chain']['evolves_to'];
+    if (evolut) {
+        console.log('gibt es');
+        // for (let j = 0; j < currentEvolution['chain']['evolves_to'][0].length; j++) {
+            evolut = currentEvolution['chain']['evolves_to'][0]['species']['name'];
+            document.getElementById('card3' + i).innerHTML += evolut;
+        // }
+    }
+}
+
 
 async function getNamePokeStart(currentEvolution, i) {
     let startPokeNameURL = currentEvolution['chain']['species']['url'];
