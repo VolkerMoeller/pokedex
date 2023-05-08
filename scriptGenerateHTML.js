@@ -5,16 +5,16 @@ function generateHTMLPokedex(i) {
         <div id="pokedex-control" class="pokedex-control">
             <div id="pokedex-nav" class="pokedex-nav">
                 <div class="left-buttons">
-                    <button onclick="showFirstPoke()"><<</button>
-                    <button onclick="sliderOneLeft()"><</button>
+                    <button onclick="showFirstPoke()"><img src="./img/double_arrow_left.png"></button>
+                    <button onclick="sliderOneLeft()"><img src="./img/arrow_left.png"></button>
                 </div>
                 <div id="search" class= "search">
-                    <input id="search-nr${i}" placeholder="Nr.">
+                    <input id="search-nr${i}" class="input-search" placeholder="Nr.">
                     <button onclick="showByNr(${i})">Suche</button>
                 </div>
                 <div class="right-buttons">
-                    <button onclick="sliderOneRight()">></button>
-                    <button onclick="showLastPoke()">>></button>
+                    <button onclick="sliderOneRight()"><img src="./img/arrow_right.png"></button>
+                    <button onclick="showLastPoke()"><img src="./img/double_arrow_right.png"></button>
                 </div>
             </div>
             <div class="loadLine">

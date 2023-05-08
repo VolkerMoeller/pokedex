@@ -76,16 +76,57 @@ h1 {
 .pokedex-nav {
     display: flex;
     justify-content: space-between;
+    /* flex-wrap: wrap; */
+    margin-bottom: 8px;
+}
+
+@media (max-width: 400px) {
+    .pokedex-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
 }
 
 .pokedex-nav input {
-    width: 25%;
+    width: 75%;
 }
 
 .search {
+    width: 33.333333%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    /* gap: 4px; */
 }
+
+@media (max-width: 400px) {
+    .search {
+        width: 100%;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+}
+
+.search button {
+    font-family: 'Noto Sans';
+    font-size: 16px;
+    padding: 4px;
+    cursor: pointer;
+    border: none;
+    border-radius: 0px 5px 5px 0px;
+    background-color: rgba(251, 251, 251, 0.8);
+}
+
+.search input {
+    font-family: 'Noto Sans';
+    font-size: 16px;
+    padding: 4px;
+    border: none;
+    border-radius: 5px 0px 0px 5px;
+    /* background-color: rgba(251, 251, 251, 0.8); */
+}
+
 
 .pokedexBgn {
     background-color: white;
@@ -299,6 +340,7 @@ h1 {
     .slot {
         margin-left: 8px;
     }
+
     .slot-line {
         margin-top: 8px;
         justify-content: center;
@@ -329,7 +371,60 @@ h1 {
 .pokedex-control {
     display: flex;
     flex-direction: column;
+    /* flex-wrap: wrap; */
     padding: 15px;
     border: solid 5px khaki;
     border-radius: 10px;
+}
+
+.left-buttons {
+    width: 33.333333%;
+    gap: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.left-buttons button {
+    padding: 0px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(251, 251, 251, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.left-buttons button img {
+    height: 40px;
+    width: 40px;
+}
+
+.right-buttons {
+    width: 33.333333%;
+    gap: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.right-buttons button {
+    height: 40px;
+    width: 40px;
+    padding: 0px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(251, 251, 251, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.right-buttons button img {
+    height: 40px;
+    width: 40px;
 }
