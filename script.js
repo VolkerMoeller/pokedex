@@ -65,7 +65,8 @@ let amountOfPokesToLoad = 1;
 let amountRenderdPokes = 0;
 let currentEvolution = [];
 let currentGermanStartPokeName = [];
-let testArray = [];
+let currentGermanEvolut1stName = [];
+let currentGermanEvolut2ndName = [];
 
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
@@ -232,6 +233,22 @@ async function loadGermanStartPokeName(url) {
     let responseAsJSON = await response.json();
     currentGermanStartPokeName = responseAsJSON;
     return currentGermanStartPokeName;
+}
+
+
+async function loadGermanEvolut1stName(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentGermanEvolut1stName = responseAsJSON;
+    return currentGermanEvolut1stName;
+}
+
+
+async function loadGermanEvolut2ndName(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentGermanEvolut2ndName = responseAsJSON;
+    return currentGermanEvolut2ndName;
 }
 
 
