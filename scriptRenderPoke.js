@@ -62,10 +62,10 @@ function renderPokeBottomNavigation(i) {
 
 
 async function renderPokeBottom(i) {
-    renderPokeCardAbout(i);
-    renderPokeCardBaseStats(i);
-    renderPokeCardMoves(i);
-    renderPokeCardEvolution(i);
+    await renderPokeCardAbout(i);
+    await renderPokeCardBaseStats(i);
+    await renderPokeCardEvolution(i);
+    await renderPokeCardMoves(i);
 }
 
 

@@ -65,6 +65,7 @@ let amountOfPokesToLoad = 1;
 let amountRenderdPokes = 0;
 let currentEvolution = [];
 let currentGermanStartPokeName = [];
+let testArray = [];
 
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';

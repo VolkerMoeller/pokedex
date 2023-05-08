@@ -7,31 +7,23 @@ async function renderPokeCardEvolution(i) {
     // console.log(currentSpecie);
     let evolutionChainURL = currentSpecie['evolution_chain']['url'];
     await loadCurrentEvolution(evolutionChainURL);
-    // console.log(currentEvolution);
-    // let startPokeName = currentEvolution['chain']['species']['name'];
-    // console.log(i, ' ', startPokeName);
     // console.log(i, ' ', currentEvolution);
-    // document.getElementById('card3' + i).innerHTML += startPokeName;
-    await getNamePokeStart(currentEvolution, i);  
-    await getEvolut(currentEvolution, i);
-}
-
-
-async function getEvolut (currentEvolution, i) {
-    await checkIfEvolut(currentEvolution, i);
-}
-
-
-async function checkIfEvolut(currentEvolution, i){
-    // console.log('hier');
-    let evolut = currentEvolution['chain']['evolves_to'];
-    if (evolut) {
-        console.log('gibt es');
-        // for (let j = 0; j < currentEvolution['chain']['evolves_to'][0].length; j++) {
-            evolut = currentEvolution['chain']['evolves_to'][0]['species']['name'];
-            document.getElementById('card3' + i).innerHTML += evolut;
-        // }
+    let startPokeName = currentEvolution['chain']['species']['name'];
+    // console.log(i, ' ', startPokeName);
+    document.getElementById('card3' + i).innerHTML += `<div>${startPokeName}</div>`;
+    if (currentEvolution['chain']['evolves_to'][0]['species']['name']) {
+        let evolut1st = currentEvolution['chain']['evolves_to'][0]['species']['name'];
+        document.getElementById('card3' + i).innerHTML += `<div>${evolut1st}</div>`;
+        // console.log(i, ' ', evolut1st);
+        if (currentEvolution['chain']['evolves_to'][0]['evolves_to'].length >= 1) {
+            let evolut2nd = currentEvolution['chain']['evolves_to'][0]['evolves_to'][0]['species']['name'];
+            document.getElementById('card3' + i).innerHTML += `<div>${evolut2nd}</div>`;
+            // console.log(i, ' ', evolut2nd);
+        }
+    } else {
+        return;
     }
+    await getNamePokeStart(currentEvolution, i);
 }
 
 
@@ -62,3 +54,6 @@ async function getGermanStartPokeName(language, startPokeNames, j, i) {
         document.getElementById('card3' + i).innerHTML += `<div>Zuerst: <b>${germanStartPokeName}</b></div>`;
     }
 }
+
+
+
