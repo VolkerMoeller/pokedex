@@ -5,7 +5,7 @@ function generateHTMLPokedex(i) {
         <div id="pokedex-control" class="pokedex-control">
             <div id="pokedex-nav" class="pokedex-nav">
                 <div class="left-buttons">
-                    <button onclick="showFirstPoke()"><img src="./img/double_arrow_left.png"></button>
+                    <button onclick="showFirstPoke()"><img src="./img/double_arrow_left_2.png"></button>
                     <button onclick="sliderOneLeft()"><img src="./img/arrow_left.png"></button>
                 </div>
                 <div id="search" class= "search">
@@ -26,7 +26,7 @@ function generateHTMLPokedex(i) {
                 <div id="progress${i}" class="progress">
                 </div>
             </div>
-            <div id="searchByNameLine${i}">
+            <div id="searchByNameLine${i}" class="searchByName">
                 <span>Suche nach </span>
                 <input id="search-name${i}" placeholder="Name" onkeydown="searchPokeByName(${i})">
             </div> 
