@@ -8,23 +8,23 @@ async function renderPokeCardEvolution(i) {
     let evolutionChainURL = currentSpecie['evolution_chain']['url'];
     await loadCurrentEvolution(evolutionChainURL);
     // console.log(i, ' ', currentEvolution);
-    let startPokeName = currentEvolution['chain']['species']['name'];
+    // let startPokeName = currentEvolution['chain']['species']['name'];
     // console.log(i, ' ', startPokeName);
-    document.getElementById('card3' + i).innerHTML += `<div>${startPokeName}</div>`;
-    if (currentEvolution['chain']['evolves_to'].length >= 1) {
-        let evolut1st = currentEvolution['chain']['evolves_to'][0]['species']['name'];
-        document.getElementById('card3' + i).innerHTML += `<div>${evolut1st}</div>`;
+    // document.getElementById('card3' + i).innerHTML += `<div>${startPokeName}</div>`;
+    // if (currentEvolution['chain']['evolves_to'].length >= 1) {
+        // let evolut1st = currentEvolution['chain']['evolves_to'][0]['species']['name'];
+        // document.getElementById('card3' + i).innerHTML += `<div>${evolut1st}</div>`;
         // console.log(i, ' ', evolut1st);
-        if (currentEvolution['chain']['evolves_to'][0]['evolves_to'].length >= 1) {
-            let evolut2nd = currentEvolution['chain']['evolves_to'][0]['evolves_to'][0]['species']['name'];
-            document.getElementById('card3' + i).innerHTML += `<div>${evolut2nd}</div>`;
+        // if (currentEvolution['chain']['evolves_to'][0]['evolves_to'].length >= 1) {
+            // let evolut2nd = currentEvolution['chain']['evolves_to'][0]['evolves_to'][0]['species']['name'];
+            // document.getElementById('card3' + i).innerHTML += `<div>${evolut2nd}</div>`;
             // console.log(i, ' ', evolut2nd);
-        }
-    } else {
-        document.getElementById('card3' + i).innerHTML += `<div>Keine Weiterentwicklung</div>`;
-        return;
-    }
-    await getNamePokeStart(currentEvolution, i);
+        // }
+    // } else {
+        // document.getElementById('card3' + i).innerHTML += `<div>Keine Weiterentwicklung</div>`;
+        // return;
+        // }
+        await getNamePokeStart(currentEvolution, i);
 }
 
 
@@ -43,8 +43,8 @@ async function getNamePokeStart(currentEvolution, i) {
 async function getNamePokeEvolut1st(currentEvolution, i) {
     // let startPokeNameURL = currentEvolution['chain']['species']['url'];
     // if (currentEvolution['chain']['evolves_to'][0]['species']['name']) {
-    if (currentEvolution['chain']['evolves_to']) {
-        let evolut1stNameURL = currentEvolution['chain']['evolves_to'][0]['species']['url']
+        if (currentEvolution['chain']['evolves_to'].length >= 1) {
+            let evolut1stNameURL = currentEvolution['chain']['evolves_to'][0]['species']['url']
         // console.log(startPokeNameURL);
         await loadGermanEvolut1stName(evolut1stNameURL);
         // console.log(currentGermanStartPokeName);
@@ -53,6 +53,7 @@ async function getNamePokeEvolut1st(currentEvolution, i) {
         // console.log('startPokeNames: ',startPokeNames);
         await searchGermanEvolut1stName(evolut1stNames, i, evolut1stId);
     } else {
+        document.getElementById('card3' + i).innerHTML += `<div>Keine Weiterentwicklung</div>`;
         return;
     }
     await getNamePokeEvolut2nd(currentEvolution, i);
