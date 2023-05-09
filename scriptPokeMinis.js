@@ -2,13 +2,17 @@ function backToPokeMinis() {
     document.getElementById('pokedex-all').classList.add('display-none');
 }
 
+function showPokeCard(i) {
+    document.getElementById('pokedex-all').classList.remove('display-none');
+    showPokeBy(i, currentPokeNr);
+}
+
 async function renderPokeMinisAll() {
     document.getElementById('pokeMinis-all').innerHTML = '';
     generateHTMLPokeMinisAllHeader();
     document.getElementById('pokeMinis-all').innerHTML = generateHTMLPokeMinisAllHeader();
     generateHTMLPokeMini();
     for (let i = 0; i < pokes.length; i++) {
-        const element = pokes[i];
         document.getElementById('pokeMinis').innerHTML += generateHTMLPokeMini(i);  
     }
 }
@@ -21,5 +25,8 @@ function generateHTMLPokeMinisAllHeader(){
 }
 
 function generateHTMLPokeMini(i){
-    return `<h6>Pokedex-Mini ${i}</h6>`;
+    return `
+    <h6>Pokedex-Mini ${i}</h6>
+    <button onclick="showPokeCard(${i})">Zeige Karte</button>
+    `;
 }
