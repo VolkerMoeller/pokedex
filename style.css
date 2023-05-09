@@ -112,11 +112,17 @@ h1 {
 .search button {
     font-family: 'Noto Sans';
     font-size: 16px;
+    /* font-weight: bold; */
+    letter-spacing: 0.05;
     padding: 4px;
     cursor: pointer;
     border: none;
     border-radius: 0px 5px 5px 0px;
     background-color: rgba(251, 251, 251, 0.8);
+}
+
+.search button:hover {
+    background-color: rgba(251, 251, 251, 0.9);
 }
 
 .search input {
@@ -268,6 +274,10 @@ h1 {
     justify-content: center;
 }
 
+.loadLine button:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
 .pokedex-id {
     font-size: 32px;
     margin-top: 8px;
@@ -359,7 +369,6 @@ h1 {
     align-items: center;
 }
 
-
 @media (max-width: 300px) {
     .slot {
         margin-left: 8px;
@@ -370,6 +379,15 @@ h1 {
         justify-content: center;
     }
 }
+
+@media (max-width: 480px) {
+    .stats-line {
+        margin-top: 8px;
+        flex-direction: column;
+    }
+}
+
+
 
 .progess-stats-line {
     border-radius: 5px;
@@ -391,6 +409,17 @@ h1 {
     justify-content: space-between;
     width: 48%;
 }
+
+@media (max-width: 480px) {
+    .stat {
+        width: 100%;
+    }
+
+    .progess-stats-line {
+        width: 100%;
+    }
+}
+
 
 .pokedex-control {
     display: flex;
@@ -447,7 +476,10 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+}
 
+.btn-control:hover {
+    background-color: rgba(251, 251, 251, 0.9);
 }
 
 @media (max-width: 400px) {
@@ -455,7 +487,7 @@ h1 {
         width: 100%;
         justify-content: center;
     }
-    
+
     .right-buttons {
         width: 100%;
         justify-content: center;
@@ -486,4 +518,27 @@ h1 {
     /* margin-bottom: 8px; */
     width: 100%;
     /* background-color: rgba(251, 251, 251, 0.8); */
+}
+
+.evol-name-line {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.evol-name {
+    width: 74%;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width: 480px) {
+    .evol-name-line {
+        flex-direction: column;
+    }
+    
+    .evol-name {
+        width: 100%;
+    }
+
 }

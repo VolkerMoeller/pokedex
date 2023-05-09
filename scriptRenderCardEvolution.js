@@ -107,7 +107,8 @@ async function searchGermanEvolut2ndName(evolut2ndNames, i, evolut2ndId) {
 async function getGermanStartPokeName(language, startPokeNames, j, i, startPokeId) {
     if (language == 'de') {
         let germanStartPokeName = startPokeNames[j]['name'];
-        document.getElementById('card3' + i).innerHTML += `<div>Zuerst: <b>${germanStartPokeName}</b> ${startPokeId}</div>`;
+        let formatedId = format3LeftHandZeros(startPokeId);
+        document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuerst: <b><div class="evol-name">${germanStartPokeName}</b> # ${formatedId}</div></div>`;
         // return germanStartPokeName;
         // console.log(germanStartPokeName);
     }
@@ -117,7 +118,8 @@ async function getGermanStartPokeName(language, startPokeNames, j, i, startPokeI
 async function getGermanEvolut1stName(language, evolut1stNames, j, i, evolut1stId) {
     if (language == 'de') {
         let germanEvolut1stName = evolut1stNames[j]['name'];
-        document.getElementById('card3' + i).innerHTML += `<div>Danach: <b>${germanEvolut1stName}</b> ${evolut1stId}</div>`;
+        let formatedId = format3LeftHandZeros(evolut1stId);
+        document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Danach: <b><div class="evol-name">${germanEvolut1stName}</b> # ${formatedId}</div></div>`;
         // return germanStartPokeName;
         // console.log(germanStartPokeName);
     }
@@ -127,7 +129,8 @@ async function getGermanEvolut1stName(language, evolut1stNames, j, i, evolut1stI
 async function getGermanEvolut2ndName(language, evolut2ndNames, j, i, evolut2ndId) {
     if (language == 'de') {
         let germanEvolut2ndName = evolut2ndNames[j]['name'];
-        document.getElementById('card3' + i).innerHTML += `<div>Zuletzt: <b>${germanEvolut2ndName}</b> ${evolut2ndId}</div>`;
+        let formatedId = format3LeftHandZeros(evolut2ndId);
+        document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuletzt: <b><div class="evol-name">${germanEvolut2ndName}</b> # ${formatedId}</div></div>`;
         // return germanStartPokeName;
         // console.log(germanStartPokeName);
     }
