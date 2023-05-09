@@ -2,6 +2,11 @@ function generateHTMLPokedex(i) {
     return /*html*/`
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
         <div id="pokedex-top${i}" class="pokedex-top">
+        <div>
+            <button onclick="backToPokeMinis()" class="btn-back">
+                <img src="./img/backspace.png">
+            </button>
+        </div>
         <div id="pokedex-control" class="pokedex-control">
             <div id="pokedex-nav" class="pokedex-nav">
                 <div class="left-buttons">

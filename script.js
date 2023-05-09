@@ -77,6 +77,7 @@ async function initPokemon() {
     await showNextCountPokes();
     updateAmountPokesAndProgress();
     loadFavorites();
+    await renderPokeMinisAll();
 }
 
 
