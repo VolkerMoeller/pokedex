@@ -130,6 +130,7 @@ async function showNextCountPokes() {
     }
     functionRunning = false;
     updateAmountPokesAndProgress()
+    renderPokeMinisAll();
 }
 
 
