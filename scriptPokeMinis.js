@@ -20,7 +20,7 @@ async function renderPokeMinisAll() {
 function generateHTMLPokeMinisAllHeader(){
     return `
     <h1>Pokedex</h1>
-    <div id="pokeMinis"></div>
+    <div id="pokeMinis" class="pokeMinis"></div>
     `;
 }
 
