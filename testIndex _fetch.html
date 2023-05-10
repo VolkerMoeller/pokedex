@@ -8,21 +8,20 @@
     <title>fetch from server</title>
     <script>
         // i ist immer die Nummer eines Pokemons!
-        let rspCurrentPokeAsText = [];
+        let rspCurrentPokeAsJSON = [];
         let info = '';
         let nextPoke = 1;
-        let rspCurrentUrlAsText = '';
         let currentImageUrl = '';
-        let currentGermanNameUrl = '';
-        let rspCurrentGermanNameAsText = [];
-        let currentGermanNames = [];
+        let currentNamesUrl = '';
+        let rspCurrentNamesAsJSON = [];
+        let currentNames = [];
         let currentGermanName = '';
+        let count = 4;
 
 
         async function init() {
             clearContent();
-            // getAndRenderFirstFour();
-            getAndRenderFour(nextPoke);
+            getAndRender();
         }
 
 
@@ -32,33 +31,8 @@
         }
 
 
-        async function getAndRenderFirstFour() {
-            for (let i = 1; i <= 4; i++) {
-                let promises1st = [renderPokePlaces(i), getCurrentPoke(i)];
-                await Promise.all(promises1st);
-                let promises2nd = [takeInfo(i), renderPoke(i, info)];
-                await Promise.all(promises2nd);
-                await getAndRenderImage(i);
-                await getAndRenderGermanName(i);
-            }
-        }
-        
-        
-        async function getAndRenderNextFour() {
-            for (let j = 1; j <= 4; j++) {
-                let promises1st = [renderPokePlaces(nextPoke), getCurrentPoke(nextPoke)];
-                await Promise.all(promises1st);
-                let promises2nd = [takeInfo(nextPoke), renderPoke(nextPoke, info)];
-                await Promise.all(promises2nd);
-                await getAndRenderImage(nextPoke);
-                await getAndRenderGermanName(nextPoke);
-                nextPoke++;
-            }
-        }
-
-
-        async function getAndRenderFour() {
-            for (let j = 1; j <= 4; j++) {
+        async function getAndRender() {
+            for (let j = 1; j <= count; j++) {
                 let promises1st = [renderPokePlaces(nextPoke), getCurrentPoke(nextPoke)];
                 await Promise.all(promises1st);
                 let promises2nd = [takeInfo(nextPoke), renderPoke(nextPoke, info)];
@@ -77,8 +51,8 @@
 
 
         async function getAndRenderGermanName(i) {
-            takeCurrentGermanNameUrl(i);
-            await getCurrentGermanName(currentGermanNameUrl);
+            takeCurrentNamesUrl(i);
+            await getCurrentNames(currentNamesUrl);
             takeCurrentGermanName()
             renderCurrentGermanName(i, currentGermanName);
         }
@@ -86,33 +60,36 @@
 
         async function getCurrentPoke(i) {
             let url = `https://pokeapi.co/api/v2/pokemon/${i}/`;
-            let rspPoke = await fetch(url);
-            rspCurrentPokeAsText = await rspPoke.json();
-            return rspCurrentPokeAsText;
+            let response = await fetch(url);
+            let responseAsJSON = await response.json();
+            rspCurrentPokeAsJSON = responseAsJSON;
+            return rspCurrentPokeAsJSON;
         }
 
-        async function getCurrentGermanName(url) {
-            let rspPoke = await fetch(url);
-            rspCurrentGermanNameAsText = await rspPoke.json();
-            return rspCurrentGermanNameAsText;
+
+        async function getCurrentNames(url) {
+            let response = await fetch(url);
+            let responseAsJSON = await response.json();
+            rspCurrentNamesAsJSON = responseAsJSON;
+            return rspCurrentNamesAsJSON;
         }
 
 
         async function takeCurrentImageUrl() {
-            currentImageUrl = rspCurrentPokeAsText['sprites']['other']['home']['front_default'];
+            currentImageUrl = rspCurrentPokeAsJSON['sprites']['other']['home']['front_default'];
             return currentImageUrl;
         }
 
 
-        async function takeCurrentGermanNameUrl(i) {
-            currentGermanNameUrl = rspCurrentPokeAsText['species']['url'];
-            return currentGermanNameUrl;
+        async function takeCurrentNamesUrl(i) {
+            currentNamesUrl = rspCurrentPokeAsJSON['species']['url'];
+            return currentNamesUrl;
         }
 
 
         async function takeCurrentGermanName() {
-            currentGermanNames = rspCurrentGermanNameAsText['names'];
-            await searchGermanName(currentGermanNames);
+            currentNames = rspCurrentNamesAsJSON['names'];
+            await searchGermanName(currentNames);
         }
 
 
@@ -126,7 +103,7 @@
 
         function checkIfGerman(language, j) {
             if (language == 'de') {
-                currentGermanName = currentGermanNames[j]['name'];
+                currentGermanName = currentNames[j]['name'];
                 return currentGermanName;
             } else {
                 return;
@@ -134,7 +111,7 @@
         }
 
         function takeInfo(i) {
-            info = rspCurrentPokeAsText['id'];
+            info = rspCurrentPokeAsJSON['id'];
             return info;
         }
 
@@ -205,7 +182,7 @@
 
 <body onload="init()">
     Testfetch
-    <button onclick="getAndRenderFour(nextPoke)">4+</button>
+    <button onclick="getAndRender(nextPoke)">4+</button>
     <div id="allInfos"></div>
 </body>
 

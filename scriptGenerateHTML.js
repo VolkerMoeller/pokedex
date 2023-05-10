@@ -78,25 +78,3 @@ function generateHTMLPokedex(i) {
     </div> 
     `
 }
-
-
-function generateHTMLPokeMinisAllHeader() {
-    return /*html*/`
-        <h1>Pokedex</h1>
-        <div id="pokeMinis" class="pokeMinis"></div>
-    `;
-}
-
-
-function generateHTMLPokeMini(i, pokeImg, pokeName) {
-    return /*html*/`
-        <div id="pokeMini${i}" class="pokeMini">
-            <button onclick="showPokeCard(${i})">
-                <h3>${pokeName} ${i}</h3>
-                <div class="pokeMiniImg">
-                    <img src="${pokeImg}">
-                </div>  
-            </button>
-        </div>
-    `;
-}
