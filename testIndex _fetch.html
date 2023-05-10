@@ -10,7 +10,7 @@
         // i ist immer die Nummer eines Pokemons!
         let rspCurrentPokeAsText = [];
         let info = '';
-        let nextPoke = 5;
+        let nextPoke = 1;
         let rspCurrentUrlAsText = '';
         let currentImageUrl = '';
         let currentGermanNameUrl = '';
@@ -21,7 +21,8 @@
 
         async function init() {
             clearContent();
-            getAndRenderFirstFour();
+            // getAndRenderFirstFour();
+            getAndRenderFour(nextPoke);
         }
 
 
@@ -41,8 +42,8 @@
                 await getAndRenderGermanName(i);
             }
         }
-
-
+        
+        
         async function getAndRenderNextFour() {
             for (let j = 1; j <= 4; j++) {
                 let promises1st = [renderPokePlaces(nextPoke), getCurrentPoke(nextPoke)];
@@ -50,6 +51,20 @@
                 let promises2nd = [takeInfo(nextPoke), renderPoke(nextPoke, info)];
                 await Promise.all(promises2nd);
                 await getAndRenderImage(nextPoke);
+                await getAndRenderGermanName(nextPoke);
+                nextPoke++;
+            }
+        }
+
+
+        async function getAndRenderFour() {
+            for (let j = 1; j <= 4; j++) {
+                let promises1st = [renderPokePlaces(nextPoke), getCurrentPoke(nextPoke)];
+                await Promise.all(promises1st);
+                let promises2nd = [takeInfo(nextPoke), renderPoke(nextPoke, info)];
+                await Promise.all(promises2nd);
+                await getAndRenderImage(nextPoke);
+                await getAndRenderGermanName(nextPoke);
                 nextPoke++;
             }
         }
@@ -190,7 +205,7 @@
 
 <body onload="init()">
     Testfetch
-    <button onclick="getAndRenderNextFour()">4+</button>
+    <button onclick="getAndRenderFour(nextPoke)">4+</button>
     <div id="allInfos"></div>
 </body>
 
