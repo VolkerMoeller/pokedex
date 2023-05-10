@@ -8,58 +8,148 @@
     <title>fetch from server</title>
     <script>
         // i ist immer die Nummer eines Pokemons!
-        let rspPokeAsText = [];
+        let rspCurrentPokeAsText = [];
         let info = '';
-        
-        
+        let nextPoke = 5;
+        let rspCurrentUrlAsText = '';
+        let currentImageUrl = '';
+        let currentGermanNameUrl = '';
+        let rspCurrentGermanNameAsText = [];
+        let currentGermanNames = [];
+        let currentGermanName = '';
+
+
         async function init() {
-            clearInfoPlace();
-            getAndRender();
-        }
-        
-        function clearInfoPlace() {
-            document.getElementById('allInfos').innerHTML = '';
-            
+            clearContent();
+            getAndRenderFirstFour();
         }
 
-        async function getAndRender() {
-            for (let i = 1; i <= 40; i++) {
-                let promises1st = [renderPokePlace(i), getPoke(i)];
+
+        function clearContent() {
+            document.getElementById('allInfos').innerHTML = '';
+
+        }
+
+
+        async function getAndRenderFirstFour() {
+            for (let i = 1; i <= 4; i++) {
+                let promises1st = [renderPokePlaces(i), getCurrentPoke(i)];
                 await Promise.all(promises1st);
                 let promises2nd = [takeInfo(i), renderPoke(i, info)];
                 await Promise.all(promises2nd);
+                await getAndRenderImage(i);
+                await getAndRenderGermanName(i);
             }
         }
 
 
-        async function getPoke(i) {
-            let url = `https://pokeapi.co/api/v2/pokemon/${i}/`;
-            let rspPoke = await fetch(url);
-            rspPokeAsText = await rspPoke.json();
-            return rspPokeAsText;
+        async function getAndRenderNextFour() {
+            for (let j = 1; j <= 4; j++) {
+                let promises1st = [renderPokePlaces(nextPoke), getCurrentPoke(nextPoke)];
+                await Promise.all(promises1st);
+                let promises2nd = [takeInfo(nextPoke), renderPoke(nextPoke, info)];
+                await Promise.all(promises2nd);
+                await getAndRenderImage(nextPoke);
+                nextPoke++;
+            }
         }
 
 
+        async function getAndRenderImage(i) {
+            takeCurrentImageUrl();
+            renderCurrentImage(i, currentImageUrl);
+        }
+
+
+        async function getAndRenderGermanName(i) {
+            takeCurrentGermanNameUrl(i);
+            await getCurrentGermanName(currentGermanNameUrl);
+            takeCurrentGermanName()
+            renderCurrentGermanName(i, currentGermanName);
+        }
+
+
+        async function getCurrentPoke(i) {
+            let url = `https://pokeapi.co/api/v2/pokemon/${i}/`;
+            let rspPoke = await fetch(url);
+            rspCurrentPokeAsText = await rspPoke.json();
+            return rspCurrentPokeAsText;
+        }
+
+        async function getCurrentGermanName(url) {
+            let rspPoke = await fetch(url);
+            rspCurrentGermanNameAsText = await rspPoke.json();
+            return rspCurrentGermanNameAsText;
+        }
+
+
+        async function takeCurrentImageUrl() {
+            currentImageUrl = rspCurrentPokeAsText['sprites']['other']['home']['front_default'];
+            return currentImageUrl;
+        }
+
+
+        async function takeCurrentGermanNameUrl(i) {
+            currentGermanNameUrl = rspCurrentPokeAsText['species']['url'];
+            return currentGermanNameUrl;
+        }
+
+
+        async function takeCurrentGermanName() {
+            currentGermanNames = rspCurrentGermanNameAsText['names'];
+            await searchGermanName(currentGermanNames);
+        }
+
+
+        async function searchGermanName(currentGermanNames) {
+            for (let j = 0; j < currentGermanNames.length; j++) {
+                let language = currentGermanNames[j]['language']['name'];
+                checkIfGerman(language, j);
+            }
+        }
+
+
+        function checkIfGerman(language, j) {
+            if (language == 'de') {
+                currentGermanName = currentGermanNames[j]['name'];
+                return currentGermanName;
+            } else {
+                return;
+            }
+        }
+
         function takeInfo(i) {
-            info = rspPokeAsText['id'];
+            info = rspCurrentPokeAsText['id'];
             return info;
         }
 
 
-        function renderPokePlace(i) {
-            document.getElementById('allInfos').innerHTML += generateHTMLPlace(i);
+        function renderPokePlaces(i) {
+            document.getElementById('allInfos').innerHTML += generateHTMLPlaces(i);
         }
 
 
-        function generateHTMLPlace(i) {
+        function generateHTMLPlaces(i) {
             return `
-            <div id= "place${i}"></div>
+            <div id="germanName${i}"></div>
+            <div id="poke${i}"></div>
+            <div id="image${i}" class="image"></div>
             `
         }
 
 
         async function renderPoke(i, info) {
-            document.getElementById('place' + i).innerHTML += generateHTMLInfo(i, info);
+            document.getElementById('poke' + i).innerHTML += generateHTMLInfo(i, info);
+        }
+
+
+        async function renderCurrentImage(i, url) {
+            document.getElementById('image' + i).innerHTML = generateHTMLImage(url);
+        }
+
+
+        async function renderCurrentGermanName(i, currentGermanName) {
+            document.getElementById('germanName' + i).innerHTML = generateHTMLGermanName(currentGermanName);
         }
 
 
@@ -68,11 +158,39 @@
             <div>i: ${i} pokeId: ${info}</div>
             `;
         }
+
+
+        function generateHTMLImage(url) {
+            return `
+            <img src="${url}">
+            `;
+        }
+
+        function generateHTMLGermanName(currentGermanName) {
+            return `
+            <div>${currentGermanName}</div>
+            `;
+        }
+
     </script>
+
+    <style>
+        .image {
+            display: flex;
+        }
+
+        .image img {
+            display: flex;
+            width: 100px;
+
+        }
+    </style>
+
 </head>
 
-<body onload="getAndRender()">
+<body onload="init()">
     Testfetch
+    <button onclick="getAndRenderNextFour()">4+</button>
     <div id="allInfos"></div>
 </body>
 

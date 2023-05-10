@@ -1,11 +1,3 @@
-index help.html
-script help.js
 src/fonts
-mockup.png
 styleFonts.css
-indexTest.html
-pokemonTypes.png
-indexTest copy.html
-scriptTest.js
-testIndex_fetch.html
-testIndex_response.html
+mockup.png
