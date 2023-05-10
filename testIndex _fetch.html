@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch from server</title>
+    <script>
+        // i ist immer die Nummer eines Pokemons!
+        let rspPokeAsText = [];
+        let info = '';
+        
+        
+        async function init() {
+            clearInfoPlace();
+            getAndRender();
+        }
+        
+        function clearInfoPlace() {
+            document.getElementById('allInfos').innerHTML = '';
+            
+        }
+
+        async function getAndRender() {
+            for (let i = 1; i <= 40; i++) {
+                let promises1st = [renderPokePlace(i), getPoke(i)];
+                await Promise.all(promises1st);
+                let promises2nd = [takeInfo(i), renderPoke(i, info)];
+                await Promise.all(promises2nd);
+            }
+        }
+
+
+        async function getPoke(i) {
+            let url = `https://pokeapi.co/api/v2/pokemon/${i}/`;
+            let rspPoke = await fetch(url);
+            rspPokeAsText = await rspPoke.json();
+            return rspPokeAsText;
+        }
+
+
+        function takeInfo(i) {
+            info = rspPokeAsText['id'];
+            return info;
+        }
+
+
+        function renderPokePlace(i) {
+            document.getElementById('allInfos').innerHTML += generateHTMLPlace(i);
+        }
+
+
+        function generateHTMLPlace(i) {
+            return `
+            <div id= "place${i}"></div>
+            `
+        }
+
+
+        async function renderPoke(i, info) {
+            document.getElementById('place' + i).innerHTML += generateHTMLInfo(i, info);
+        }
+
+
+        function generateHTMLInfo(i, info) {
+            return `
+            <div>i: ${i} pokeId: ${info}</div>
+            `;
+        }
+    </script>
+</head>
+
+<body onload="getAndRender()">
+    Testfetch
+    <div id="allInfos"></div>
+</body>
+
+</html>

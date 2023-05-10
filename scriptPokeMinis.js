@@ -13,9 +13,9 @@ async function renderPokeMinisAll() {
     document.getElementById('pokeMinis-all').innerHTML = '';
     generateHTMLPokeMinisAllHeader();
     document.getElementById('pokeMinis-all').innerHTML = generateHTMLPokeMinisAllHeader();
-    generateHTMLPokeMini();
     for (let i = 0; i < pokes.length; i++) {
         let pokeImg = pokes[i]['pokeImg'];
-        document.getElementById('pokeMinis').innerHTML += generateHTMLPokeMini(i, pokeImg); 
+        let pokeName = pokes[i]['pokeNameGerman'][1];
+        document.getElementById('pokeMinis').innerHTML += generateHTMLPokeMini(i, pokeImg, pokeName);
     }
 }

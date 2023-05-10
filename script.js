@@ -75,9 +75,9 @@ async function initPokemon() {
         await loadAndShowSavedPokes();
     }
     await showNextCountPokes();
+    renderPokeMinisAll();
     updateAmountPokesAndProgress();
     loadFavorites();
-    await renderPokeMinisAll();
 }
 
 
@@ -129,8 +129,9 @@ async function showNextCountPokes() {
         redundancy == false;
     }
     functionRunning = false;
-    updateAmountPokesAndProgress()
+    updateAmountPokesAndProgress();
     renderPokeMinisAll();
+
 }
 
 
