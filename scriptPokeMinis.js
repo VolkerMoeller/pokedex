@@ -1,4 +1,3 @@
-let currentImageUrl = '';
 
 function backToPokeMinis() {
     document.getElementById('pokedex-all').classList.add('display-none');
@@ -11,64 +10,152 @@ function showPokeCard(i) {
     showPokeBy(i, currentPokeNr);
 }
 
-async function renderPokeMinisAll() {
+
+async function initPokeMini() {
+    // clearContentPokeMini();
+    getAndRenderPokeMini();
+}
+
+
+function clearContentPokeMini() {
     document.getElementById('pokeMinis-all').innerHTML = '';
-    generateHTMLPokeMinisAllHeader();
-    document.getElementById('pokeMinis-all').innerHTML = generateHTMLPokeMinisAllHeader();
-    for (let i = 1; i < 4; i++) {
-        renderPokeMini(i);
-        await loadCurrentPoke(i);
-        getAndRenderImage(i);
-        // let pokeImg = pokes[i]['pokeImg'];
-        // let pokeName = pokes[i]['pokeNameGerman'][1];
+
+}
+
+
+async function getAndRenderPokeMini() {
+    for (let j = 1; j <= countX; j++) {
+        let promises1st = [renderPokePlaces(nextPokeMini), getCurrentPoke(nextPokeMini)];
+        await Promise.all(promises1st);
+        let promises2nd = [takeInfo(nextPokeMini), renderPokeMini(nextPokeMini, info)];
+        await Promise.all(promises2nd);
+        await getAndRenderImage(nextPokeMini);
+        await getAndRenderGermanName(nextPokeMini);
+        nextPokeMini++;
     }
 }
 
 
-async function renderPokeMini(i) {
-    document.getElementById('pokeMinis').innerHTML += generateHTMLPokeMini(i);
-
+async function getAndRenderImage(nextPokeMini) {
+    takeCurrentImageUrl();
+    renderCurrentImage(nextPokeMini, currentImageUrl);
 }
 
-async function getAndRenderImage(i) {
-    takeCurrentImageUrl();
-    renderCurrentImage(i, currentImageUrl);
+
+async function getAndRenderGermanName(nextPokeMini) {
+    takeCurrentNamesUrl();
+    await getCurrentNames(currentNamesUrl);
+    takeCurrentGermanName()
+    renderCurrentGermanName(nextPokeMini, currentGermanName);
+}
+
+
+async function getCurrentPoke(nextPokeMini) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${nextPokeMini}/`;
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    rspCurrentPokeAsJSON = responseAsJSON;
+    return rspCurrentPokeAsJSON;
+}
+
+
+async function getCurrentNames(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    rspCurrentNamesAsJSON = responseAsJSON;
+    return rspCurrentNamesAsJSON;
 }
 
 
 async function takeCurrentImageUrl() {
-    currentImageUrl = currentPoke['sprites']['other']['home']['front_default'];
+    currentImageUrl = rspCurrentPokeAsJSON['sprites']['other']['home']['front_default'];
     return currentImageUrl;
 }
 
 
-async function renderCurrentImage(i, url) {
-    document.getElementById('miniImage' + i).innerHTML = generateHTMLImage(url);
+async function takeCurrentNamesUrl() {
+    currentNamesUrl = rspCurrentPokeAsJSON['species']['url'];
+    return currentNamesUrl;
+}
+
+
+async function takeCurrentGermanName() {
+    currentNames = rspCurrentNamesAsJSON['names'];
+    await searchGermanNameMiniPoke(currentNames);
+}
+
+
+async function searchGermanNameMiniPoke(currentGermanNames) {
+    for (let j = 0; j < currentGermanNames.length; j++) {
+        let language = currentGermanNames[j]['language']['name'];
+        checkIfGerman(language, j);
+    }
+}
+
+
+function checkIfGerman(language, j) {
+    if (language == 'de') {
+        currentGermanName = currentNames[j]['name'];
+        return currentGermanName;
+    } else {
+        return;
+    }
+}
+
+function takeInfo(nextPokeMini) {
+    info = rspCurrentPokeAsJSON['id'];
+    return info;
+}
+
+
+function renderPokePlaces(nextPokeMini) {
+    document.getElementById('pokeMinis-all').innerHTML += generateHTMLPlaces(nextPokeMini);
+}
+
+
+function generateHTMLPlaces(nextPokeMini) {
+    return `
+        <div class="mini-poke-card">
+        <button onclick="showPokeCard(${nextPokeMini})">
+            <div id="germanName${nextPokeMini}"></div>
+            <div id="pokeMini${nextPokeMini}"></div>
+           <div class="mini-poke-img-place" id="image${nextPokeMini}"></div>
+        </button>
+           </div>
+    `
+}
+
+
+async function renderPokeMini(nextPokeMini, info) {
+    document.getElementById('pokeMini' + nextPokeMini).innerHTML += generateHTMLInfo(nextPokeMini, info);
+}
+
+
+async function renderCurrentImage(nextPokeMini, url) {
+    document.getElementById('image' + nextPokeMini).innerHTML = generateHTMLImage(url);
+}
+
+
+async function renderCurrentGermanName(nextPokeMini, currentGermanName) {
+    document.getElementById('germanName' + nextPokeMini).innerHTML = generateHTMLGermanName(currentGermanName);
+}
+
+
+function generateHTMLInfo(nextPokeMini, info) {
+    return `
+            <div>i: ${nextPokeMini} pokeId: ${info}</div>
+            `;
 }
 
 
 function generateHTMLImage(url) {
-    return  /*html*/`
-    <img src="${url}">
-    `;
+    return `
+            <img src="${url}">
+            `;
 }
 
-
-function generateHTMLPokeMinisAllHeader() {
-    return /*html*/`
-        <h1>Pokedex</h1>
-        <div id="pokeMinis" class="pokeMinis"></div>
-    `;
-}
-
-
-function generateHTMLPokeMini(i) {
-    return /*html*/`
-        <div id="pokeMini${i}" class="pokeMini">
-            <button onclick="showPokeCard(${i})">
-                <div id="miniImage${i}" class="pokeMiniImg">
-                </div>  
-            </button>
-        </div>
-    `;
+function generateHTMLGermanName(currentGermanName) {
+    return `
+            <div>${currentGermanName}</div>
+            `;
 }

@@ -49,6 +49,7 @@ let beginPokeNr = 1;
 let count = 3;
 let countX = 4;
 let nextPoke = 1;
+let nextPokeMini = 1;
 let endPokeNr = beginPokeNr + count;
 let searchPokeNr = 0;
 let searchingPoke = false;
@@ -69,11 +70,18 @@ let currentEvolution = [];
 let currentGermanStartPokeName = [];
 let currentGermanEvolut1stName = [];
 let currentGermanEvolut2ndName = [];
+let rspCurrentPokeAsJSON = [];
+let info = '';
+let currentImageUrl = '';
+let currentNamesUrl = '';
+let rspCurrentNamesAsJSON = [];
+let currentNames = [];
+let currentGermanName = '';
 
 async function initPokemon() {
     clearContent();
     await showNextCountPokes();
-    renderPokeMinisAll();
+    // renderPokeMinisAll();
     updateAmountPokesAndProgress();
     loadFavorites();
 }
@@ -101,7 +109,7 @@ async function showNextCountPokes() {
     }
     functionRunning = false;
     updateAmountPokesAndProgress();
-    renderPokeMinisAll();
+    initPokeMini();
 }
 
 
