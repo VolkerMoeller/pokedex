@@ -686,6 +686,17 @@ h1 {
     width: 480px;
     overflow-x: clip;
     display: flex;
+    flex-direction: column;
+}
+
+.miniHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.miniPokes {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;

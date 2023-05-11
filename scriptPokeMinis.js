@@ -12,14 +12,35 @@ function showPokeCard(i) {
 
 
 async function initPokeMini() {
-    // clearContentPokeMini();
+    renderPokeMiniContent();
+    renderPokeMiniHeader();
     getAndRenderPokeMini();
 }
 
 
-function clearContentPokeMini() {
-    document.getElementById('pokeMinis-all').innerHTML = '';
+function renderPokeMiniContent(){
+document.getElementById('pokeMinis-all').innerHTML += generateHTMLPokeMiniContent();
+}
 
+
+function generateHTMLPokeMiniContent() {
+    return `
+        <div id="miniHeader" class="miniHeader">
+        </div>  
+        <div id="miniPokes" class="miniPokes">
+        </div>  
+    `;
+}
+
+function renderPokeMiniHeader() {
+    document.getElementById('miniHeader').innerHTML = generateHTMLPokeMiniHeader();
+}
+
+
+function generateHTMLPokeMiniHeader() {
+    return `
+        <h1>Pokemöller</h1> 
+    `;
 }
 
 
@@ -109,19 +130,19 @@ function takeInfo(nextPokeMini) {
 
 
 function renderPokePlaces(nextPokeMini) {
-    document.getElementById('pokeMinis-all').innerHTML += generateHTMLPlaces(nextPokeMini);
+    document.getElementById('miniPokes').innerHTML += generateHTMLPlaces(nextPokeMini);
 }
 
 
 function generateHTMLPlaces(nextPokeMini) {
     return `
         <div class="mini-poke-card">
-        <button onclick="showPokeCard(${nextPokeMini})">
-            <div id="germanName${nextPokeMini}"></div>
-            <div id="pokeMini${nextPokeMini}"></div>
-           <div class="mini-poke-img-place" id="image${nextPokeMini}"></div>
-        </button>
-           </div>
+            <button onclick="showPokeCard(${nextPokeMini})">
+                <div id="germanName${nextPokeMini}"></div>
+                <div id="pokeMini${nextPokeMini}"></div>
+                <div class="mini-poke-img-place" id="image${nextPokeMini}"></div>
+            </button>
+        </div>
     `
 }
 
