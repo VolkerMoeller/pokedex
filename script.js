@@ -117,6 +117,7 @@ async function getData() {
             await getCurrentData();
             await getGermanName();
             await saveDataForTopPoke();
+            await saveGeneralPokeDataToLocalStorage();
             nextPoke++;
         }
         functionRunning = false;
@@ -127,12 +128,6 @@ async function getData() {
 async function getCurrentData() {
     await getCurrentPokemonFromServer();
     await getCurrentPokemonSpeciesFromServer();
-    await saveGeneralPokeDataLocalStorage();
-}
-
-
-async function saveDataForTopPoke() {
-    await saveDataForTopPoke();
 }
 
 
@@ -163,6 +158,18 @@ function checkIfGerman(language, j) {
         return;
     }
 }
+
+
+async function saveDataForTopPoke() {
+    generalPokeData.push(
+        {
+            "pokeSlot1": currentPoke['types'][0]['type']['name'],         
+            "pokeId": currentPoke['id'],         
+            "pokeImgSrc": currentPoke['sprites']['other']['home']['front_default'],
+            "pokeGermanName": currentGermanName,
+        }
+        );
+    }
 
 
 

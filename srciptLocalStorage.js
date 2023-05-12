@@ -1,4 +1,4 @@
-async function saveGeneralPokeDataLocalStorage() {
+async function saveGeneralPokeDataToLocalStorage() {
     let generalPokeDataAsText = JSON.stringify(generalPokeData);
     localStorage.setItem('generalPokeData', generalPokeDataAsText);
 }
