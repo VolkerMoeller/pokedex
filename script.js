@@ -9,10 +9,10 @@ let pokes = [
         // "pokeWeight": [],
         // "pokeHeight": [],
         // "pokeSpecie": [],
-        "pokeFlavors": [],
-        "pokeAbilityURL": [],
-        "pokeAbilities": [],
-        "pokeAbilityFlavors": [],
+        // "pokeFlavors": [],
+        // "pokeAbilityURL": [],
+        // "pokeAbilities": [],
+        // "pokeAbilityFlavors": [],
         "pokeMoveURL": [],
         "pokeMoveName": [],
     }
@@ -28,10 +28,10 @@ let pokesLoaded = [
         // "pokeImg": [],
         // "pokeWeight": [],
         // "pokeHeight": [],
-        "pokeFlavors": [],
-        "pokeAbilities": [],
-        "pokeAbilityURL": [],
-        "pokeAbilityFlavors": [],
+        // "pokeFlavors": [],
+        // "pokeAbilities": [],
+        // "pokeAbilityURL": [],
+        // "pokeAbilityFlavors": [],
         "pokeMoveURL": [],
         "pokeMoveName": [],
     }
@@ -50,6 +50,8 @@ let generalPokeData = [
         "pokeHeight": [],
         "pokeGermanGenera": [],
         "pokeGermanGeneraText": [],
+        "pokeGermanAbilitie": [],
+        "pokeGermanAbilitieText": [],
     }
 ];
 
@@ -65,6 +67,10 @@ let currentSlot2 = '';
 let currentGermanGenera = '';
 let currentGermanGeneraEntries = [];
 let currentGermanGeneraEntrie = '';
+let currentPokeAbilities = [];
+let currentGermanAbility = '';
+let currentGermanAbilityEntries = [];
+let currentGermanAbilityEntrie = '';
 
 
 
@@ -91,7 +97,6 @@ let nextPokeNrLeft200;
 let millisec = 0;
 let currentWait = 550;
 let currentSpecie = [];
-let currentAbility = [];
 let currentIndex = '';
 let amountOfPokesToLoad = 1;
 let amountRenderdPokes = 0;
@@ -123,6 +128,7 @@ async function getData() {
         functionRunning = true;
         nextPoke = generalPokeData.length;
         for (let j = 0; j < count; j++) {
+            await getCurrentData();
             await dataToRenderTop();
             await dataToRenderCardAbout();
             await saveGeneralPokeData();
@@ -134,24 +140,25 @@ async function getData() {
 }
 
 
-
-
 async function getCurrentData() {
     await getCurrentPokemonFromServer();
     await getCurrentPokemonSpeciesFromServer();
+    await getCurrentAbilitiesFromServer();
 }
 
 
 async function dataToRenderTop() {
-    await getCurrentData();
     await takeSlot2();
     await takeCurrentGermanName();
 }
 
 
 async function dataToRenderCardAbout() {
-    await takeCurrentGermanGenera();    
-    await takeCurrentGermanGeneraText();    
+    await takeCurrentGermanGenera();
+    await takeCurrentGermanGeneraText();
+    await takeCurrentGermanAbility();
+    await takeCurrentGermanAbilityText();
+
 }
 
 
@@ -165,6 +172,19 @@ async function takeSlot2() {
 }
 
 
+async function takeCurrentGermanAbility() {
+    currentGermanAbility = currentPokeAbilities['names'][4]['name'];
+}
+
+
+async function takeCurrentGermanAbilityText() {
+    let target = 'flavor_text';
+    currentGermanAbilityEntries = currentPokeAbilities['flavor_text_entries'];
+    await searchGermanData(currentGermanAbilityEntries, target);
+    currentGermanAbilityEntrie = currentGermanData;
+}
+
+
 async function takeCurrentGermanGenera() {
     currentGermanGenera = currentPokeSpecies['genera'][4]['genus'];
 }
@@ -173,7 +193,7 @@ async function takeCurrentGermanGenera() {
 async function takeCurrentGermanGeneraText() {
     let target = 'flavor_text';
     currentGermanGeneraEntries = currentPokeSpecies['flavor_text_entries'];
-    await searchGermanData(currentGermanGeneraEntries, target);  
+    await searchGermanData(currentGermanGeneraEntries, target);
     currentGermanGeneraEntrie = currentGermanData;
 }
 
@@ -181,7 +201,7 @@ async function takeCurrentGermanGeneraText() {
 async function takeCurrentGermanName() {
     let target = 'name';
     currentNames = currentPokeSpecies['names'];
-    await searchGermanData(currentNames, target);  
+    await searchGermanData(currentNames, target);
     currentGermanName = currentGermanData;
 }
 
@@ -216,6 +236,8 @@ async function saveGeneralPokeData() {
             "pokeHeight": currentPoke['height'],
             "pokeGermanGenera": currentGermanGenera,
             "pokeGermanGeneraText": currentGermanGeneraEntrie,
+            "pokeGermanAbilitie": currentGermanAbility,
+            "pokeGermanAbilitieText": currentGermanAbilityEntrie,
         }
     );
 }

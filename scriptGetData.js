@@ -13,4 +13,14 @@ async function getCurrentPokemonSpeciesFromServer() {
     let responseAsJSON = await response.json();
     currentPokeSpecies = responseAsJSON;
     return currentPokeSpecies;
+
+}
+
+
+async function getCurrentAbilitiesFromServer() {
+    let url = currentPoke['abilities'][0]['ability']['url'];
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentPokeAbilities = responseAsJSON;
+    return currentPokeAbilities;
 }
