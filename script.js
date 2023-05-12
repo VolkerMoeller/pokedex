@@ -1,8 +1,8 @@
 let pokes = [
     {
         // "pokeId": [],
-        "pokeName": [],
-        "pokeNameGerman": [],
+        // "pokeName": [],
+        // "pokeNameGerman": [],
         // "pokeSlot1": [],
         "pokeSlot2": [],
         // "pokeImg": [],
@@ -21,8 +21,8 @@ let pokes = [
 let pokesLoaded = [
     {
         // "pokeId": [],
-        "pokeName": [],
-        "pokeNameGerman": [],
+        // "pokeName": [],
+        // "pokeNameGerman": [],
         // "pokeSlot1": [],
         "pokeSlot2": [],
         // "pokeImg": [],
@@ -45,10 +45,20 @@ let generalPokeData = [
         "pokeSlot1": [],
         "pokeId": [],
         "pokeImgSrc": [],
+        "pokeGermanName": [],
     }
 ];
+
+
 let count = 4;
 let functionRunning = false;
+let currentPokeSpecies = [];
+let currentNamesUrl = '';
+let currentNames = [];
+let currentGermanName = '';
+
+
+
 
 
 
@@ -83,27 +93,19 @@ let currentGermanEvolut2ndName = [];
 let rspCurrentPokeAsJSON = [];
 let info = '';
 let currentImageUrl = '';
-let currentNamesUrl = '';
 let rspCurrentNamesAsJSON = [];
-let currentNames = [];
-let currentGermanName = '';
 let miniSlot1 = '';
-
-
-function clearContent() {
-    document.getElementById('pokedex-all').innerHTML = '';
-}
 
 
 async function initPokemon() {
     clearContent();
-    await loadGeneralPokeDataLocalStorage()
+    await loadGeneralPokeDataLocalStorage();
     await getData();
+}
 
 
-    // X await showNextCountPokes();
-    // X updateAmountPokesAndProgress();
-    // X loadFavorites();
+function clearContent() {
+    document.getElementById('pokedex-all').innerHTML = '';
 }
 
 
@@ -113,7 +115,8 @@ async function getData() {
         nextPoke = generalPokeData.length;
         for (let j = 0; j < count; j++) {
             await getCurrentData();
-            await dataForTopPoke();
+            await getGermanName();
+            await saveDataForTopPoke();
             nextPoke++;
         }
         functionRunning = false;
@@ -123,15 +126,43 @@ async function getData() {
 
 async function getCurrentData() {
     await getCurrentPokemonFromServer();
-}
-
-
-async function dataForTopPoke() {
-    await saveDataForTopPoke();
+    await getCurrentPokemonSpeciesFromServer();
     await saveGeneralPokeDataLocalStorage();
 }
 
 
+async function saveDataForTopPoke() {
+    await saveDataForTopPoke();
+}
+
+
+async function getGermanName() {
+    takeCurrentGermanName();
+}
+
+
+async function takeCurrentGermanName() {
+    currentNames = currentPokeSpecies['names'];
+    await searchGermanName();
+}
+
+
+async function searchGermanName() {
+    for (let j = 0; j < currentNames.length; j++) {
+        let language = currentNames[j]['language']['name'];
+        checkIfGerman(language, j);
+    }
+}
+
+
+function checkIfGerman(language, j) {
+    if (language == 'de') {
+        currentGermanName = currentNames[j]['name'];
+        return currentGermanName;
+    } else {
+        return;
+    }
+}
 
 
 

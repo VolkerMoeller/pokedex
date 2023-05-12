@@ -13,6 +13,10 @@ async function loadGeneralPokeDataLocalStorage() {
 
 
 
+
+
+
+
 function saveFavorites() {
     let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
     localStorage.setItem('pokesFavorites', pokesFavoritesAsText);

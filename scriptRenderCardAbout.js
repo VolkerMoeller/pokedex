@@ -35,12 +35,12 @@ async function searchGermanText(pokeFlavor, i) {
 }
 
 
-async function searchGermanName(pokeNamesGerman, i) {
-    for (let j = 0; j < pokeNamesGerman.length; j++) {
-        let language = pokeNamesGerman[j]['language']['name'];
-        await pushGermanName(language, i, j, pokeNamesGerman);
-    }
-}
+// async function searchGermanName(pokeNamesGerman, i) {
+//     for (let j = 0; j < pokeNamesGerman.length; j++) {
+//         let language = pokeNamesGerman[j]['language']['name'];
+//         await pushGermanName(language, i, j, pokeNamesGerman);
+//     }
+// }
 
 
 async function pushFlavor(language, i, j, pokeFlavor) {

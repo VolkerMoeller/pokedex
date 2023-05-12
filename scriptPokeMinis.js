@@ -80,12 +80,12 @@ function takeCurrentSlot1() {
 }
 
 
-async function getAndRenderGermanName(nextPokeMini) {
-    takeCurrentNamesUrl();
-    await getCurrentNames(currentNamesUrl);
-    takeCurrentGermanName()
-    renderCurrentGermanName(nextPokeMini, currentGermanName);
-}
+// async function getAndRenderGermanName(nextPokeMini) {
+//     takeCurrentNamesUrl();
+//     await getCurrentNames(currentNamesUrl);
+//     takeCurrentGermanName()
+//     renderCurrentGermanName(nextPokeMini, currentGermanName);
+// }
 
 
 async function getCurrentPoke(nextPokeMini) {
@@ -111,16 +111,16 @@ async function takeCurrentImageUrl() {
 }
 
 
-async function takeCurrentNamesUrl() {
-    currentNamesUrl = rspCurrentPokeAsJSON['species']['url'];
-    return currentNamesUrl;
-}
+// async function takeCurrentNamesUrl() {
+//     currentNamesUrl = rspCurrentPokeAsJSON['species']['url'];
+//     return currentNamesUrl;
+// }
 
 
-async function takeCurrentGermanName() {
-    currentNames = rspCurrentNamesAsJSON['names'];
-    await searchGermanNameMiniPoke(currentNames);
-}
+// async function takeCurrentGermanName() {
+//     currentNames = rspCurrentNamesAsJSON['names'];
+//     await searchGermanNameMiniPoke(currentNames);
+// }
 
 
 async function searchGermanNameMiniPoke(currentGermanNames) {
