@@ -1,15 +1,17 @@
+async function loadGeneralPokeDataFromLocalStorage() {
+    let generalPokeDataAsText = localStorage.getItem('generalPokeData');
+    if (generalPokeDataAsText) {
+        generalPokeData = JSON.parse(generalPokeDataAsText);
+    }
+}
+
+
 async function saveGeneralPokeDataToLocalStorage() {
     let generalPokeDataAsText = JSON.stringify(generalPokeData);
     localStorage.setItem('generalPokeData', generalPokeDataAsText);
 }
 
 
-async function loadGeneralPokeDataLocalStorage() {
-    let generalPokeDataAsText = localStorage.getItem('generalPokeData');
-    if (generalPokeDataAsText) {
-        generalPokeData = JSON.parse(generalPokeDataAsText);
-    }
-}
 
 
 

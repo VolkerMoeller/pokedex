@@ -4,7 +4,7 @@ let pokes = [
         // "pokeName": [],
         // "pokeNameGerman": [],
         // "pokeSlot1": [],
-        "pokeSlot2": [],
+        // "pokeSlot2": [],
         // "pokeImg": [],
         "pokeWeight": [],
         "pokeHeight": [],
@@ -24,7 +24,7 @@ let pokesLoaded = [
         // "pokeName": [],
         // "pokeNameGerman": [],
         // "pokeSlot1": [],
-        "pokeSlot2": [],
+        // "pokeSlot2": [],
         // "pokeImg": [],
         "pokeWeight": [],
         "pokeHeight": [],
@@ -43,6 +43,7 @@ let currentPoke = [];
 let generalPokeData = [
     {
         "pokeSlot1": [],
+        "pokeSlot2": [],
         "pokeId": [],
         "pokeImgSrc": [],
         "pokeGermanName": [],
@@ -56,6 +57,7 @@ let currentPokeSpecies = [];
 let currentNamesUrl = '';
 let currentNames = [];
 let currentGermanName = '';
+let currentSlot2 = '';
 
 
 
@@ -99,7 +101,7 @@ let miniSlot1 = '';
 
 async function initPokemon() {
     clearContent();
-    await loadGeneralPokeDataLocalStorage();
+    await loadGeneralPokeDataFromLocalStorage();
     await getData();
 }
 
@@ -115,6 +117,7 @@ async function getData() {
         nextPoke = generalPokeData.length;
         for (let j = 0; j < count; j++) {
             await getCurrentData();
+            await takeSlot2();
             await getGermanName();
             await saveDataForTopPoke();
             await saveGeneralPokeDataToLocalStorage();
@@ -129,6 +132,17 @@ async function getCurrentData() {
     await getCurrentPokemonFromServer();
     await getCurrentPokemonSpeciesFromServer();
 }
+
+
+async function takeSlot2() {
+    if (!currentPoke['types'][1]) {
+        currentSlot2 = '';
+    } else {
+        currentSlot2 = currentPoke['types'][1]['type']['name'];
+        return currentSlot2;
+    }
+}
+
 
 
 async function getGermanName() {
@@ -167,6 +181,7 @@ async function saveDataForTopPoke() {
             "pokeId": currentPoke['id'],         
             "pokeImgSrc": currentPoke['sprites']['other']['home']['front_default'],
             "pokeGermanName": currentGermanName,
+            "pokeSlot2": currentSlot2,
         }
         );
     }
