@@ -5,7 +5,7 @@ let pokes = [
         "pokeNameGerman": [],
         // "pokeSlot1": [],
         "pokeSlot2": [],
-        "pokeImg": [],
+        // "pokeImg": [],
         "pokeWeight": [],
         "pokeHeight": [],
         "pokeSpecie": [],
@@ -25,7 +25,7 @@ let pokesLoaded = [
         "pokeNameGerman": [],
         // "pokeSlot1": [],
         "pokeSlot2": [],
-        "pokeImg": [],
+        // "pokeImg": [],
         "pokeWeight": [],
         "pokeHeight": [],
         "pokeSpecie": [],
@@ -48,12 +48,12 @@ let generalPokeData = [
     }
 ];
 let count = 4;
+let functionRunning = false;
 
 
 
 
 let pokesFavorites = [];
-let functionRunning = false;
 let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
@@ -108,11 +108,15 @@ async function initPokemon() {
 
 
 async function getData() {
-    nextPoke = generalPokeData.length;
-    for (let j = 0; j < count; j++) {
-        await getCurrentData();
-        await dataForTopPoke();
-        nextPoke++;
+    if (functionRunning == false) {
+        functionRunning = true;
+        nextPoke = generalPokeData.length;
+        for (let j = 0; j < count; j++) {
+            await getCurrentData();
+            await dataForTopPoke();
+            nextPoke++;
+        }
+        functionRunning = false;
     }
 }
 
