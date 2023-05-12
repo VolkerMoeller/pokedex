@@ -367,6 +367,7 @@ h1 {
     width: 32px;
     margin-top: 8px;
     margin-bottom: 8px;
+    border-radius: 5px;
 }
 
 .btn-fav {
@@ -701,11 +702,24 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 8px;
+    color: white;
 }
 
 .mini-poke-card {
-
+    border-radius: 15px;
+    padding: 8px;
     display: flex;
+}
+
+.mini-poke-card div {
+    color: white;
+    font-size: 16px;
+}
+
+.mini-poke-card button {
+    border: none;
+    cursor: pointer;
+    background: none;
 }
 
 .mini-poke-img-place {

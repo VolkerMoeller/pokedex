@@ -1,9 +1,9 @@
 let pokes = [
     {
-        // "pokeId": [],
+        "pokeId": [],
         "pokeName": [],
         "pokeNameGerman": [],
-        // "pokeSlot1": [],
+        "pokeSlot1": [],
         "pokeSlot2": [],
         "pokeImg": [],
         "pokeWeight": [],
@@ -20,10 +20,10 @@ let pokes = [
 
 let pokesLoaded = [
     {
-        // "pokeId": [],
+        "pokeId": [],
         "pokeName": [],
         "pokeNameGerman": [],
-        // "pokeSlot1": [],
+        "pokeSlot1": [],
         "pokeSlot2": [],
         "pokeImg": [],
         "pokeWeight": [],
@@ -38,27 +38,17 @@ let pokesLoaded = [
     }
 ];
 
-let nextPoke = 1;
-let currentPoke = [];
-let generalPokeData = [
-    {
-        "pokeSlot1": [],
-        "pokeId": [],
-        "pokeImgSrc": [],
-    }
-];
-let count = 4;
-
-
-
-
 let pokesFavorites = [];
+
 let functionRunning = false;
+let currentPoke = [];
 let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
 let beginPokeNr = 1;
-// let count = 3;
+let count = 3;
+let countX = 4;
+let nextPoke = 1;
 let nextPokeMini = 1;
 let endPokeNr = beginPokeNr + count;
 let searchPokeNr = 0;
@@ -90,78 +80,16 @@ let currentGermanName = '';
 let miniSlot1 = '';
 
 
-function clearContent() {
-    document.getElementById('pokedex-all').innerHTML = '';
-}
-
-
 async function initPokemon() {
-    clearContent();
-    await loadGeneralPokeDataLocalStorage()
-    await getData();
-
-
-    // X await showNextCountPokes();
-    // X updateAmountPokesAndProgress();
-    // X loadFavorites();
-}
-
-
-async function getData() {
-    nextPoke = generalPokeData.length;
-    for (let j = 0; j < count; j++) {
-        await getCurrentData();
-        await dataForTopPoke();
-        nextPoke++;
+    document.getElementById('pokedex-all').innerHTML = '';
+    await load();
+    if (pokes.length > 1) {
+        await loadAndShowSavedPokes();
     }
-}
-
-
-async function getCurrentData() {
-    await getCurrentPokemonFromServer();
-}
-
-
-async function dataForTopPoke() {
-    await saveDataForTopPoke();
-    await saveGeneralPokeDataLocalStorage();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function showNextCountPokes() {
-    if (!functionRunning) {
-        functionRunning = true;
-        await getNextCountPokes();
-        await sortPokesLoaded();
-        checkRedundancy();
-        if (redundancy == true) {
-            resetPokesLoaded();
-            return;
-        } else {
-            let promises = [pushPokesLoadedToPokes(), resetPokesLoaded(), renderPokes(), updateParam(), showCurrentPoke(currentPokeNr)];
-            await Promise.all(promises);
-        }
-        amountLoadedPokes = pokes.length - 1;
-        redundancy == false;
-    }
+    await showNextCountPokes();
+    // renderPokeMinisAll();
     updateAmountPokesAndProgress();
-    functionRunning = false;
-    // initPokeMini();
+    loadFavorites();
 }
 
 
@@ -196,6 +124,26 @@ async function promise(func) {
 }
 
 
+async function showNextCountPokes() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await getNextCountPokes();
+        await sortPokesLoaded();
+        await checkRedundancy();
+        if (redundancy == true) {
+            await resetPokesLoaded();
+            return;
+        } else {
+            let promises = [pushPokesLoadedToPokes(), save(), resetPokesLoaded(), renderPokes(), updateParam(), showCurrentPoke(currentPokeNr)];
+            await Promise.all(promises);
+        }
+        amountLoadedPokes = pokes.length - 1;
+        redundancy == false;
+    }
+    updateAmountPokesAndProgress();
+    functionRunning = false;
+    initPokeMini();
+}
 
 
 async function promiseWait(currentWait) {
@@ -215,10 +163,9 @@ function renderPokes() {
 
 
 async function getNextCountPokes() {
-    for (let j = 1; j <= countX; j++) {
-        await loadCurrentPoke(nextPoke);
-        addToPokesLoaded(nextPoke);
-        nextPoke++;
+    for (let i = beginPokeNr; i <= endPokeNr; i++) {
+        await loadCurrentPoke(i);
+        addToPokesLoaded();
     }
 }
 
@@ -319,7 +266,7 @@ async function loadGermanEvolut2ndName(url) {
 }
 
 
-function checkRedundancy() {
+async function checkRedundancy() {
     let startValue = pokes.length - 1;
     let reference = startValue + pokesLoaded.length;
     let lastPokeIdOfLoaded = pokesLoaded[pokesLoaded.length - 1]['pokeId'][0];
@@ -331,7 +278,7 @@ function checkRedundancy() {
 }
 
 
-function resetPokesLoaded() {
+async function resetPokesLoaded() {
     pokesLoaded = [
         {
             "pokeId": [],

@@ -46,8 +46,8 @@ function generateHTMLPokedex(i) {
                 <div id="pokedex-slots${i}" class="pokedex-slots">
                 </div>
                 <div class="favorite">
-                    <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img src="./img/favorite_FILL0.png"></button></div>
-                    <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img src="./img/favorite_FILL1.png"></button></div>
+                    <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>
+                    <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill1${i}" src="./img/favorite_FILL1.png"></button></div>
                 </div>
             </div>
         </div>

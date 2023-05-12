@@ -1,4 +1,3 @@
-
 function backToPokeMinis() {
     document.getElementById('pokedex-all').classList.add('display-none');
     document.getElementById('overlay').classList.add('display-none');
@@ -12,14 +11,18 @@ function showPokeCard(i) {
 
 
 async function initPokeMini() {
-    renderPokeMiniContent();
-    renderPokeMiniHeader();
-    getAndRenderPokeMini();
+    if (!functionRunning) {
+        functionRunning = true;
+        renderPokeMiniContent();
+        renderPokeMiniHeader();
+        getAndRenderPokeMini();
+        functionRunning = false;
+    }
 }
 
 
-function renderPokeMiniContent(){
-document.getElementById('pokeMinis-all').innerHTML += generateHTMLPokeMiniContent();
+function renderPokeMiniContent() {
+    document.getElementById('pokeMinis-all').innerHTML += generateHTMLPokeMiniContent();
 }
 
 
@@ -48,7 +51,7 @@ async function getAndRenderPokeMini() {
     for (let j = 1; j <= countX; j++) {
         let promises1st = [renderPokePlaces(nextPokeMini), getCurrentPoke(nextPokeMini)];
         await Promise.all(promises1st);
-        let promises2nd = [takeInfo(nextPokeMini), renderPokeMini(nextPokeMini, info)];
+        let promises2nd = [takepokeMiniId(nextPokeMini), renderPokeMini(nextPokeMini)];
         await Promise.all(promises2nd);
         await getAndRenderImage(nextPokeMini);
         await getAndRenderGermanName(nextPokeMini);
@@ -60,6 +63,20 @@ async function getAndRenderPokeMini() {
 async function getAndRenderImage(nextPokeMini) {
     takeCurrentImageUrl();
     renderCurrentImage(nextPokeMini, currentImageUrl);
+    renderBackground(nextPokeMini);
+}
+
+
+function renderBackground(nextPokeMini) {
+    takeCurrentSlot1();
+    let bgnSlotType = 'bgn-slot-type-' + miniSlot1;
+    let bgnType = 'bgn-type-' + miniSlot1;
+    document.getElementById('miniPokeCard' + nextPokeMini).classList.add(`${bgnType}`);
+}
+
+function takeCurrentSlot1() {
+    miniSlot1 = rspCurrentPokeAsJSON['types'][0]['type']['name'];
+    return miniSlot1;
 }
 
 
@@ -123,9 +140,9 @@ function checkIfGerman(language, j) {
     }
 }
 
-function takeInfo(nextPokeMini) {
-    info = rspCurrentPokeAsJSON['id'];
-    return info;
+function takepokeMiniId(nextPokeMini) {
+    pokeMiniId = rspCurrentPokeAsJSON['id'];
+    return pokeMiniId;
 }
 
 
@@ -136,19 +153,20 @@ function renderPokePlaces(nextPokeMini) {
 
 function generateHTMLPlaces(nextPokeMini) {
     return `
-        <div class="mini-poke-card">
+        <div id="miniPokeCard${nextPokeMini}"class="mini-poke-card">
             <button onclick="showPokeCard(${nextPokeMini})">
                 <div id="germanName${nextPokeMini}"></div>
                 <div id="pokeMini${nextPokeMini}"></div>
                 <div class="mini-poke-img-place" id="image${nextPokeMini}"></div>
-            </button>
-        </div>
-    `
+                </button>
+                </div>
+                `
 }
 
 
-async function renderPokeMini(nextPokeMini, info) {
-    document.getElementById('pokeMini' + nextPokeMini).innerHTML += generateHTMLInfo(nextPokeMini, info);
+async function renderPokeMini(nextPokeMini) {
+    let formatedPokeMiniId = format3LeftHandZeros(nextPokeMini);
+    document.getElementById('pokeMini' + nextPokeMini).innerHTML += generateHTMLpokeMiniId(formatedPokeMiniId);
 }
 
 
@@ -162,9 +180,9 @@ async function renderCurrentGermanName(nextPokeMini, currentGermanName) {
 }
 
 
-function generateHTMLInfo(nextPokeMini, info) {
+function generateHTMLpokeMiniId(pokeMiniId) {
     return `
-            <div>i: ${nextPokeMini} pokeId: ${info}</div>
+            <div># ${pokeMiniId}</div>
             `;
 }
 
