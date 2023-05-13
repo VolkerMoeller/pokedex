@@ -1,7 +1,7 @@
 async function renderPokeCardAbout(i) {
     await loadCurrentSpecie(i);
     let pokeGenera = currentSpecie['genera'][4]['genus'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b><br>${pokeGenera}</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
     // and German-Name on top
     let pokeNamesGerman = currentSpecie['names'];
     await searchGermanName(pokeNamesGerman, i);
@@ -13,13 +13,13 @@ async function renderPokeCardAbout(i) {
     let pokeFlavor1st = pokes[i]['pokeFlavors'][1];
     document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor1st}</div>`;
     let pokeWeight = pokes[i]['pokeWeight'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b><br>${pokeWeight} Poke-Einheiten</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
     let pokeHeight = pokes[i]['pokeHeight'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b><br>${pokeHeight} Poke-Einheiten</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
 
     await loadCurrentAbility(i);
     let pokeAbility = currentAbility['names'][4]['name'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b><br>${pokeAbility}</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${pokeAbility}</div>`;
     let pokeAbilityFlavor = currentAbility['flavor_text_entries'];
     searchGermanTextAbilityFlavor(pokeAbilityFlavor, i);
     let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][1];
@@ -35,12 +35,12 @@ async function searchGermanText(pokeFlavor, i) {
 }
 
 
-// async function searchGermanName(pokeNamesGerman, i) {
-//     for (let j = 0; j < pokeNamesGerman.length; j++) {
-//         let language = pokeNamesGerman[j]['language']['name'];
-//         await pushGermanName(language, i, j, pokeNamesGerman);
-//     }
-// }
+async function searchGermanName(pokeNamesGerman, i) {
+    for (let j = 0; j < pokeNamesGerman.length; j++) {
+        let language = pokeNamesGerman[j]['language']['name'];
+        await pushGermanName(language, i, j, pokeNamesGerman);
+    }
+}
 
 
 async function pushFlavor(language, i, j, pokeFlavor) {

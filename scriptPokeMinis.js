@@ -1,4 +1,5 @@
 function backToPokeMinis() {
+    document.getElementById('pokedexMinis-all').classList.remove('display-none');
     document.getElementById('pokedex-all').classList.add('display-none');
     document.getElementById('overlay').classList.add('display-none');
 }
@@ -22,7 +23,7 @@ async function initPokeMini() {
 
 
 function renderPokeMiniContent() {
-    document.getElementById('pokeMinis-all').innerHTML += generateHTMLPokeMiniContent();
+    document.getElementById('pokedexMinis-all').innerHTML += generateHTMLPokeMiniContent();
 }
 
 
@@ -48,7 +49,7 @@ function generateHTMLPokeMiniHeader() {
 
 
 async function getAndRenderPokeMini() {
-    for (let j = 1; j <= countX; j++) {
+    for (let j = 1; j <=countX; j++) {
         let promises1st = [renderPokePlaces(nextPokeMini), getCurrentPoke(nextPokeMini)];
         await Promise.all(promises1st);
         let promises2nd = [takepokeMiniId(nextPokeMini), renderPokeMini(nextPokeMini)];
@@ -80,12 +81,12 @@ function takeCurrentSlot1() {
 }
 
 
-// async function getAndRenderGermanName(nextPokeMini) {
-//     takeCurrentNamesUrl();
-//     await getCurrentNames(currentNamesUrl);
-//     takeCurrentGermanName()
-//     renderCurrentGermanName(nextPokeMini, currentGermanName);
-// }
+async function getAndRenderGermanName(nextPokeMini) {
+    takeCurrentNamesUrl();
+    await getCurrentNames(currentNamesUrl);
+    takeCurrentGermanName()
+    renderCurrentGermanName(nextPokeMini, currentGermanName);
+}
 
 
 async function getCurrentPoke(nextPokeMini) {
@@ -111,16 +112,16 @@ async function takeCurrentImageUrl() {
 }
 
 
-// async function takeCurrentNamesUrl() {
-//     currentNamesUrl = rspCurrentPokeAsJSON['species']['url'];
-//     return currentNamesUrl;
-// }
+async function takeCurrentNamesUrl() {
+    currentNamesUrl = rspCurrentPokeAsJSON['species']['url'];
+    return currentNamesUrl;
+}
 
 
-// async function takeCurrentGermanName() {
-//     currentNames = rspCurrentNamesAsJSON['names'];
-//     await searchGermanNameMiniPoke(currentNames);
-// }
+async function takeCurrentGermanName() {
+    currentNames = rspCurrentNamesAsJSON['names'];
+    await searchGermanNameMiniPoke(currentNames);
+}
 
 
 async function searchGermanNameMiniPoke(currentGermanNames) {

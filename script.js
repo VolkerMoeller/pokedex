@@ -1,18 +1,18 @@
 let pokes = [
     {
-        // "pokeId": [],
-        // "pokeName": [],
-        // "pokeNameGerman": [],
-        // "pokeSlot1": [],
-        // "pokeSlot2": [],
-        // "pokeImg": [],
-        // "pokeWeight": [],
-        // "pokeHeight": [],
-        // "pokeSpecie": [],
-        // "pokeFlavors": [],
-        // "pokeAbilityURL": [],
-        // "pokeAbilities": [],
-        // "pokeAbilityFlavors": [],
+        "pokeId": [],
+        "pokeName": [],
+        "pokeNameGerman": [],
+        "pokeSlot1": [],
+        "pokeSlot2": [],
+        "pokeImg": [],
+        "pokeWeight": [],
+        "pokeHeight": [],
+        "pokeSpecie": [],
+        "pokeFlavors": [],
+        "pokeAbilityURL": [],
+        "pokeAbilities": [],
+        "pokeAbilityFlavors": [],
         "pokeMoveURL": [],
         "pokeMoveName": [],
     }
@@ -20,71 +20,34 @@ let pokes = [
 
 let pokesLoaded = [
     {
-        // "pokeId": [],
-        // "pokeName": [],
-        // "pokeNameGerman": [],
-        // "pokeSlot1": [],
-        // "pokeSlot2": [],
-        // "pokeImg": [],
-        // "pokeWeight": [],
-        // "pokeHeight": [],
-        // "pokeFlavors": [],
-        // "pokeAbilities": [],
-        // "pokeAbilityURL": [],
-        // "pokeAbilityFlavors": [],
+        "pokeId": [],
+        "pokeName": [],
+        "pokeNameGerman": [],
+        "pokeSlot1": [],
+        "pokeSlot2": [],
+        "pokeImg": [],
+        "pokeWeight": [],
+        "pokeHeight": [],
+        "pokeSpecie": [],
+        "pokeFlavors": [],
+        "pokeAbilities": [],
+        "pokeAbilityURL": [],
+        "pokeAbilityFlavors": [],
         "pokeMoveURL": [],
         "pokeMoveName": [],
     }
 ];
 
-let nextPoke = 1;
-let currentPoke = [];
-let generalPokeData = [
-    {
-        "pokeSlot1": [],
-        "pokeSlot2": [],
-        "pokeId": [],
-        "pokeImgSrc": [],
-        "pokeGermanName": [],
-        "pokeWeight": [],
-        "pokeHeight": [],
-        "pokeGermanGenera": [],
-        "pokeGermanGeneraText": [],
-        "pokeGermanAbilitie": [],
-        "pokeGermanAbilitieText": [],
-    }
-];
-
-
-let count = 4;
-let functionRunning = false;
-let currentPokeSpecies = [];
-let currentNamesUrl = '';
-let currentNames = [];
-let currentGermanData = '';
-let currentGermanName = '';
-let currentSlot2 = '';
-let currentGermanGenera = '';
-let currentGermanGeneraEntries = [];
-let currentGermanGeneraEntrie = '';
-let currentPokeAbilities = [];
-let currentGermanAbility = '';
-let currentGermanAbilityEntries = [];
-let currentGermanAbilityEntrie = '';
-
-
-
-
-
-
-
 let pokesFavorites = [];
+
+let functionRunning = false;
+let currentPoke = [];
 let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
 let beginPokeNr = 1;
-// let count = 3;
-let nextPokeMini = 1;
+let count =  3;
+let countX =  4;
 let endPokeNr = beginPokeNr + count;
 let searchPokeNr = 0;
 let searchingPoke = false;
@@ -97,184 +60,22 @@ let nextPokeNrLeft200;
 let millisec = 0;
 let currentWait = 550;
 let currentSpecie = [];
+let currentAbility = [];
 let currentIndex = '';
 let amountOfPokesToLoad = 1;
 let amountRenderdPokes = 0;
-let currentEvolution = [];
-let currentGermanStartPokeName = [];
-let currentGermanEvolut1stName = [];
-let currentGermanEvolut2ndName = [];
-let rspCurrentPokeAsJSON = [];
-let info = '';
-let currentImageUrl = '';
-let rspCurrentNamesAsJSON = [];
-let miniSlot1 = '';
+let nextPokeMini = 1;
 
 
 async function initPokemon() {
-    clearContent();
-    await loadGeneralPokeDataFromLocalStorage();
-    await getData();
-}
-
-
-function clearContent() {
     document.getElementById('pokedex-all').innerHTML = '';
-}
-
-
-async function getData() {
-    if (functionRunning == false) {
-        functionRunning = true;
-        nextPoke = generalPokeData.length;
-        for (let j = 0; j < count; j++) {
-            await getCurrentData();
-            await dataToRenderTop();
-            await dataToRenderCardAbout();
-            await saveGeneralPokeData();
-            await saveGeneralPokeDataToLocalStorage();
-            nextPoke++;
-        }
-        functionRunning = false;
+    await load();
+    if (pokes.length > 1) {
+        await loadAndShowSavedPokes();
     }
-}
-
-
-async function getCurrentData() {
-    await getCurrentPokemonFromServer();
-    await getCurrentPokemonSpeciesFromServer();
-    await getCurrentAbilitiesFromServer();
-}
-
-
-async function dataToRenderTop() {
-    await takeSlot2();
-    await takeCurrentGermanName();
-}
-
-
-async function dataToRenderCardAbout() {
-    await takeCurrentGermanGenera();
-    await takeCurrentGermanGeneraText();
-    await takeCurrentGermanAbility();
-    await takeCurrentGermanAbilityText();
-
-}
-
-
-async function takeSlot2() {
-    if (!currentPoke['types'][1]) {
-        currentSlot2 = '';
-    } else {
-        currentSlot2 = currentPoke['types'][1]['type']['name'];
-        return currentSlot2;
-    }
-}
-
-
-async function takeCurrentGermanAbility() {
-    currentGermanAbility = currentPokeAbilities['names'][4]['name'];
-}
-
-
-async function takeCurrentGermanAbilityText() {
-    let target = 'flavor_text';
-    currentGermanAbilityEntries = currentPokeAbilities['flavor_text_entries'];
-    await searchGermanData(currentGermanAbilityEntries, target);
-    currentGermanAbilityEntrie = currentGermanData;
-}
-
-
-async function takeCurrentGermanGenera() {
-    currentGermanGenera = currentPokeSpecies['genera'][4]['genus'];
-}
-
-
-async function takeCurrentGermanGeneraText() {
-    let target = 'flavor_text';
-    currentGermanGeneraEntries = currentPokeSpecies['flavor_text_entries'];
-    await searchGermanData(currentGermanGeneraEntries, target);
-    currentGermanGeneraEntrie = currentGermanData;
-}
-
-
-async function takeCurrentGermanName() {
-    let target = 'name';
-    currentNames = currentPokeSpecies['names'];
-    await searchGermanData(currentNames, target);
-    currentGermanName = currentGermanData;
-}
-
-
-async function searchGermanData(currentArray, target) {
-    for (let j = 0; j < currentArray.length; j++) {
-        let language = currentArray[j]['language']['name'];
-        checkIfGerman(language, j, currentArray, target);
-    }
-}
-
-
-function checkIfGerman(language, j, currentArray, target) {
-    if (language == 'de') {
-        currentGermanData = currentArray[j][target];
-        return currentGermanData;
-    } else {
-        return;
-    }
-}
-
-
-async function saveGeneralPokeData() {
-    generalPokeData.push(
-        {
-            "pokeSlot1": currentPoke['types'][0]['type']['name'],
-            "pokeId": currentPoke['id'],
-            "pokeImgSrc": currentPoke['sprites']['other']['home']['front_default'],
-            "pokeGermanName": currentGermanName,
-            "pokeSlot2": currentSlot2,
-            "pokeWeight": currentPoke['weight'],
-            "pokeHeight": currentPoke['height'],
-            "pokeGermanGenera": currentGermanGenera,
-            "pokeGermanGeneraText": currentGermanGeneraEntrie,
-            "pokeGermanAbilitie": currentGermanAbility,
-            "pokeGermanAbilitieText": currentGermanAbilityEntrie,
-        }
-    );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function showNextCountPokes() {
-    if (!functionRunning) {
-        functionRunning = true;
-        await getNextCountPokes();
-        await sortPokesLoaded();
-        checkRedundancy();
-        if (redundancy == true) {
-            resetPokesLoaded();
-            return;
-        } else {
-            let promises = [pushPokesLoadedToPokes(), resetPokesLoaded(), renderPokes(), updateParam(), showCurrentPoke(currentPokeNr)];
-            await Promise.all(promises);
-        }
-        amountLoadedPokes = pokes.length - 1;
-        redundancy == false;
-    }
+    await showNextCountPokes();
     updateAmountPokesAndProgress();
-    functionRunning = false;
-    // initPokeMini();
+    loadFavorites();
 }
 
 
@@ -309,6 +110,26 @@ async function promise(func) {
 }
 
 
+async function showNextCountPokes() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await promise(getNextCountPokes());
+        await promise(sortPokesLoaded());
+        await promise(checkRedundancy());
+        if (redundancy == true) {
+            await promise(resetPokesLoaded());
+            return;
+        } else {
+            let promises = [promise(pushPokesLoadedToPokes()), save(), promise(resetPokesLoaded()), promise(renderPokes()), promise(updateParam()), promise(showCurrentPoke(currentPokeNr))];
+            await Promise.all(promises);
+        }
+        amountLoadedPokes = pokes.length - 1;
+        redundancy == false;
+    }
+    functionRunning = false;
+    updateAmountPokesAndProgress()
+    initPokeMini();
+}
 
 
 async function promiseWait(currentWait) {
@@ -328,10 +149,9 @@ function renderPokes() {
 
 
 async function getNextCountPokes() {
-    for (let j = 1; j <= countX; j++) {
-        await loadCurrentPoke(nextPoke);
-        addToPokesLoaded(nextPoke);
-        nextPoke++;
+    for (let i = beginPokeNr; i <= endPokeNr; i++) {
+        await loadCurrentPoke(i);
+        addToPokesLoaded();
     }
 }
 
@@ -406,7 +226,6 @@ async function loadCurrentEvolution(url) {
     currentEvolution = responseAsJSON;
     return currentEvolution;
 }
-
 
 async function loadGermanStartPokeName(url) {
     let response = await fetch(url);
