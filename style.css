@@ -363,10 +363,11 @@ h1 {
 }
 
 .favorite img {
-    height: 32px;
-    width: 32px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    height: 40px;
+    width: 40px;
+    /* margin-top: 8px;
+    margin-bottom: 8px; */
+    padding: 4px;
     border-radius: 5px;
 }
 
@@ -649,7 +650,7 @@ h1 {
     /* Fixed/sticky position */
     bottom: 20px;
     /* Place the button at the bottom of the page */
-    right: 37%;
+    /* right: 37%; */
     /* Place the button 30px from the right */
     z-index: 99;
     /* Make sure it does not overlap */
@@ -703,7 +704,7 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    color: white;
+    /* color: white; */
 }
 
 .mini-poke-card {
@@ -713,7 +714,7 @@ h1 {
 }
 
 .mini-poke-card div {
-    color: white;
+    /* color: white; */
     font-size: 16px;
 }
 
@@ -721,12 +722,11 @@ h1 {
     border: none;
     cursor: pointer;
     background: none;
-    border-radius: 15px;;
+    border-radius: 10px;;
 }
 
 .mini-poke-card:hover button {
-    background-color: rgba(0, 0, 0, 0.1);
-    background-color: rgba(251, 251, 251, 0.1);
+    background-color: rgba(251, 251, 251, 0.08);
 }
 
 .mini-poke-img-place {

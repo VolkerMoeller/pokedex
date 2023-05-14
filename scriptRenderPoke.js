@@ -28,25 +28,42 @@ async function renderPokeTop(i) {
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
     }
-    if (pokeSlot1 == 'electric') {
-        document.getElementById('pokedex-name' + i).classList.add('color-black');
-        document.getElementById('pokedex-id' + i).classList.add('color-black');
-        document.getElementById('pokedex-slots' + i).classList.add('color-black');
-        document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-        document.getElementById('searchByNameLine' + i).classList.add('color-black');
-        for (let j = 1; j <= 4; j++) {
-            document.getElementById('btn-card' + j + i).classList.add('color-black');
-        }
+    if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
+        changeToBlack(i, pokeSlot1);
+        // document.getElementById('pokedex-name' + i).classList.add('color-black');
+        // document.getElementById('pokedex-id' + i).classList.add('color-black');
+        // document.getElementById('pokedex-slots' + i).classList.add('color-black');
+        // document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
+        // document.getElementById('searchByNameLine' + i).classList.add('color-black');
+        // for (let j = 1; j <= 4; j++) {
+        //     document.getElementById('btn-card' + j + i).classList.add('color-black');
+        // }
     }
-    if (pokeSlot1 == 'ice') {
-        document.getElementById('pokedex-name' + i).classList.add('color-black');
-        document.getElementById('pokedex-id' + i).classList.add('color-black');
-        document.getElementById('pokedex-slots' + i).classList.add('color-black');
-        document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-        document.getElementById('searchByNameLine' + i).classList.add('color-black');
-        for (let j = 1; j <= 4; j++) {
-            document.getElementById('btn-card' + j + i).classList.add('color-black');
-        }
+    // if (pokeSlot1 == 'ice') {
+    //     changeToBlack(i, pokeSlot1);
+        // document.getElementById('pokedex-name' + i).classList.add('color-black');
+        // document.getElementById('pokedex-id' + i).classList.add('color-black');
+        // document.getElementById('pokedex-slots' + i).classList.add('color-black');
+        // document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
+        // document.getElementById('searchByNameLine' + i).classList.add('color-black');
+        // for (let j = 1; j <= 4; j++) {
+        //     document.getElementById('btn-card' + j + i).classList.add('color-black');
+        // }
+    // }
+}
+
+
+function changeToBlack(i, pokeSlot1) {
+    let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
+    document.getElementById('pokeImgFavFill0' + i).classList.add(`${bgnSlotType}`);
+    document.getElementById('pokeImgFavFill1' + i).classList.add(`${bgnSlotType}`);
+    document.getElementById('pokedex-name' + i).classList.add('color-black');
+    document.getElementById('pokedex-id' + i).classList.add('color-black');
+    document.getElementById('pokedex-slots' + i).classList.add('color-black');
+    document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
+    document.getElementById('searchByNameLine' + i).classList.add('color-black');
+    for (let j = 1; j <= 4; j++) {
+        document.getElementById('btn-card' + j + i).classList.add('color-black');
     }
 }
 

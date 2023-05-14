@@ -14,12 +14,7 @@ function showPokeCard(i) {
 
 
 async function initPokeMini() {
-    // if (pokes) {
-    //     let end = pokes.length -1;
-    //     countX = end;
-    // };
     await renderPokeMini();
-    // countX = 4;
 }
 
 async function renderPokeMini() {
@@ -41,7 +36,7 @@ async function getAndRenderPokeMini() {
             await Promise.all(promises2nd);
             await getAndRenderImage(j);
             await getAndRenderGermanName(j);
-            // nextPokeMini++;
+            changeMiniToBlack(j);
         }
     }
     functionRunning2 = false;
@@ -56,9 +51,17 @@ async function getAndRenderImage(nextPokeMini) {
 
 function renderBackground(nextPokeMini) {
     let miniSlot1 = pokes[nextPokeMini]['pokeSlot1'];
-    let bgnSlotType = 'bgn-slot-type-' + miniSlot1;
     let bgnType = 'bgn-type-' + miniSlot1;
     document.getElementById('miniPokeCard' + nextPokeMini).classList.add(`${bgnType}`);
+}
+
+
+function changeMiniToBlack(i) {
+    let miniSlot1 = pokes[i]['pokeSlot1'][0];
+    if (miniSlot1 == 'electric' || miniSlot1 == 'ice') {
+        document.getElementById('germanName' + i).classList.add(`color-black`);
+        document.getElementById('pokeMini' + i).classList.add(`color-black`);
+    }
 }
 
 function takeCurrentSlot1() {
@@ -87,8 +90,8 @@ function generateHTMLPlaces(nextPokeMini) {
     return `
         <div id="miniPokeCard${nextPokeMini}"class="mini-poke-card">
             <button onclick="showPokeCard(${nextPokeMini})">
-                <div id="germanName${nextPokeMini}"></div>
-                <div id="pokeMini${nextPokeMini}"></div>
+                <div id="germanName${nextPokeMini}" style="color: white"></div>
+                <div id="pokeMini${nextPokeMini}" style="color: white"></div>
                 <div class="mini-poke-img-place" id="image${nextPokeMini}"></div>
                 </button>
                 </div>

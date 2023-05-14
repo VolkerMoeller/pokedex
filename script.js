@@ -80,10 +80,11 @@ async function initPokemon() {
     await load();
     if (pokes.length > 1) {
         await showSavedPokes();
+    } else {
+        await showNextCountPokes();
+        updateAmountPokesAndProgress();
+        topFunction();
     }
-    await showNextCountPokes();
-    updateAmountPokesAndProgress();
-    topFunction();
     loadFavorites();
 }
 

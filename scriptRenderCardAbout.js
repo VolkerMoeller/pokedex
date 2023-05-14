@@ -12,7 +12,7 @@ async function renderPokeCardAbout(i) {
     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
     let pokeFlavor = currentSpecie['flavor_text_entries'];
     await searchGermanText(pokeFlavor, i);
-    let pokeFlavor1st = pokes[i]['pokeFlavors'][1];
+    let pokeFlavor1st = pokes[i]['pokeFlavors'][0][0];
     document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor1st}</div>`;
     let pokeWeight = pokes[i]['pokeWeight'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
@@ -57,8 +57,8 @@ async function pushGermanName(language, i, j, pokeNamesGerman) {
 async function pushFlavor(language, i, j, pokeFlavor) {
     if (language == 'de') {
         let flavorText = pokeFlavor[j]['flavor_text'];
-        pokes[i]['pokeFlavors'] = [];
-        pokes[i]['pokeFlavors'].push(flavorText);
+        pokes[i]['pokeFlavors'][0] = [];
+        pokes[i]['pokeFlavors'][0].push(flavorText);
     }
     save();
 }

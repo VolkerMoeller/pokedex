@@ -11,7 +11,7 @@ function searchPokeByName(i) {
 
 function searchIndexOfName(searchName) {
     for (let i = 0; i < pokes.length; i++) {
-        let nameGerman = pokes[i]['pokeNameGerman'][1];
+        let nameGerman = pokes[i]['pokeNameGerman'][0];
         if (nameGerman) {
             nameGerman = nameGerman.toLowerCase();
         }
