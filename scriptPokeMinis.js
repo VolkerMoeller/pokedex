@@ -1,5 +1,4 @@
 function backToPokeMinis() {
-    // hier minis rendern
     initPokeMini();
     document.getElementById('pokedexMinis-all').classList.remove('display-none');
     document.getElementById('pokedex-all').classList.add('display-none');
@@ -23,55 +22,30 @@ async function initPokeMini() {
     // countX = 4;
 }
 
-async function renderPokeMini(){
-if (!functionRunning) {
-    functionRunning = true;
-    // await renderPokeMiniContent();
-    // await renderPokeMiniHeader();
-    await getAndRenderPokeMini();
-    functionRunning = false;
+async function renderPokeMini() {
+    if (!functionRunning) {
+        functionRunning = true;
+        await getAndRenderPokeMini();
+        functionRunning = false;
+    }
 }
-}
-
-// async function renderPokeMiniContent() {
-//     document.getElementById('pokedexMinis-all').innerHTML += generateHTMLPokeMiniContent();
-// }
-
-
-// function generateHTMLPokeMiniContent() {
-//     return `
-//         <div id="miniHeader" class="miniHeader">
-//         </div>  
-//         <div id="miniPokes" class="miniPokes">
-//         </div>  
-//     `;
-// }
-
-// async function renderPokeMiniHeader() {
-//     document.getElementById('miniHeader').innerHTML = generateHTMLPokeMiniHeader();
-// }
-
-
-// function generateHTMLPokeMiniHeader() {
-//     return `
-//         <h1>Pokemöller</h1> 
-//     `;
-// }
-
 
 async function getAndRenderPokeMini() {
-    // if (nextPokeMini < pokes.length) {
+    document.getElementById('miniPokes').innerHTML = '';
+    if (!functionRunning2) {
+        functionRunning2 = true;
         for (let j = 1; j <= pokes.length - 1; j++) {
-            let promises1st = [renderPokePlaces(nextPokeMini)];
+            let promises1st = [renderPokePlaces(j)];
             await Promise.all(promises1st);
-            let promises2nd = [takepokeMiniId(nextPokeMini), renderPokeMiniNr(nextPokeMini)];
+            let promises2nd = [takepokeMiniId(j), renderPokeMiniNr(j)];
             await Promise.all(promises2nd);
-            await getAndRenderImage(nextPokeMini);
-            await getAndRenderGermanName(nextPokeMini);
-            nextPokeMini++;
+            await getAndRenderImage(j);
+            await getAndRenderGermanName(j);
+            // nextPokeMini++;
         }
-    // } else {console.log('Bratpfanne')};
     }
+    functionRunning2 = false;
+}
 
 
 async function getAndRenderImage(nextPokeMini) {
@@ -135,7 +109,7 @@ async function renderCurrentImage(nextPokeMini) {
 
 
 async function renderCurrentGermanName(nextPokeMini) {
-    let name = pokes[nextPokeMini]['pokeNameGerman'][1];
+    let name = pokes[nextPokeMini]['pokeNameGerman'][0];
     document.getElementById('germanName' + nextPokeMini).innerHTML = generateHTMLGermanName(name);
 }
 

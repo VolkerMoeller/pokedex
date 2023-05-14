@@ -41,6 +41,7 @@ let pokesLoaded = [
 let pokesFavorites = [];
 
 let functionRunning = false;
+let functionRunning2 = false;
 let currentPoke = [];
 let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;

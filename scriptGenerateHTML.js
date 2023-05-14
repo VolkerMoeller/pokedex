@@ -3,8 +3,7 @@ function generateHTMLPokedex(i) {
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
         <div id="pokedex-top${i}" class="pokedex-top">
         <div>
-            <button onclick="" class="btn-back">
-            <!-- <button onclick="backToPokeMinis()" class="btn-back"> -->
+            <button onclick="backToPokeMinis()" class="btn-back">
                 <img src="./img/backspace.png">
             </button>
         </div>

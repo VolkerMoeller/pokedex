@@ -9,7 +9,7 @@ async function renderPokeCardAbout(i) {
     let pokeNamesGerman = currentSpecie['names'];
     await searchGermanName(pokeNamesGerman, i);
 
-    let pokeNameGerman = pokes[i]['pokeNameGerman'][1];
+    let pokeNameGerman = pokes[i]['pokeNameGerman'][0];
 
     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
     let pokeFlavor = currentSpecie['flavor_text_entries'];
