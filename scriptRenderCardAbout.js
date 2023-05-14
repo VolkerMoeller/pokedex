@@ -1,12 +1,16 @@
 // and German-Name on top
 
 async function renderPokeCardAbout(i) {
-    await loadCurrentSpecie(i);
+    // schnon vorher machen
+    // await loadCurrentSpecie(i); 
     let pokeGenera = currentSpecie['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
+
     let pokeNamesGerman = currentSpecie['names'];
     await searchGermanName(pokeNamesGerman, i);
+
     let pokeNameGerman = pokes[i]['pokeNameGerman'][1];
+
     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
     let pokeFlavor = currentSpecie['flavor_text_entries'];
     await searchGermanText(pokeFlavor, i);
@@ -22,7 +26,7 @@ async function renderPokeCardAbout(i) {
     document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${pokeAbility}</div>`;
     let pokeAbilityFlavor = currentAbility['flavor_text_entries'];
     searchGermanTextAbilityFlavor(pokeAbilityFlavor, i);
-    let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][1];
+    let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][0];
     document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor2nd}</div>`;
 }
 
@@ -43,19 +47,22 @@ async function searchGermanName(pokeNamesGerman, i) {
 }
 
 
-async function pushFlavor(language, i, j, pokeFlavor) {
+async function pushGermanName(language, i, j, pokeNamesGerman) {
     if (language == 'de') {
-        let flavorText = pokeFlavor[j]['flavor_text'];
-        pokes[i]['pokeFlavors'].push(flavorText);
+        let germanName = pokeNamesGerman[j]['name'];
+        pokes[i]['pokeNameGerman'] = [];
+        pokes[i]['pokeNameGerman'].push(germanName);
     }
 }
 
 
-async function pushGermanName(language, i, j, pokeNamesGerman) {
+async function pushFlavor(language, i, j, pokeFlavor) {
     if (language == 'de') {
-        let germanName = pokeNamesGerman[j]['name'];
-        pokes[i]['pokeNameGerman'].push(germanName);
+        let flavorText = pokeFlavor[j]['flavor_text'];
+        pokes[i]['pokeFlavors'] = [];
+        pokes[i]['pokeFlavors'].push(flavorText);
     }
+    save();
 }
 
 
@@ -70,6 +77,8 @@ async function searchGermanTextAbilityFlavor(pokeAbilityFlavor, i) {
 function pushAbilityFlavor(language, i, j, pokeAbilityFlavor) {
     if (language == 'de') {
         let flavorText = pokeAbilityFlavor[j]['flavor_text'];
+        pokes[i]['pokeAbilityFlavors'] = [];
         pokes[i]['pokeAbilityFlavors'].push(flavorText);
     }
+    save();
 }

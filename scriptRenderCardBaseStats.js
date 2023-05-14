@@ -1,9 +1,6 @@
-let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
-let baseStatId = ['pokeKpId','pokeAttackId','pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
-
-
 async function renderPokeCardBaseStats(i) {
-    await loadCurrentPoke(i);
+    //  vorher machen:
+    // await loadCurrentPoke(i);
     for (let j = 0; j < baseStatNames.length; j++) {
         let value = currentPoke['stats'][j]['base_stat'];
         let valuePerCent = perCent(value);

@@ -1,14 +1,16 @@
-function renderPoke(i) {
+async function renderPoke(i) {
     document.getElementById('pokedex-all').innerHTML += generateHTMLPokedex(i);
-    renderPokeTop(i);
-    renderPokeBottom(i);
-    stylePokeBgnTop(i);
-    renderPokeBottomNavigation(i);
+    await loadCurrentPoke(i);
+    await loadCurrentSpecie(i);
+    await renderPokeTop(i);
+    await renderPokeBottom(i);
+    await stylePokeBgnTop(i);
+    await renderPokeBottomNavigation(i);
     amountRenderdPokes = amountRenderdPokes + 1;
 }
 
 
-function renderPokeTop(i) {
+async function renderPokeTop(i) {
     let pokeId = pokes[i]['pokeId'];
     let formatPokeId = format3LeftHandZeros(pokeId);
     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
@@ -49,7 +51,7 @@ function renderPokeTop(i) {
 }
 
 
-function renderPokeBottomNavigation(i) {
+async function renderPokeBottomNavigation(i) {
     let pokeSlot1 = pokes[i]['pokeSlot1'][0];
     let bgnSlotType = 'bgn-type-' + pokeSlot1;
     let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
@@ -69,7 +71,7 @@ async function renderPokeBottom(i) {
 }
 
 
-function stylePokeBgnTop(i) {
+async function stylePokeBgnTop(i) {
     let pokeType = document.getElementById('base-type' + i).innerHTML;
     setBgnByType(pokeType, i);
 }

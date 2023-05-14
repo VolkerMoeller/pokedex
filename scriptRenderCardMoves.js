@@ -1,5 +1,4 @@
 async function renderPokeCardMoves(i) {
-    await loadCurrentPoke(i);
     for (let j = 0; j < countMoves; j++) {
     let moveURL = currentPoke['moves'][j]['move']['url'];
         await loadMoveInfo(moveURL);

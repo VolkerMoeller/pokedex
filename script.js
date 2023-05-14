@@ -46,8 +46,8 @@ let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
 let beginPokeNr = 1;
-let count =  3;
-let countX =  4;
+let count = 3;
+let countX = 4;
 let endPokeNr = beginPokeNr + count;
 let searchPokeNr = 0;
 let searchingPoke = false;
@@ -70,22 +70,24 @@ let germanText = '';
 
 let countMoves = 5;
 
+let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
+
+
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
     await load();
     if (pokes.length > 1) {
-        await loadAndShowSavedPokes();
+        await showSavedPokes();
     }
     await showNextCountPokes();
     updateAmountPokesAndProgress();
     topFunction();
     loadFavorites();
-
 }
 
 
-async function loadAndShowSavedPokes() {
-    await load();
+async function showSavedPokes() {
     setGlobalValuesBeforePromisesSavedPokes();
     let promises = [promise(resetPokesLoaded()), promise(renderPokes()), promise(updateParam()), promise(showCurrentPoke(currentPokeNr))];
     await Promise.all(promises);
@@ -118,14 +120,14 @@ async function promise(func) {
 async function showNextCountPokes() {
     if (!functionRunning) {
         functionRunning = true;
-        await promise(getNextCountPokes());
+        await getNextCountPokes();
         await promise(sortPokesLoaded());
         await promise(checkRedundancy());
         if (redundancy == true) {
             await promise(resetPokesLoaded());
             return;
         } else {
-            let promises = [promise(pushPokesLoadedToPokes()), save(), promise(resetPokesLoaded()), promise(renderPokes()), promise(updateParam()), promise(showCurrentPoke(currentPokeNr))];
+            let promises = [promise(pushPokesLoadedToPokes()), promise(resetPokesLoaded()), promise(renderPokes()), promise(updateParam()), promise(showCurrentPoke(currentPokeNr))];
             await Promise.all(promises);
         }
         amountLoadedPokes = pokes.length - 1;
@@ -134,6 +136,7 @@ async function showNextCountPokes() {
     functionRunning = false;
     updateAmountPokesAndProgress();
     topFunction();
+    save();
 }
 
 
@@ -146,7 +149,7 @@ async function promiseWait(currentWait) {
 }
 
 
-function renderPokes() {
+async function renderPokes() {
     for (let i = beginPokeNr; i <= endPokeNr; i++) {
         renderPoke(i);
     }
@@ -224,6 +227,7 @@ async function loadCurrentAbility(i) {
     return currentAbility;
 }
 
+// load CardEvolution
 
 async function loadCurrentEvolution(url) {
     let response = await fetch(url);
@@ -256,6 +260,7 @@ async function loadGermanEvolut2ndName(url) {
     return currentGermanEvolut2ndName;
 }
 
+// 
 
 function checkRedundancy() {
     let startValue = pokes.length - 1;
