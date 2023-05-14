@@ -4,6 +4,7 @@ function searchPokeByName(i) {
     searchIndexOfName(searchName);
     if (searchIndexOfName(searchName)) {
         showPokeBy(searchIndexOfName(searchName), currentPokeNr);
+        document.getElementById('search-name' + i).value = '';
     }
 }
 
@@ -52,5 +53,6 @@ async function showLastPoke() {
 
 function showByNr(i) {
     let searchId = +document.getElementById('search-nr' + i).value;
+    document.getElementById('search-nr' + i).value = '';
     showPokeBy(searchId, i);
 }

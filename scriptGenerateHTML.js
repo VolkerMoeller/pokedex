@@ -63,18 +63,13 @@ function generateHTMLPokedex(i) {
                 <button onclick="showCurrentCardById('card3${i}', 'btn-card3${i}')" id="btn-card3${i}">Evolution</button>
             </div>
             <div onmouseover="hoverNavigationOver(4, ${i})" onmouseout="hoverNavigationOut(4, ${i})">
-                <button onclick="showCurrentCardById('card4${i}', 'btn-card4${i}')" id="btn-card4${i}">Moves</button>
+                <button onclick="showCurrentCardById('card4${i}', 'btn-card4${i}')" id="btn-card4${i}">5 Moves</button>
             </div>
         </div>
-        <div id="card1${i}" class="cards">
-        </div>
-        <div id="card2${i}" class="cards display-none">
-        </div>
-        <div id="card3${i}" class="cards display-none">
-        </div>
-        <div id="card4${i}" class="cards display-none">
-        </div>
-        </div>  
+        <div id="card1${i}" class="cards"></div>
+        <div id="card2${i}" class="cards display-none"></div>
+        <div id="card3${i}" class="cards display-none"></div>
+        <div id="card4${i}" class="cards display-none"></div>
     </div> 
     `
 }

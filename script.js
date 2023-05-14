@@ -65,7 +65,10 @@ let currentIndex = '';
 let amountOfPokesToLoad = 1;
 let amountRenderdPokes = 0;
 let nextPokeMini = 1;
+let currentMoveInfo = [];
+let germanText = '';
 
+let countMoves = 5;
 
 async function initPokemon() {
     document.getElementById('pokedex-all').innerHTML = '';
@@ -75,7 +78,9 @@ async function initPokemon() {
     }
     await showNextCountPokes();
     updateAmountPokesAndProgress();
+    topFunction();
     loadFavorites();
+
 }
 
 
@@ -127,8 +132,8 @@ async function showNextCountPokes() {
         redundancy == false;
     }
     functionRunning = false;
-    updateAmountPokesAndProgress()
-    initPokeMini();
+    updateAmountPokesAndProgress();
+    topFunction();
 }
 
 
@@ -179,8 +184,8 @@ async function pushPokesLoadedToPokes() {
                 "pokeAbilityURL": [pokesLoaded[i]['pokeAbilityURL'][0]],
                 "pokeAbilityFlavors": [pokesLoaded[i]['pokeAbilityFlavors'][0]],
                 "pokeNameGerman": [pokesLoaded[i]['pokeNameGerman'][0]],
-                "pokeMoveURL": [pokesLoaded[i]['pokeMoveURL'][0]],
-                "pokeMoveName": [pokesLoaded[i]['pokeMoveName'][0]],
+                // "pokeMoveURL": [pokesLoaded[i]['pokeMoveURL'][0]],
+                // "pokeMoveName": [pokesLoaded[i]['pokeMoveName'][0]],
             }
         );
     }
@@ -226,6 +231,7 @@ async function loadCurrentEvolution(url) {
     currentEvolution = responseAsJSON;
     return currentEvolution;
 }
+
 
 async function loadGermanStartPokeName(url) {
     let response = await fetch(url);
@@ -279,8 +285,8 @@ function resetPokesLoaded() {
             "pokeAbilities": [],
             "pokeAbilityURL": [],
             "pokeAbilityFlavors": [],
-            "pokeMoveURL": [],
-            "pokeMoveName": [],
+            // "pokeMoveURL": [],
+            // "pokeMoveName": [],
         }
     ];
 }

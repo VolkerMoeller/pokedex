@@ -1,13 +1,13 @@
+// and German-Name on top
+
 async function renderPokeCardAbout(i) {
     await loadCurrentSpecie(i);
     let pokeGenera = currentSpecie['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
-    // and German-Name on top
     let pokeNamesGerman = currentSpecie['names'];
     await searchGermanName(pokeNamesGerman, i);
     let pokeNameGerman = pokes[i]['pokeNameGerman'][1];
     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
-
     let pokeFlavor = currentSpecie['flavor_text_entries'];
     await searchGermanText(pokeFlavor, i);
     let pokeFlavor1st = pokes[i]['pokeFlavors'][1];

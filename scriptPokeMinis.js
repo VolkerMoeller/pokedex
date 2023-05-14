@@ -1,4 +1,6 @@
 function backToPokeMinis() {
+    // hier minis rendern
+    initPokeMini();
     document.getElementById('pokedexMinis-all').classList.remove('display-none');
     document.getElementById('pokedex-all').classList.add('display-none');
     document.getElementById('overlay').classList.add('display-none');
@@ -8,57 +10,58 @@ function showPokeCard(i) {
     document.getElementById('pokedex-all').classList.remove('display-none');
     document.getElementById('overlay').classList.remove('display-none');
     showPokeBy(i, currentPokeNr);
+    topFunction();
 }
 
 
 async function initPokeMini() {
-    if (pokes) {
-        console.log('hurray');
-        let end = pokes.length -1;
-        countX = end;
-    };
+    // if (pokes) {
+    //     let end = pokes.length -1;
+    //     countX = end;
+    // };
     await renderPokeMini();
-    countX = 4;
+    // countX = 4;
 }
 
 async function renderPokeMini(){
 if (!functionRunning) {
     functionRunning = true;
-    await renderPokeMiniContent();
-    await renderPokeMiniHeader();
+    // await renderPokeMiniContent();
+    // await renderPokeMiniHeader();
     await getAndRenderPokeMini();
     functionRunning = false;
 }
 }
 
-async function renderPokeMiniContent() {
-    document.getElementById('pokedexMinis-all').innerHTML += generateHTMLPokeMiniContent();
-}
+// async function renderPokeMiniContent() {
+//     document.getElementById('pokedexMinis-all').innerHTML += generateHTMLPokeMiniContent();
+// }
 
 
-function generateHTMLPokeMiniContent() {
-    return `
-        <div id="miniHeader" class="miniHeader">
-        </div>  
-        <div id="miniPokes" class="miniPokes">
-        </div>  
-    `;
-}
+// function generateHTMLPokeMiniContent() {
+//     return `
+//         <div id="miniHeader" class="miniHeader">
+//         </div>  
+//         <div id="miniPokes" class="miniPokes">
+//         </div>  
+//     `;
+// }
 
-async function renderPokeMiniHeader() {
-    document.getElementById('miniHeader').innerHTML = generateHTMLPokeMiniHeader();
-}
+// async function renderPokeMiniHeader() {
+//     document.getElementById('miniHeader').innerHTML = generateHTMLPokeMiniHeader();
+// }
 
 
-function generateHTMLPokeMiniHeader() {
-    return `
-        <h1>Pokemöller</h1> 
-    `;
-}
+// function generateHTMLPokeMiniHeader() {
+//     return `
+//         <h1>Pokemöller</h1> 
+//     `;
+// }
 
 
 async function getAndRenderPokeMini() {
-        for (let j = 1; j <= countX; j++) {
+    // if (nextPokeMini < pokes.length) {
+        for (let j = 1; j <= pokes.length - 1; j++) {
             let promises1st = [renderPokePlaces(nextPokeMini)];
             await Promise.all(promises1st);
             let promises2nd = [takepokeMiniId(nextPokeMini), renderPokeMiniNr(nextPokeMini)];
@@ -67,6 +70,7 @@ async function getAndRenderPokeMini() {
             await getAndRenderGermanName(nextPokeMini);
             nextPokeMini++;
         }
+    // } else {console.log('Bratpfanne')};
     }
 
 
@@ -131,7 +135,7 @@ async function renderCurrentImage(nextPokeMini) {
 
 
 async function renderCurrentGermanName(nextPokeMini) {
-    let name = pokes[nextPokeMini]['pokeName'];
+    let name = pokes[nextPokeMini]['pokeNameGerman'][1];
     document.getElementById('germanName' + nextPokeMini).innerHTML = generateHTMLGermanName(name);
 }
 
@@ -154,3 +158,8 @@ function generateHTMLGermanName(currentGermanName) {
             <div>${currentGermanName}</div>
             `;
 }
+
+
+// function renderFavorite(){
+//     if ()
+// }

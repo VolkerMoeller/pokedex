@@ -1,13 +1,8 @@
-let currentMoveInfo = [];
-let germanText = '';
-
 async function renderPokeCardMoves(i) {
     await loadCurrentPoke(i);
-    for (let j = 0; j < currentPoke['moves'].length; j++) {
-        let moveURL = currentPoke['moves'][j]['move']['url'];
-        // console.log('i: ', i, 'j: ', j, ' ',moveURL);
+    for (let j = 0; j < countMoves; j++) {
+    let moveURL = currentPoke['moves'][j]['move']['url'];
         await loadMoveInfo(moveURL);
-        // console.log('i: ', i, 'j: ', j, ' ', currentMoveInfo);
         let moveNames = currentMoveInfo['names'];
         let moveText = currentMoveInfo['flavor_text_entries']
         await searchGermanMoveName(moveNames, moveText, i, j);
@@ -27,7 +22,6 @@ async function searchGermanMoveName(moveNames, moveText, i, j) {
     for (let k = 0; k < moveNames.length; k++) {
         let count = j + 1;
         let language = moveNames[k]['language']['name'];
-        // console.log(language, i, j, k);
         await getGermanMoveName(moveNames, language, i, j, k, count);
     }
     for (let m = 0; m < moveText.length; m++) {
