@@ -1,8 +1,6 @@
 // and German-Name on top
 
 async function renderPokeCardAbout(i) {
-    // schnon vorher machen
-    // await loadCurrentSpecie(i); 
     let pokeGenera = currentSpecie['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
 
@@ -23,7 +21,7 @@ async function renderPokeCardAbout(i) {
 
     await loadCurrentAbility(i);
     let pokeAbility = currentAbility['names'][4]['name'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${pokeAbility}</div>`;
+    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${pokeAbility}:</div>`;
     let pokeAbilityFlavor = currentAbility['flavor_text_entries'];
     searchGermanTextAbilityFlavor(pokeAbilityFlavor, i);
     let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][0];
