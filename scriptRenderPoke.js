@@ -14,24 +14,39 @@ async function renderPokeTop(i) {
     let pokeSlot1 = pokes[i]['pokeSlot1'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
-    renderPokeId(i);
-    renderPokeSlots(i, bgnSlotType, pokeSlot1);
-    renderPokeFavorite(i, bgnType);
     let pokeImg = pokes[i]['pokeImg'];
-    document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
+    renderPokeId(i);
+    renderPokeSlot1(i, bgnSlotType, pokeSlot1);
+    renderPokeSlot2(i);
+    renderPokeFavorite(i, bgnType);
+    renderPokeImage(i, pokeImg);
+    renderPokeToBlack(pokeSlot1);
+}
+
+
+function renderPokeToBlack(pokeSlot1){
+    if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
+        changeToBlack(i, pokeSlot1);
+    }
+};
+
+
+function renderPokeSlot2(i) {
     if (pokes[i]['pokeSlot2'] == 'none') {
     } else {
         let pokeSlot2 = pokes[i]['pokeSlot2'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
     }
-    if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
-        changeToBlack(i, pokeSlot1);
-    }
-}
+};
 
 
-function renderPokeSlots(i, bgnSlotType, pokeSlot1) {
+function renderPokeImage(i, pokeImg) {
+    document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
+};
+
+
+function renderPokeSlot1(i, bgnSlotType, pokeSlot1) {
     document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
 };
 
