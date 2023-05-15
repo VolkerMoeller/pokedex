@@ -11,15 +11,12 @@ async function renderPoke(i) {
 
 
 async function renderPokeTop(i) {
-    let pokeId = pokes[i]['pokeId'];
-    let formatPokeId = format3LeftHandZeros(pokeId);
-    document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
     let pokeSlot1 = pokes[i]['pokeSlot1'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
-    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
-    document.getElementById('btn-fill0' + i).classList.add(`${bgnType}`);
-    document.getElementById('btn-fill1' + i).classList.add(`${bgnType}`);
+    renderPokeId(i);
+    renderPokeSlots(i, bgnSlotType, pokeSlot1);
+    renderPokeFavorite(i, bgnType);
     let pokeImg = pokes[i]['pokeImg'];
     document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
     if (pokes[i]['pokeSlot2'] == 'none') {
@@ -30,27 +27,26 @@ async function renderPokeTop(i) {
     }
     if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
         changeToBlack(i, pokeSlot1);
-        // document.getElementById('pokedex-name' + i).classList.add('color-black');
-        // document.getElementById('pokedex-id' + i).classList.add('color-black');
-        // document.getElementById('pokedex-slots' + i).classList.add('color-black');
-        // document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-        // document.getElementById('searchByNameLine' + i).classList.add('color-black');
-        // for (let j = 1; j <= 4; j++) {
-        //     document.getElementById('btn-card' + j + i).classList.add('color-black');
-        // }
     }
-    // if (pokeSlot1 == 'ice') {
-    //     changeToBlack(i, pokeSlot1);
-        // document.getElementById('pokedex-name' + i).classList.add('color-black');
-        // document.getElementById('pokedex-id' + i).classList.add('color-black');
-        // document.getElementById('pokedex-slots' + i).classList.add('color-black');
-        // document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-        // document.getElementById('searchByNameLine' + i).classList.add('color-black');
-        // for (let j = 1; j <= 4; j++) {
-        //     document.getElementById('btn-card' + j + i).classList.add('color-black');
-        // }
-    // }
 }
+
+
+function renderPokeSlots(i, bgnSlotType, pokeSlot1) {
+    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
+};
+
+
+function renderPokeFavorite(i, bgnType) {
+    document.getElementById('btn-fill0' + i).classList.add(`${bgnType}`);
+    document.getElementById('btn-fill1' + i).classList.add(`${bgnType}`);
+};
+
+
+function renderPokeId(i) {
+    let pokeId = pokes[i]['pokeId'];
+    let formatPokeId = format3LeftHandZeros(pokeId);
+    document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
+};
 
 
 function changeToBlack(i, pokeSlot1) {

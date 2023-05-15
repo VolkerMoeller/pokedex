@@ -5,6 +5,7 @@ function backToPokeMinis() {
     document.getElementById('overlay').classList.add('display-none');
 }
 
+
 function showPokeCard(i) {
     document.getElementById('pokedex-all').classList.remove('display-none');
     document.getElementById('overlay').classList.remove('display-none');
@@ -17,6 +18,7 @@ async function initPokeMini() {
     await renderPokeMini();
 }
 
+
 async function renderPokeMini() {
     if (!functionRunning) {
         functionRunning = true;
@@ -25,6 +27,7 @@ async function renderPokeMini() {
     }
 }
 
+
 async function getAndRenderPokeMini() {
     document.getElementById('miniPokes').innerHTML = '';
     if (!functionRunning2) {
@@ -32,11 +35,8 @@ async function getAndRenderPokeMini() {
         for (let j = 1; j <= pokes.length - 1; j++) {
             let promises1st = [renderPokePlaces(j)];
             await Promise.all(promises1st);
-            let promises2nd = [takepokeMiniId(j), renderPokeMiniNr(j)];
+            let promises2nd = [takepokeMiniId(j), renderPokeMiniNr(j), getAndRenderImage(j), getAndRenderGermanName(j), changeMiniToBlack(j)];
             await Promise.all(promises2nd);
-            await getAndRenderImage(j);
-            await getAndRenderGermanName(j);
-            changeMiniToBlack(j);
         }
     }
     functionRunning2 = false;
@@ -130,13 +130,9 @@ function generateHTMLImage(url) {
             `;
 }
 
+
 function generateHTMLGermanName(currentGermanName) {
     return `
             <div>${currentGermanName}</div>
             `;
 }
-
-
-// function renderFavorite(){
-//     if ()
-// }

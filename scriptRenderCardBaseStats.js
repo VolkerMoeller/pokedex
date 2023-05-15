@@ -1,6 +1,4 @@
 async function renderPokeCardBaseStats(i) {
-    //  vorher machen:
-    // await loadCurrentPoke(i);
     for (let j = 0; j < baseStatNames.length; j++) {
         let value = currentPoke['stats'][j]['base_stat'];
         let valuePerCent = perCent(value);

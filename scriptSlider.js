@@ -20,7 +20,7 @@ function showPokeBy(searchId, i) {
 async function sliderOneRight() {
     let endNr = pokes.length - 1;
     if (currentPokeNr < endNr) {
-        let promise = [slideLeft(), pokeCaseLeft(), hideLeft(), slideToDeck(), promiseWait(), displayRight200()];
+        let promise = [slideLeft(), pokeCaseLeft(), hideLeft(), slideToDeck()];
         await Promise.all(promise);
     }
     updateAmountPokesAndProgress();
@@ -58,7 +58,7 @@ async function showPokeSomewhereLeft(i) {
 async function sliderOneLeft() {
     let endNr = 1;
     if (currentPokeNr > endNr) {
-        let promise = [slideRight(), pokeCaseRight(), hideRight(), slideToFirstPosition(), promiseWait(), displayFirstPosition()];
+        let promise = [slideRight(), pokeCaseRight(), hideRight(), slideToFirstPosition()];
         await Promise.all(promise);
     }
     updateAmountPokesAndProgress();
@@ -129,13 +129,6 @@ function slideToDeck() {
     let left200PokeNr = beforePokeNr - 1;
     if (left200PokeNr >= 1) {
         document.getElementById('pokedex' + left200PokeNr).style = 'transform: translateX(200%);';
-    }
-}
-
-
-function displayRight200() {
-    let left200PokeNr = beforePokeNr - 1;
-    if (left200PokeNr >= 1) {
         document.getElementById('pokedex' + left200PokeNr).classList.remove('display-none');
     }
 }
@@ -171,14 +164,6 @@ function hideRight() {
 function slideToFirstPosition() {
     if (beforePokeNr >= 1) {
         document.getElementById('pokedex' + beforePokeNr).style = 'transform: translateX(-100%);';
-    }
-}
-
-
-function displayFirstPosition() {
-    if (beforePokeNr >= 1) {
         document.getElementById('pokedex' + beforePokeNr).classList.remove('display-none');
     }
 }
-
-// 

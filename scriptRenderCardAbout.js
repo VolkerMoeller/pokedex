@@ -1,24 +1,14 @@
-// and German-Name on top
-
 async function renderPokeCardAbout(i) {
-    let pokeGenera = currentSpecie['genera'][4]['genus'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
+    // and German-Name on top
+    renderPokeGenera(i);
+    renderPokeGermanName(i);
+    renderPokeFlavor(i);
+    renderPokeWeightAndHeight(i);
+    renderPokeAbility(i);
+}
 
-    let pokeNamesGerman = currentSpecie['names'];
-    await searchGermanName(pokeNamesGerman, i);
 
-    let pokeNameGerman = pokes[i]['pokeNameGerman'][0];
-
-    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
-    let pokeFlavor = currentSpecie['flavor_text_entries'];
-    await searchGermanText(pokeFlavor, i);
-    let pokeFlavor1st = pokes[i]['pokeFlavors'][0][0];
-    document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor1st}</div>`;
-    let pokeWeight = pokes[i]['pokeWeight'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
-    let pokeHeight = pokes[i]['pokeHeight'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
-
+async function renderPokeAbility(i) {
     await loadCurrentAbility(i);
     let pokeAbility = currentAbility['names'][4]['name'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${pokeAbility}:</div>`;
@@ -26,6 +16,38 @@ async function renderPokeCardAbout(i) {
     searchGermanTextAbilityFlavor(pokeAbilityFlavor, i);
     let pokeFlavor2nd = pokes[i]['pokeAbilityFlavors'][0];
     document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor2nd}</div>`;
+};
+
+
+function renderPokeWeightAndHeight(i) {
+    let pokeWeight = pokes[i]['pokeWeight'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
+    let pokeHeight = pokes[i]['pokeHeight'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
+};
+
+
+async function renderPokeFlavor(i) {
+    let pokeFlavor = currentSpecie['flavor_text_entries'];
+    await searchGermanText(pokeFlavor, i);
+    let pokeFlavor1st = pokes[i]['pokeFlavors'][0][0];
+    document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor1st}</div>`;
+};
+
+
+async function renderPokeGermanName(i) {
+    let pokeNamesGerman = currentSpecie['names'];
+    await searchGermanName(pokeNamesGerman, i);
+
+    let pokeNameGerman = pokes[i]['pokeNameGerman'][0];
+
+    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
+};
+
+
+function renderPokeGenera(i) {
+    let pokeGenera = currentSpecie['genera'][4]['genus'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
 }
 
 

@@ -18,6 +18,7 @@ function addFavorite(i) {
     saveFavorites();
 }
 
+
 function removeFavorite(i) {
     let index = pokesFavorites.indexOf(i);
     pokesFavorites.splice(index,1);

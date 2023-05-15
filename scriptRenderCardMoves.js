@@ -38,6 +38,7 @@ async function getGermanMoveName(moveNames, language, i, j, k, count) {
     }
 }
 
+
 async function getGermanMoveText(moveText, languageTxt, i, j, m) {
         if (languageTxt == 'de') {
             germanText = moveText[m]['flavor_text'];
