@@ -93,7 +93,6 @@ async function removeTransitionFromAll() {
 }
 
 
-
 // Left SubFunctions
 
 
@@ -134,7 +133,6 @@ function slideToDeck() {
 }
 
 
-// 
 // Right Subfunctions
 
 

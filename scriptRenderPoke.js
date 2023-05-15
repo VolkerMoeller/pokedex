@@ -20,11 +20,11 @@ async function renderPokeTop(i) {
     renderPokeSlot2(i);
     renderPokeFavorite(i, bgnType);
     renderPokeImage(i, pokeImg);
-    renderPokeToBlack(pokeSlot1);
+    renderPokeToBlack(i, pokeSlot1);
 }
 
 
-function renderPokeToBlack(pokeSlot1){
+function renderPokeToBlack(i, pokeSlot1){
     if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
         changeToBlack(i, pokeSlot1);
     }

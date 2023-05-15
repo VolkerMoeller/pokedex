@@ -16,12 +16,10 @@ body {
     display: flex;
 }
 
-
 h1 {
     margin-top: 8px;
     margin-bottom: 24px;
 }
-
 
 .content {
     position: relative;
@@ -29,7 +27,6 @@ h1 {
     align-items: start;
     width: 480px;
     min-height: 100vh;
-    /* background-color: white; */
 }
 
 @media (max-width: 500px) {
@@ -38,7 +35,6 @@ h1 {
 
     }
 }
-
 
 .pokedex-all {
     position: absolute;
@@ -50,9 +46,6 @@ h1 {
     align-items: center;
     z-index: 3;
 }
-
-
-
 
 @media (max-width: 480px) {
     .pokedex-all {
@@ -87,11 +80,9 @@ h1 {
     transition: transform 0ms ease-in-out !important;
 }
 
-
 .pokedex-nav {
     display: flex;
     justify-content: space-between;
-    /* flex-wrap: wrap; */
     margin-bottom: 8px;
 }
 
@@ -112,7 +103,6 @@ h1 {
     width: 33.333333%;
     display: flex;
     justify-content: space-around;
-    /* gap: 4px; */
 }
 
 @media (max-width: 480px) {
@@ -127,7 +117,6 @@ h1 {
 .search button {
     font-family: 'Noto Sans';
     font-size: 16px;
-    /* font-weight: bold; */
     letter-spacing: 0.05;
     padding: 4px;
     cursor: pointer;
@@ -146,9 +135,7 @@ h1 {
     padding: 4px;
     border: none;
     border-radius: 5px 0px 0px 5px;
-    /* background-color: rgba(251, 251, 251, 0.8); */
 }
-
 
 .pokedexBgn {
     background-color: white;
@@ -162,7 +149,6 @@ h1 {
     flex-direction: column;
     color: white;
     letter-spacing: 0.125px;
-    /* height: 60vh; */
     padding: 16px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
@@ -198,12 +184,10 @@ h1 {
     min-height: 1000vh;
 }
 
-
 @media (max-width: 480px) {
     .pokedex {
         width: 100%;
     }
-
 
     .pokedex-top {
         margin-left: 8px;
@@ -215,18 +199,6 @@ h1 {
         margin-right: 8px;
     }
 }
-
-/* @media (max-width: 600px) {
-    .pokedex-top {
-        margin-left: 32px;
-        margin-right: 32px;
-    }
-
-    .pokedex-bottom {
-        margin-left: 32px;
-        margin-right: 32px;
-    }
-} */
 
 .pokedex-slots {
     display: flex;
@@ -244,7 +216,6 @@ h1 {
 .color-black {
     color: black !important;
 }
-
 
 .progress-bar {
     display: flex;
@@ -279,7 +250,6 @@ h1 {
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    /* background-color: rgba(251, 251, 251, 0.8); */
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-family: 'Noto Sans';
@@ -315,7 +285,6 @@ h1 {
 }
 
 .navigation {
-    /* margin-top: 48px; */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -365,8 +334,7 @@ h1 {
 .favorite img {
     height: 40px;
     width: 40px;
-    /* margin-top: 8px;
-    margin-bottom: 8px; */
+    margin-bottom: 8px;
     padding: 4px;
     border-radius: 5px;
 }
@@ -404,8 +372,6 @@ h1 {
     }
 }
 
-
-
 .progess-stats-line {
     border-radius: 5px;
     display: flex;
@@ -437,7 +403,6 @@ h1 {
     }
 }
 
-
 .pokedex-control {
     display: flex;
     flex-direction: column;
@@ -456,7 +421,6 @@ h1 {
     justify-content: flex-start;
 }
 
-
 .left-buttons button {
     padding: 0px;
     cursor: pointer;
@@ -466,7 +430,6 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .left-buttons button img {
@@ -511,7 +474,6 @@ h1 {
     }
 }
 
-
 .right-buttons button img {
     height: 40px;
     width: 40px;
@@ -532,9 +494,7 @@ h1 {
     border: none;
     border-radius: 5px;
     margin-top: 8px;
-    /* margin-bottom: 8px; */
     width: 100%;
-    /* background-color: rgba(251, 251, 251, 0.8); */
 }
 
 .evol-name-line {
@@ -557,7 +517,6 @@ h1 {
     .evol-name {
         width: 100%;
     }
-
 }
 
 .btn-back {
@@ -578,53 +537,6 @@ h1 {
     background-color: rgba(251, 251, 251, 0.9);
 }
 
-
-/* PokeMini */
-
-
-.pokeMinis {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.pokeMini {
-    display: flex;
-    max-width: 200px;
-    height: 100px;
-    /* justify-content: center; */
-    /* flex-wrap: wrap; */
-}
-
-.pokeMini button {
-    /* height: 125px; */
-    width: 200px;
-    gap: 8px;
-    padding: 8px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pokeMiniImg {
-    display: flex;
-    height: 50px;
-    width: 100px;
-}
-
-.pokeMiniImg image {
-    object-fit: contain;
-    height: 50px;
-    width: 100px;
-}
-
-/* overlay */
-
 .overlay {
     display: flex;
     justify-content: center;
@@ -641,99 +553,22 @@ h1 {
     z-index: 2;
 }
 
-/* goToTop w3school */
 
 #myBtn {
     display: none;
-    /* Hidden by default */
     position: fixed;
-    /* Fixed/sticky position */
     bottom: 20px;
-    /* Place the button at the bottom of the page */
-    /* right: 37%; */
-    /* Place the button 30px from the right */
     z-index: 99;
-    /* Make sure it does not overlap */
     border: none;
-    /* Remove borders */
     outline: none;
-    /* Remove outline */
     background-color: red;
-    /* Set a background color */
     color: white;
-    /* Text color */
     cursor: pointer;
-    /* Add a mouse pointer on hover */
     padding: 15px;
-    /* Some padding */
     border-radius: 10px;
-    /* Rounded corners */
     font-size: 18px;
-    /* Increase font size */
 }
 
 #myBtn:hover {
     background-color: #555;
-    /* Add a dark-grey background on hover */
-}
-
-
-/* MiniPokes */
-
-.pokeMinis-all {
-    border-radius: 30px;
-    background-color: white;
-    position: relative;
-    margin-top: 32px;
-    width: 480px;
-    overflow-x: clip;
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-}
-
-.miniHeader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.miniPokes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    /* color: white; */
-}
-
-.mini-poke-card {
-    border-radius: 15px;
-    padding: 8px;
-    display: flex;
-}
-
-.mini-poke-card div {
-    /* color: white; */
-    font-size: 16px;
-}
-
-.mini-poke-card button {
-    border: none;
-    cursor: pointer;
-    background: none;
-    border-radius: 10px;;
-}
-
-.mini-poke-card:hover button {
-    background-color: rgba(251, 251, 251, 0.08);
-}
-
-.mini-poke-img-place {
-    display: flex;
-}
-
-.mini-poke-img-place img {
-    display: flex;
-    width: 100px;
 }
