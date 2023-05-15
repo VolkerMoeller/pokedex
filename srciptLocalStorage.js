@@ -33,6 +33,6 @@ function saveFavorites() {
 async function loadFavorites() {
     let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
     if (pokesFavoritesAsText) {
-        pokes = JSON.parse(pokesFavoritesAsText);
+        pokesFavorites = JSON.parse(pokesFavoritesAsText);
     }
 }
