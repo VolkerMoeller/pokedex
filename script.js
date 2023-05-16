@@ -34,21 +34,24 @@ async function init() {
 }
 
 
-async function loadPokemonData(id) {
-    const url1 = 'https://pokeapi.co/api/v2/pokemon/' + id;
-    const url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + id;
-
-    let results = await Promise.all([defResp1(), defResp2(),]);
-
-    async function defResp1() {
-        let resp1AsSthFromServer = await fetch(url1);
-        resp1GeneralInfoAsJSON = await resp1AsSthFromServer.json();
-    }
-    async function defResp2() {
-        let resp2AsSthFromServer = await fetch(url2);
-        resp2SpeciesInfoAsJSON = await resp2AsSthFromServer.json();
-    }
+async function loadPokemonData(i) {
+    const url1 = 'https://pokeapi.co/api/v2/pokemon/' + i;
+    const url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + i;
+    await Promise.all([defResp1(url1), defResp2(url2),]);
 }
+
+
+async function defResp1(url1) {
+    let resp1AsSthFromServer = await fetch(url1);
+    resp1GeneralInfoAsJSON = await resp1AsSthFromServer.json();
+}
+
+
+async function defResp2(url2) {
+    let resp2AsSthFromServer = await fetch(url2);
+    resp2SpeciesInfoAsJSON = await resp2AsSthFromServer.json();
+}
+
 
 function buildMyPokeObject() {
     myPokesAsObject.push(
@@ -71,30 +74,18 @@ function buildMyPokeObject() {
 
 
 function fillMyPokeObject(i) {
-    let idFromServer = resp1GeneralInfoAsJSON['id'];
-    let nameFromServer = resp1GeneralInfoAsJSON['name'];
-    let nameGermanFromServer = resp2SpeciesInfoAsJSON['names'][searchIndexOfGerman('names')]['name'];
-    let slot1FromServer = resp1GeneralInfoAsJSON['types'][0]['type']['name'];
-    let slot2FromServer = checkIfThereIsSlot2();
-    let imgUrlFromServer = resp1GeneralInfoAsJSON['sprites']['other']['home']['front_default'];
-    let weightFromServer = resp1GeneralInfoAsJSON['weight'];
-    let heightFromServer = resp1GeneralInfoAsJSON['height'];
-    let generaGermanFromServer = resp2SpeciesInfoAsJSON['genera'][searchIndexOfGerman('genera')]['genus'];
-    let flavorFromServer = '';
-    let abilitiesFromServer = '';
-    let flavorsFromServer = '';
-    myPokesAsObject[i]['id'] = idFromServer;
-    myPokesAsObject[i]['name'] = nameFromServer;
-    myPokesAsObject[i]['nameGerman'] = nameGermanFromServer;
-    myPokesAsObject[i]['slot1'] = slot1FromServer;
-    myPokesAsObject[i]['slot2'] = slot2FromServer;
-    myPokesAsObject[i]['imgUrl'] = imgUrlFromServer;
-    myPokesAsObject[i]['weight'] = weightFromServer;
-    myPokesAsObject[i]['height'] = heightFromServer;
-    myPokesAsObject[i]['specie'] = generaGermanFromServer;
-    myPokesAsObject[i]['flavor'] = flavorFromServer;
-    myPokesAsObject[i]['abilities'] = abilitiesFromServer;
-    myPokesAsObject[i]['flavors'] = flavorsFromServer;
+    myPokesAsObject[i]['id'] = resp1GeneralInfoAsJSON['id'];
+    myPokesAsObject[i]['name'] = resp1GeneralInfoAsJSON['name'];
+    myPokesAsObject[i]['nameGerman'] = resp2SpeciesInfoAsJSON['names'][searchIndexOfGerman('names')]['name'];
+    myPokesAsObject[i]['slot1'] = resp1GeneralInfoAsJSON['types'][0]['type']['name'];
+    myPokesAsObject[i]['slot2'] = checkIfThereIsSlot2();
+    myPokesAsObject[i]['imgUrl'] =  resp1GeneralInfoAsJSON['sprites']['other']['home']['front_default'];
+    myPokesAsObject[i]['weight'] = resp1GeneralInfoAsJSON['weight'];
+    myPokesAsObject[i]['height'] = resp1GeneralInfoAsJSON['height'];
+    myPokesAsObject[i]['generaGerman'] = resp2SpeciesInfoAsJSON['genera'][searchIndexOfGerman('genera')]['genus'];
+    myPokesAsObject[i]['flavor'] = '';
+    myPokesAsObject[i]['abilities'] = '';
+    myPokesAsObject[i]['flavors'] = '';
 }
 
 
@@ -111,12 +102,12 @@ function checkIfThereIsSlot2() {
 
 function searchIndexOfGerman(index) {
     for (let j = 0; j < resp2SpeciesInfoAsJSON[index].length; j++) {
-        const language = resp2SpeciesInfoAsJSON['names'][j]['language']['name'];
+        const language = resp2SpeciesInfoAsJSON[index][j]['language']['name'];
         if (language == 'de') {
             return j;
         }
     }
-};
+}
 
 
 // function generateHTMLCounter(i) {

@@ -15,16 +15,12 @@ function showPokeCard(i) {
 
 
 function renderPokeMini(i) {
-    if (!functionRunning) {
-        functionRunning = true;
-        renderPokePlaces(i);
-        renderPokeMiniNr(i);
-        renderImage(i);
-        renderBackground(i);
-        renderGermanName(i);
-        changeMiniToBlack(i);
-    }
-    functionRunning = false;
+    renderPokePlaces(i);
+    renderPokeMiniNr(i);
+    renderImage(i);
+    renderBackground(i);
+    renderGermanName(i);
+    changeMiniToBlack(i);
 }
 
 
