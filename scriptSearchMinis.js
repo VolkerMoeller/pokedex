@@ -1,25 +1,23 @@
 function searchMiniPokeByName() {
     let searchName = document.getElementById('mini-search-name').value;
     searchName = searchName.toLowerCase();
-    console.log(searchName);
-    findMiniPokes(searchName);
-    // showSearchedMiniPokes();
-    // searchIndexOfName(searchName);
-    // if (searchIndexOfName(searchName)) {
-    //     showPokeBy(searchIndexOfName(searchName), currentPokeNr);
-    //     document.getElementById('search-mini-name' + i).value = '';
-    // }
+    sortMiniPokes(searchName);
 }
 
-function findMiniPokes(searchInput) {
-    for (let k = 1; k < 5; k++) {
-        let currentName = myPokesAsObject[k]['nameGerman'];
-        let result = currentName.startsWith(searchInput);
+
+function sortMiniPokes(searchName) {
+    document.getElementById('search-results').innerHTML = '';
+    for (let k = 0; k < pokeCounter; k++) {
+        let searchText = myPokesAsObject[k]['nameGerman'];
+        searchText = searchText.toLowerCase();
+        let result = searchText.startsWith(searchName);
         if (result == true) {
-            document.getElementById('search-results').innerHTML = currentName;
-        }
+            document.getElementById('search-results').innerHTML += `<p>${searchText}</p><img src="${myPokesAsObject[k]['imgUrl']}" style="width: 100px">`;
+        };
+
     }
 }
+
 
 function searchIndexOfName(searchName) {
     for (let i = 0; i < myPokesAsObject.length; i++) {
