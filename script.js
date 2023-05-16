@@ -26,24 +26,28 @@ let functionRunning2 = false;
 
 async function init() {
     for (let i = 1; i <= pokeCounter; i++) {
-        await loadPokemon(i);
+        await loadPokemonData(i);
         buildMyPokeObject(i);
         fillMyPokeObject(i);
         renderPokeMini(i);
     }
 }
 
-function generateHTMLCounter(i) {
-    return `
-    <div>${i} von ${pokeCounter} geladen.</div>
-    `
-}
 
+async function loadPokemonData(id) {
+    const url1 = 'https://pokeapi.co/api/v2/pokemon/' + id;
+    const url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + id;
 
-function generateHTMLPokeName(i) {
-    return `
-    <div>${myPokesAsObject[i]['germanName']}</div>
-    `
+    let results = await Promise.all([defResp1(), defResp2(),]);
+
+    async function defResp1() {
+        let resp1AsSthFromServer = await fetch(url1);
+        resp1GeneralInfoAsJSON = await resp1AsSthFromServer.json();
+    }
+    async function defResp2() {
+        let resp2AsSthFromServer = await fetch(url2);
+        resp2SpeciesInfoAsJSON = await resp2AsSthFromServer.json();
+    }
 }
 
 function buildMyPokeObject() {
@@ -93,6 +97,7 @@ function fillMyPokeObject(i) {
     myPokesAsObject[i]['flavors'] = flavorsFromServer;
 }
 
+
 function checkIfThereIsSlot2() {
     if (resp1GeneralInfoAsJSON['types'][1]) {
         let slot2FromServer = resp1GeneralInfoAsJSON['types'][1]['type']['name'];
@@ -114,29 +119,15 @@ function searchIndexOfGerman(index) {
 };
 
 
-
-// function searchIndexOfGerman() {
-//     for (let j = 0; j < resp1GeneralInfoAsJSON['names'].length; j++) {
-//         const language = resp2SpeciesInfoAsJSON['names'][j]['language']['name'];
-//         if (language == 'de') {
-//             return j;
-//         }
-//     }
-// };
+// function generateHTMLCounter(i) {
+//     return `
+//     <div>${i} von ${pokeCounter} geladen.</div>
+//     `
+// }
 
 
-async function loadPokemon(id) {
-    const url1 = 'https://pokeapi.co/api/v2/pokemon/' + id;
-    const url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + id;
-
-    let results = await Promise.all([defResp1(), defResp2(),]);
-
-    async function defResp1() {
-        let resp1AsSthFromServer = await fetch(url1);
-        resp1GeneralInfoAsJSON = await resp1AsSthFromServer.json();
-    }
-    async function defResp2() {
-        let resp2AsSthFromServer = await fetch(url2);
-        resp2SpeciesInfoAsJSON = await resp2AsSthFromServer.json();
-    }
-}
+// function generateHTMLPokeName(i) {
+//     return `
+//     <div>${myPokesAsObject[i]['germanName']}</div>
+//     `
+// }

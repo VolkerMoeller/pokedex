@@ -104,9 +104,3 @@ async function stylePokeBgnTop(i) {
     setBgnByType(pokeType, i);
 }
 
-
-function format3LeftHandZeros(value) {
-    value = value.toString();
-    let formatValue = value.padStart(4, '0');
-    return formatValue;
-}
