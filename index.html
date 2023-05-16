@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokedexNew</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="styleFonts.css">
+    <link rel="stylesheet" href="colors.css">
+    <link rel="stylesheet" href="stylePokeMinis.css">
+    <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="scriptPokeMinis.js"></script>
 </head>
+
 <body onload="init()">
-    <div id="test"></div>
-    
+    <div id="content" class="content">
+        <div id="pokedexMinis-all" class="pokeMinis-all">
+            <div id="miniHeader" class="miniHeader">
+                <h1>PokeMöller</h1>
+                <div id="miniPokesCounter" class="miniPokesCounter"></div>
+            </div>
+            <div id="miniPokes" class="miniPokes">
+                <div id="miniPokesNames" class="miniPokesNames"></div>
+            </div>
+        </div>
+        <div id="pokedex-all" class="pokedex-all display-none"></div>
+    </div>
+    <div id="overlay" class="overlay display-none">
+    </div>
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 </body>
+
 </html>

@@ -1,33 +1,66 @@
 let myPokesAsObject = [
     {
-        'id': '',
-        'name': '',
-        'germanName': '',
-        'objArray': [],
+        "id": '',
+        "name": '',
+        "nameGerman": '',
+        "slot1": '',
+        "slot2": '',
+        "imgUrl": '',
+        "weight": '',
+        "height": '',
+        "generaGerman": '',
+        "flavor": '',
+        "abilities": '',
+        "flavors": '',
     }
 ]
+
+
 let resp1GeneralInfoAsJSON;
 let resp2SpeciesInfoAsJSON;
+let pokeCounter = 101;
 
+let functionRunning = false;
+let functionRunning2 = false;
 
 
 async function init() {
-    for (let i = 1; i < 101; i++) {
+    for (let i = 1; i <= pokeCounter; i++) {
         await loadPokemon(i);
         buildMyPokeObject(i);
         fillMyPokeObject(i);
+        renderPokeMini(i);
     }
-    console.log(myPokesAsObject);
 }
 
+function generateHTMLCounter(i) {
+    return `
+    <div>${i} von ${pokeCounter} geladen.</div>
+    `
+}
+
+
+function generateHTMLPokeName(i) {
+    return `
+    <div>${myPokesAsObject[i]['germanName']}</div>
+    `
+}
 
 function buildMyPokeObject() {
     myPokesAsObject.push(
         {
-            'id': '',
-            'name': '',
-            'germanName': '',
-            'objArray': [],
+            "id": '',
+            "name": '',
+            "nameGerman": '',
+            "slot1": '',
+            "slot2": '',
+            "imgUrl": '',
+            "weight": '',
+            "height": '',
+            "generaGerman": '',
+            "flavor": '',
+            "abilities": '',
+            "flavors": '',
         }
     );
 }
@@ -36,22 +69,60 @@ function buildMyPokeObject() {
 function fillMyPokeObject(i) {
     let idFromServer = resp1GeneralInfoAsJSON['id'];
     let nameFromServer = resp1GeneralInfoAsJSON['name'];
-    searchIndexOfGermanName();
-    let germanNameFromServer = resp2SpeciesInfoAsJSON['names'][searchIndexOfGermanName()]['name'];
+    let nameGermanFromServer = resp2SpeciesInfoAsJSON['names'][searchIndexOfGerman('names')]['name'];
+    let slot1FromServer = resp1GeneralInfoAsJSON['types'][0]['type']['name'];
+    let slot2FromServer = checkIfThereIsSlot2();
+    let imgUrlFromServer = resp1GeneralInfoAsJSON['sprites']['other']['home']['front_default'];
+    let weightFromServer = resp1GeneralInfoAsJSON['weight'];
+    let heightFromServer = resp1GeneralInfoAsJSON['height'];
+    let generaGermanFromServer = resp2SpeciesInfoAsJSON['genera'][searchIndexOfGerman('genera')]['genus'];
+    let flavorFromServer = '';
+    let abilitiesFromServer = '';
+    let flavorsFromServer = '';
     myPokesAsObject[i]['id'] = idFromServer;
     myPokesAsObject[i]['name'] = nameFromServer;
-    myPokesAsObject[i]['germanName'] = germanNameFromServer;
+    myPokesAsObject[i]['nameGerman'] = nameGermanFromServer;
+    myPokesAsObject[i]['slot1'] = slot1FromServer;
+    myPokesAsObject[i]['slot2'] = slot2FromServer;
+    myPokesAsObject[i]['imgUrl'] = imgUrlFromServer;
+    myPokesAsObject[i]['weight'] = weightFromServer;
+    myPokesAsObject[i]['height'] = heightFromServer;
+    myPokesAsObject[i]['specie'] = generaGermanFromServer;
+    myPokesAsObject[i]['flavor'] = flavorFromServer;
+    myPokesAsObject[i]['abilities'] = abilitiesFromServer;
+    myPokesAsObject[i]['flavors'] = flavorsFromServer;
+}
+
+function checkIfThereIsSlot2() {
+    if (resp1GeneralInfoAsJSON['types'][1]) {
+        let slot2FromServer = resp1GeneralInfoAsJSON['types'][1]['type']['name'];
+        return slot2FromServer;
+    } else {
+        let slot2FromServer = '';
+        return slot2FromServer;
+    }
 }
 
 
-function searchIndexOfGermanName() {
-    for (let j = 0; j < resp2SpeciesInfoAsJSON['names'].length; j++) {
+function searchIndexOfGerman(index) {
+    for (let j = 0; j < resp2SpeciesInfoAsJSON[index].length; j++) {
         const language = resp2SpeciesInfoAsJSON['names'][j]['language']['name'];
         if (language == 'de') {
             return j;
         }
     }
 };
+
+
+
+// function searchIndexOfGerman() {
+//     for (let j = 0; j < resp1GeneralInfoAsJSON['names'].length; j++) {
+//         const language = resp2SpeciesInfoAsJSON['names'][j]['language']['name'];
+//         if (language == 'de') {
+//             return j;
+//         }
+//     }
+// };
 
 
 async function loadPokemon(id) {

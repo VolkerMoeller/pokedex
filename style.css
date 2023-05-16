@@ -85,7 +85,7 @@ h1 {
         flex-direction: column;
         align-items: center;
     }
-    
+
 }
 
 .pokedex-nav input {
@@ -105,7 +105,7 @@ h1 {
         margin-top: 8px;
         margin-bottom: 8px;
     }
-    
+
 }
 
 .search button {
@@ -183,7 +183,7 @@ h1 {
     .pokedex {
         width: 100%;
     }
-    
+
     .pokedex-top {
         margin-left: 8px;
         margin-right: 8px;
@@ -353,7 +353,7 @@ h1 {
     .slot {
         margin-left: 8px;
     }
-    
+
     .slot-line {
         margin-top: 8px;
         justify-content: center;
@@ -392,7 +392,7 @@ h1 {
     .stat {
         width: 100%;
     }
-    
+
     .progess-stats-line {
         width: 100%;
     }
@@ -462,7 +462,7 @@ h1 {
         width: 100%;
         justify-content: center;
     }
-    
+
     .right-buttons {
         width: 100%;
         justify-content: center;
@@ -508,7 +508,7 @@ h1 {
     .evol-name-line {
         flex-direction: column;
     }
-    
+
     .evol-name {
         width: 100%;
     }
@@ -573,4 +573,20 @@ h1 {
     .content {
         width: 95%;
     }
+}
+
+/* NewPokedex */
+.miniPokesNames {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.miniHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
 }
