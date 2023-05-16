@@ -29,12 +29,6 @@ h1 {
     min-height: 100vh;
 }
 
-@media (max-width: 500px) {
-    .content {
-        width: 80%;
-
-    }
-}
 
 .pokedex-all {
     position: absolute;
@@ -91,7 +85,7 @@ h1 {
         flex-direction: column;
         align-items: center;
     }
-
+    
 }
 
 .pokedex-nav input {
@@ -111,7 +105,7 @@ h1 {
         margin-top: 8px;
         margin-bottom: 8px;
     }
-
+    
 }
 
 .search button {
@@ -180,15 +174,16 @@ h1 {
     padding: 16px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
+    border-radius: 30px;
     padding-top: 48px;
-    min-height: 1000vh;
+    /* min-height: 400px; */
 }
 
 @media (max-width: 480px) {
     .pokedex {
         width: 100%;
     }
-
+    
     .pokedex-top {
         margin-left: 8px;
         margin-right: 8px;
@@ -358,7 +353,7 @@ h1 {
     .slot {
         margin-left: 8px;
     }
-
+    
     .slot-line {
         margin-top: 8px;
         justify-content: center;
@@ -397,7 +392,7 @@ h1 {
     .stat {
         width: 100%;
     }
-
+    
     .progess-stats-line {
         width: 100%;
     }
@@ -467,7 +462,7 @@ h1 {
         width: 100%;
         justify-content: center;
     }
-
+    
     .right-buttons {
         width: 100%;
         justify-content: center;
@@ -513,7 +508,7 @@ h1 {
     .evol-name-line {
         flex-direction: column;
     }
-
+    
     .evol-name {
         width: 100%;
     }
@@ -571,4 +566,11 @@ h1 {
 
 #myBtn:hover {
     background-color: #555;
+}
+
+
+@media (max-width: 500px) {
+    .content {
+        width: 95%;
+    }
 }

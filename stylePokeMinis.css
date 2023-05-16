@@ -7,7 +7,7 @@
     overflow-x: clip;
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    /* padding: 24px; */
 }
 
 .miniHeader {
@@ -51,7 +51,7 @@
 
 .mini-poke-img-place img {
     display: flex;
-    width: 100px;
+    width: 160px;
 }
 
 .pokeMinis {
