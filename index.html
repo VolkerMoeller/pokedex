@@ -11,19 +11,28 @@
     <link rel="stylesheet" href="colors.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="stylePokeMinis.css">
-    <script src="script.js"></script>
+    <script src="scriptSearchMinis.js"></script>
     <script src="scriptPokeMinis.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body onload="init()">
     <div id="content" class="content">
-        <div id="pokedexMinis-all" class="pokeMinis-all">
+        <div id="pokedexMinis-all" class="pokeMinis-all display-none">
             <div id="miniHeader" class="miniHeader">
                 <h1>PokeMöller</h1>
                 <div id="miniPokesCounter" class="miniPokesCounter"></div>
             </div>
             <div id="miniPokes" class="miniPokes">
             </div>
+        </div>
+        <div id="pokedexMinis-search" class="pokedex-all">
+            <h1>Hier wird gesucht!</h1>
+            <div id="miniSearchByNameLine" class="searchByName">
+                <span>Suche nach </span>
+                <input id="mini-search-name" placeholder="Name" onkeydown="searchMiniPokeByName()">
+                <div id="search-results"></div>
+            </div> 
         </div>
         <div id="pokedex-all" class="pokedex-all display-none"></div>
     </div>

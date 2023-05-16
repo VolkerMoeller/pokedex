@@ -18,7 +18,7 @@ let myPokesAsObject = [
 
 let resp1GeneralInfoAsJSON;
 let resp2SpeciesInfoAsJSON;
-let pokeCounter = 101;
+let pokeCounter = 202;
 
 let functionRunning = false;
 let functionRunning2 = false;
@@ -27,11 +27,19 @@ let functionRunning2 = false;
 async function init() {
     for (let i = 1; i <= pokeCounter; i++) {
         await loadPokemonData(i);
+        updateCounter(i);
         buildMyPokeObject(i);
         fillMyPokeObject(i);
         renderPokeMini(i);
     }
 }
+
+
+function updateCounter(i) {
+document.getElementById('miniPokesCounter').innerHTML = generateHTMLCounter(i);
+
+}
+
 
 
 async function loadPokemonData(i) {
@@ -110,15 +118,8 @@ function searchIndexOfGerman(index) {
 }
 
 
-// function generateHTMLCounter(i) {
-//     return `
-//     <div>${i} von ${pokeCounter} geladen.</div>
-//     `
-// }
-
-
-// function generateHTMLPokeName(i) {
-//     return `
-//     <div>${myPokesAsObject[i]['germanName']}</div>
-//     `
-// }
+function generateHTMLCounter(i) {
+    return `
+    <div>${i} von ${pokeCounter} geladen.</div>
+    `
+}
