@@ -9,9 +9,10 @@ let myPokesAsObject = [
         "weight": '',
         "height": '',
         "generaGerman": '',
-        "flavor": '',
-        "abilities": '',
-        "flavors": '',
+        "generaFlavor": '',
+        "abilityGerman": '',
+        "abilityUrl": '',
+        "abilityFlavor": '',
     }
 ]
 
@@ -23,7 +24,6 @@ let pokeCounter = 11;
 let pokeCounterStep = 4;
 let scrollCounter = 1;
 let nextToLoadNr = 1;
-
 let functionRunning = false;
 let functionRunning2 = false;
 
@@ -38,10 +38,20 @@ async function init() {
             await renderPokeMini(i);
             await updateCounter(i);
         }
+        loadPokemonAbilitiesData();
         nextToLoadNr = pokeCounter + 1;
         pokeCounter = pokeCounter + pokeCounterStep;
-        }
-        functionRunning == false;
+    }
+    functionRunning == false;
+}
+
+
+async function loadPokemonAbilitiesData() {
+    for (let i = nextToLoadNr; i <= myPokesAsObject.length - 1; i++) {
+        let url3 = myPokesAsObject[i]['abilityUrl'];
+        await defResp3(url3);
+        fillMyPokeObjectWithAbilitieData(i);
+    }
 }
 
 
@@ -70,10 +80,10 @@ async function defResp2(url2) {
 }
 
 
-async function loadPokemonDataBy(url) {
-        let resp3AsSthFromServer = await fetch(url);
-        resp3AbilitiesInfoAsJSON = await resp3AsSthFromServer.json();
-    }
+async function defResp3(url3) {
+    let resp3AsSthFromServer = await fetch(url3);
+    resp3AbilitiesInfoAsJSON = await resp3AsSthFromServer.json();
+}
 
 
 async function buildMyPokeObject() {
@@ -88,9 +98,10 @@ async function buildMyPokeObject() {
             "weight": '',
             "height": '',
             "generaGerman": '',
-            "flavor": '',
-            "abilities": '',
-            "flavors": '',
+            "generaFlavor": '',
+            "abilityGerman": '',
+            "abilityUrl": '',
+            "abilityFlavor": '',
         }
     );
 }
@@ -106,9 +117,16 @@ async function fillMyPokeObject(i) {
     myPokesAsObject[i]['weight'] = resp1GeneralInfoAsJSON['weight'];
     myPokesAsObject[i]['height'] = resp1GeneralInfoAsJSON['height'];
     myPokesAsObject[i]['generaGerman'] = resp2SpeciesInfoAsJSON['genera'][searchIndexOfGerman('genera')]['genus'];
-    myPokesAsObject[i]['flavor'] = '';
-    myPokesAsObject[i]['abilities'] = '';
-    myPokesAsObject[i]['flavors'] = '';
+    myPokesAsObject[i]['generaFlavor'] = resp2SpeciesInfoAsJSON['flavor_text_entries'][searchIndexOfGermanGeneraFlavor('flavor_text_entries')]['flavor_text'];
+    myPokesAsObject[i]['abilityGerman'] = '';
+    myPokesAsObject[i]['abilityUrl'] = resp1GeneralInfoAsJSON['abilities'][0]['ability']['url'];
+    myPokesAsObject[i]['abilityFlavor'] = '';
+}
+
+
+function fillMyPokeObjectWithAbilitieData(i) {
+    myPokesAsObject[i]['abilityGerman'] = resp3AbilitiesInfoAsJSON['names'][searchIndexOfGermanAbilities('names')]['name'];
+    myPokesAsObject[i]['abilityFlavor'] = resp3AbilitiesInfoAsJSON['flavor_text_entries'][searchIndexOfGermanAbilities('flavor_text_entries')]['flavor_text'];
 }
 
 
@@ -124,6 +142,26 @@ async function checkIfThereIsSlot2() {
 
 
 function searchIndexOfGerman(index) {
+    for (let j = 0; j < resp2SpeciesInfoAsJSON[index].length; j++) {
+        const language = resp2SpeciesInfoAsJSON[index][j]['language']['name'];
+        if (language == 'de') {
+            return j;
+        }
+    }
+}
+
+
+function searchIndexOfGermanAbilities(index) {
+    for (let j = 0; j < resp3AbilitiesInfoAsJSON[index].length; j++) {
+        const language = resp3AbilitiesInfoAsJSON[index][j]['language']['name'];
+        if (language == 'de') {
+            return j;
+        }
+    }
+}
+
+
+function searchIndexOfGermanGeneraFlavor(index) {
     for (let j = 0; j < resp2SpeciesInfoAsJSON[index].length; j++) {
         const language = resp2SpeciesInfoAsJSON[index][j]['language']['name'];
         if (language == 'de') {

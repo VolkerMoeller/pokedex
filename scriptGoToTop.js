@@ -18,10 +18,6 @@ async function scrollFunction() {
   }
 }
 
-function myResolve() {
-  console.log('init done');
-}
-
 
 
 // let myPromise = new Promise(function (myResolve, myReject) {
