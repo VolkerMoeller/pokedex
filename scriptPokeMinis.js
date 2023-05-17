@@ -14,13 +14,16 @@ function showPokeCard(i) {
 }
 
 
-function renderPokeMini(i) {
-    renderPokePlaces(i);
-    renderPokeMiniNr(i);
-    renderImage(i);
-    renderBackground(i);
-    renderGermanName(i);
-    changeMiniToBlack(i);
+async function renderPokeMini(i) {
+    let promises = [
+        renderPokePlaces(i),
+        renderPokeMiniNr(i),
+        renderImage(i),
+        renderBackground(i),
+        renderGermanName(i),
+        changeMiniToBlack(i),
+    ]
+    await Promise.all(promises);
 }
 
 

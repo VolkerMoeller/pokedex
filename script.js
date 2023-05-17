@@ -18,34 +18,43 @@ let myPokesAsObject = [
 
 let resp1GeneralInfoAsJSON;
 let resp2SpeciesInfoAsJSON;
-let pokeCounter = 202;
+let resp3AbilitiesInfoAsJSON;
+let pokeCounter = 11;
+let pokeCounterStep = 4;
+let scrollCounter = 1;
+let nextToLoadNr = 1;
 
 let functionRunning = false;
 let functionRunning2 = false;
 
 
 async function init() {
-    for (let i = 1; i <= pokeCounter; i++) {
-        await loadPokemonData(i);
-        updateCounter(i);
-        buildMyPokeObject(i);
-        fillMyPokeObject(i);
-        renderPokeMini(i);
-    }
+    if (functionRunning == false) {
+        functionRunning == true;
+        for (let i = nextToLoadNr; i <= pokeCounter; i++) {
+            await loadPokemonData(i);
+            await buildMyPokeObject(i);
+            await fillMyPokeObject(i);
+            await renderPokeMini(i);
+            await updateCounter(i);
+        }
+        nextToLoadNr = pokeCounter + 1;
+        pokeCounter = pokeCounter + pokeCounterStep;
+        }
+        functionRunning == false;
 }
 
 
-function updateCounter(i) {
-document.getElementById('miniPokesCounter').innerHTML = generateHTMLCounter(i);
+async function updateCounter(i) {
+    document.getElementById('miniPokesCounter').innerHTML = generateHTMLCounter(i);
 
 }
-
 
 
 async function loadPokemonData(i) {
     const url1 = 'https://pokeapi.co/api/v2/pokemon/' + i;
     const url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + i;
-    await Promise.all([defResp1(url1), defResp2(url2),]);
+    await Promise.all([defResp1(url1), defResp2(url2)]);
 }
 
 
@@ -61,7 +70,13 @@ async function defResp2(url2) {
 }
 
 
-function buildMyPokeObject() {
+async function loadPokemonDataBy(url) {
+        let resp3AsSthFromServer = await fetch(url);
+        resp3AbilitiesInfoAsJSON = await resp3AsSthFromServer.json();
+    }
+
+
+async function buildMyPokeObject() {
     myPokesAsObject.push(
         {
             "id": '',
@@ -81,13 +96,13 @@ function buildMyPokeObject() {
 }
 
 
-function fillMyPokeObject(i) {
+async function fillMyPokeObject(i) {
     myPokesAsObject[i]['id'] = resp1GeneralInfoAsJSON['id'];
     myPokesAsObject[i]['name'] = resp1GeneralInfoAsJSON['name'];
     myPokesAsObject[i]['nameGerman'] = resp2SpeciesInfoAsJSON['names'][searchIndexOfGerman('names')]['name'];
     myPokesAsObject[i]['slot1'] = resp1GeneralInfoAsJSON['types'][0]['type']['name'];
     myPokesAsObject[i]['slot2'] = checkIfThereIsSlot2();
-    myPokesAsObject[i]['imgUrl'] =  resp1GeneralInfoAsJSON['sprites']['other']['home']['front_default'];
+    myPokesAsObject[i]['imgUrl'] = resp1GeneralInfoAsJSON['sprites']['other']['home']['front_default'];
     myPokesAsObject[i]['weight'] = resp1GeneralInfoAsJSON['weight'];
     myPokesAsObject[i]['height'] = resp1GeneralInfoAsJSON['height'];
     myPokesAsObject[i]['generaGerman'] = resp2SpeciesInfoAsJSON['genera'][searchIndexOfGerman('genera')]['genus'];
@@ -97,7 +112,7 @@ function fillMyPokeObject(i) {
 }
 
 
-function checkIfThereIsSlot2() {
+async function checkIfThereIsSlot2() {
     if (resp1GeneralInfoAsJSON['types'][1]) {
         let slot2FromServer = resp1GeneralInfoAsJSON['types'][1]['type']['name'];
         return slot2FromServer;
@@ -120,6 +135,6 @@ function searchIndexOfGerman(index) {
 
 function generateHTMLCounter(i) {
     return `
-    <div>${i} von ${pokeCounter} geladen.</div>
+    <div class="counter">${i} von ${pokeCounter} geladen.</div>
     `
 }
