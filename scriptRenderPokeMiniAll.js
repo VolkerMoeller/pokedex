@@ -14,6 +14,11 @@ function showPokeCard(i) {
 }
 
 
+async function renderPokMini() {
+    document.getElementById('pokedexMinis-all').innerHTML = '';
+    document.getElementById('pokedexMinis-all').innerHTML = generateHTMLPokeMiniAll();
+ }
+
 async function renderPokeMini(i) {
     let promises = [
         renderPokePlaces(i),
@@ -24,6 +29,7 @@ async function renderPokeMini(i) {
         changeMiniToBlack(i),
     ]
     await Promise.all(promises);
+
 }
 
 
@@ -104,4 +110,17 @@ function format3LeftHandZeros(value) {
     value = value.toString();
     let formatValue = value.padStart(4, '0');
     return formatValue;
+}
+
+
+async function renderPokeMiniNavigation(i, cards) {
+    let pokeSlot1 = myPokesAsObject[i]['slot1'];
+    let bgnSlotType = 'bgn-type-' + pokeSlot1;
+    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
+    for (let k = 0; k < cards.length; k++) {
+        let l = k + 1;
+        document.getElementById('btn-card' + cards[k] + l).classList.add(`${bgnSlotType}`);
+    }
+    document.getElementById('btn-card' + 10 + i).classList.remove(`${bgnSlotType}`);
+    document.getElementById('btn-card' + 10 + i).classList.add(`${bgnActiveType}`);
 }

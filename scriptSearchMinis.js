@@ -14,23 +14,22 @@ function sortMiniPokes(searchName) {
         if (result == true) {
             document.getElementById('search-results').innerHTML += `<p>${searchText}</p><img src="${myPokesAsObject[k]['imgUrl']}" style="width: 100px">`;
         };
-
     }
 }
 
 
-function searchIndexOfName(searchName) {
-    for (let i = 0; i < myPokesAsObject.length; i++) {
-        let nameGerman = myPokesAsObject[i]['nameGerman'];
-        if (nameGerman) {
-            nameGerman = nameGerman.toLowerCase();
-        }
-        if (searchName == nameGerman) {
-            let index = i;
-            return index;
-        }
-    }
-}
+// function searchIndexOfName(searchName) {
+//     for (let i = 0; i < myPokesAsObject.length; i++) {
+//         let nameGerman = myPokesAsObject[i]['nameGerman'];
+//         if (nameGerman) {
+//             nameGerman = nameGerman.toLowerCase();
+//         }
+//         if (searchName == nameGerman) {
+//             let index = i;
+//             return index;
+//         }
+//     }
+// }
 
 
 async function showFirstPoke() {

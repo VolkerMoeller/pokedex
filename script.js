@@ -21,17 +21,46 @@ let resp1GeneralInfoAsJSON;
 let resp2SpeciesInfoAsJSON;
 let resp3AbilitiesInfoAsJSON;
 let pokeCounter = 11;
-let pokeCounterStep = 4;
+let pokeCounterStep = 2;
 let scrollCounter = 1;
 let nextToLoadNr = 1;
 let functionRunning = false;
 let functionRunning2 = false;
+let start = nextToLoadNr;
+let end = pokeCounter;
+let currentPokeNr = 1;
+
+let cardIdsPokeMini = ['10', '10', '10']
+let cardIdsPokeAll = ['1', '2', '3', '4']
 
 
 async function init() {
+    await load();
+    pokeMiniAll();
+}
+
+
+async function pokeMiniAll() {
+    await renderPokMini();
+    await showPokeMinis();
+    renderPokeMiniNavigation(1, cardIdsPokeMini);
+    renderPokMiniSearch();
+    renderPokMiniFavorites();
+}
+
+async function showPokeMinis() {
+    if (myPokesAsObject.length > 1) {
+        showSavedPokeMini(1, myPokesAsObject.length - 1);
+    } else {
+        showNextPokeMini(start, end);
+    }
+}
+
+
+async function showNextPokeMini(start, end) {
     if (functionRunning == false) {
         functionRunning == true;
-        for (let i = nextToLoadNr; i <= pokeCounter; i++) {
+        for (let i = start; i <= end; i++) {
             await loadPokemonData(i);
             await buildMyPokeObject(i);
             await fillMyPokeObject(i);
@@ -39,8 +68,22 @@ async function init() {
             await updateCounter(i);
         }
         loadPokemonAbilitiesData();
-        nextToLoadNr = pokeCounter + 1;
-        pokeCounter = pokeCounter + pokeCounterStep;
+        start = end + 1;
+        end = end + pokeCounterStep;
+    }
+    functionRunning == false;
+}
+
+
+async function showSavedPokeMini(start, end) {
+    if (functionRunning == false) {
+        functionRunning == true;
+        for (let i = start; i <= end; i++) {
+            await renderPokeMini(i);
+            updateCounter(i);
+        }
+        start = end + 1;
+        end = end + pokeCounterStep;
     }
     functionRunning == false;
 }
@@ -52,6 +95,7 @@ async function loadPokemonAbilitiesData() {
         await defResp3(url3);
         fillMyPokeObjectWithAbilitieData(i);
     }
+    save();
 }
 
 
@@ -173,6 +217,6 @@ function searchIndexOfGermanGeneraFlavor(index) {
 
 function generateHTMLCounter(i) {
     return `
-    <div class="counter">${i} von ${pokeCounter} geladen.</div>
+    <div class="counter">${i} von 1010 geladen.</div>
     `
 }

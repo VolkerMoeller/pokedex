@@ -11,35 +11,29 @@
     <link rel="stylesheet" href="colors.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="stylePokeMinis.css">
-    <script src="script.js"></script>
     <script src="scriptSearchMinis.js"></script>
-    <script src="scriptPokeMinis.js"></script>
-    <script src="scriptGoToTop.js"></script>
+    <script src="scriptRenderPokeMiniAll.js"></script>
+    <script src="scriptGenHTMLPokeMiniAll.js"></script>
+    <script src="scriptRenderPokeMiniAllCards.js"></script>
+    <script src="scriptGenHTMLPokeMiniSearch.js"></script>
+    <script src="scriptGenHTMLPokeMiniFavorites.js"></script>
+    <script src="scriptOnScroll.js"></script>
+    <script src="scriptCards.js"></script>
+    <script src="srciptLocalStorage.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body onload="init()">
     <div id="content" class="content">
-        <div id="pokedexMinis-all" class="pokeMinis-all">
-            <div id="miniHeader" class="miniHeader">
-                <h1>PokeMöller</h1>
-                <div id="miniPokesCounter" class="miniPokesCounter"></div>
-            </div>
-            <div id="miniPokes" class="miniPokes">
-            </div>
-        </div>
-        <div id="pokedexMinis-search" class="pokedexMinis-search display-none">
-            <h1>Hier wird gesucht!</h1>
-            <div id="miniSearchByNameLine" class="searchByName">
-                <span>Suche nach </span>
-                <input id="mini-search-name" placeholder="Name" onkeydown="searchMiniPokeByName()">
-                <div id="search-results"></div>
-            </div>
-        </div>
+        <div id="pokedexMinis-all" class="pokeMinis-all"></div>
         <div id="pokedex-all" class="pokedex-all display-none"></div>
     </div>
+
     <div id="overlay" class="overlay display-none">
     </div>
-    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+    <!-- <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button> -->
+
 </body>
 
 </html>

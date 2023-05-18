@@ -1,5 +1,5 @@
 function save() {
-    let pokesText = JSON.stringify(pokes);
+    let pokesText = JSON.stringify(myPokesAsObject);
     localStorage.setItem('pokes', pokesText);
 }
 
@@ -7,7 +7,7 @@ function save() {
 async function load() {
     let pokesAsText = localStorage.getItem('pokes');
     if (pokesAsText) {
-        pokes = JSON.parse(pokesAsText);
+        myPokesAsObject = JSON.parse(pokesAsText);
     }
 }
 

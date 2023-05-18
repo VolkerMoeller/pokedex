@@ -1,4 +1,4 @@
-function generateHTMLPokedex(i) {
+function generateHTMLPokeAll(i) {
     return /*html*/`
     <div id="pokedex${i}" class="pokedex" style="transform: translateX(200%)">
         <div id="pokedex-top${i}" class="pokedex-top">
