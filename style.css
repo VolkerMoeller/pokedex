@@ -283,7 +283,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 13px;
+    gap: 15px;
     padding-left: 48px;
     padding-right: 48px;
     padding-bottom: 16px;

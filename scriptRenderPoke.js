@@ -1,7 +1,7 @@
 async function renderPoke(i) {
-    document.getElementById('pokedex-all').innerHTML += generateHTMLPokedex(i);
-    await loadCurrentPoke(i);
-    await loadCurrentSpecie(i);
+    document.getElementById('pokedex-all').innerHTML += generateHTMLPokeAll(i);
+    // await loadCurrentPoke(i);
+    // await loadCurrentSpecie(i);
     await renderPokeTop(i);
     await renderPokeBottom(i);
     await stylePokeBgnTop(i);
@@ -11,10 +11,10 @@ async function renderPoke(i) {
 
 
 async function renderPokeTop(i) {
-    let pokeSlot1 = pokes[i]['pokeSlot1'];
+    let pokeSlot1 = myPokesAsObject[i]['slot1'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
-    let pokeImg = pokes[i]['pokeImg'];
+    let pokeImg = myPokesAsObject[i]['imgUrl'];
     renderPokeId(i);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
@@ -32,9 +32,9 @@ function renderPokeToBlack(i, pokeSlot1){
 
 
 function renderPokeSlot2(i) {
-    if (pokes[i]['pokeSlot2'] == 'none') {
+    if (myPokesAsObject[i]['slot2'] == 'none') {
     } else {
-        let pokeSlot2 = pokes[i]['pokeSlot2'];
+        let pokeSlot2 = myPokesAsObject[i]['slot2'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
     }
@@ -58,7 +58,7 @@ function renderPokeFavorite(i, bgnType) {
 
 
 function renderPokeId(i) {
-    let pokeId = pokes[i]['pokeId'];
+    let pokeId = myPokesAsObject[i]['id'];
     let formatPokeId = format3LeftHandZeros(pokeId);
     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
 };
@@ -94,8 +94,8 @@ async function renderPokeBottomNavigation(i) {
 async function renderPokeBottom(i) {
     renderPokeCardAbout(i);
     renderPokeCardBaseStats(i);
-    renderPokeCardEvolution(i);
-    renderPokeCardMoves(i);
+    // renderPokeCardEvolution(i);
+    // renderPokeCardMoves(i);
 }
 
 

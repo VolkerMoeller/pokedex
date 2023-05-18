@@ -1,19 +1,3 @@
-function backToPokeMinis() {
-    initPokeMini();
-    document.getElementById('pokedexMinis-all').classList.remove('display-none');
-    document.getElementById('pokedex-all').classList.add('display-none');
-    document.getElementById('overlay').classList.add('display-none');
-}
-
-
-function showPokeCard(i) {
-    document.getElementById('pokedex-all').classList.remove('display-none');
-    document.getElementById('overlay').classList.remove('display-none');
-    showPokeBy(i, currentPokeNr);
-    topFunction();
-}
-
-
 async function renderPokMini() {
     document.getElementById('pokedexMinis-all').innerHTML = '';
     document.getElementById('pokedexMinis-all').innerHTML = generateHTMLPokeMiniAll();
@@ -114,7 +98,7 @@ function format3LeftHandZeros(value) {
 
 
 async function renderPokeMiniNavigation(i, cards) {
-    let pokeSlot1 = myPokesAsObject[i]['slot1'];
+    let pokeSlot1 = 'grass';
     let bgnSlotType = 'bgn-type-' + pokeSlot1;
     let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
     for (let k = 0; k < cards.length; k++) {

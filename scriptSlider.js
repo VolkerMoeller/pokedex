@@ -1,5 +1,5 @@
 function showPokeBy(searchId, i) {
-    if (searchId == i || searchId == 0 || searchId > pokes.length) {
+    if (searchId == i || searchId == 0 || searchId > myPokesAsObject.length) {
         return;
     }
     if (searchId == i + 1) {
@@ -18,7 +18,7 @@ function showPokeBy(searchId, i) {
 
 
 async function sliderOneRight() {
-    let endNr = pokes.length - 1;
+    let endNr = myPokesAsObject.length - 1;
     if (currentPokeNr < endNr) {
         let promise = [slideLeft(), pokeCaseLeft(), hideLeft(), slideToDeck()];
         await Promise.all(promise);
@@ -66,28 +66,28 @@ async function sliderOneLeft() {
 
 
 async function hideAll() {
-    for (let i = 1; i < pokes.length; i++) {
+    for (let i = 1; i < myPokesAsObject.length; i++) {
         document.getElementById('pokedex' + i).classList.add('display-none');
     }
 }
 
 
 async function showAll() {
-    for (let i = 1; i < pokes.length; i++) {
+    for (let i = 1; i < myPokesAsObject.length; i++) {
         document.getElementById('pokedex' + i).classList.remove('display-none');
     }
 }
 
 
 async function addTransitionToAll() {
-    for (let i = 1; i < pokes.length; i++) {
+    for (let i = 1; i < myPokesAsObject.length; i++) {
         document.getElementById('pokedex' + i).classList.add(`transition${millisec}`);
     }
 }
 
 
 async function removeTransitionFromAll() {
-    for (let i = 1; i < pokes.length; i++) {
+    for (let i = 1; i < myPokesAsObject.length; i++) {
         document.getElementById('pokedex' + i).classList.remove(`transition${millisec}`);
     }
 }
@@ -103,7 +103,7 @@ function slideLeft() {
     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(-100%);';
     document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(0%);';
     nextPokeNr++;
-    if (nextPokeNr < pokes.length) {
+    if (nextPokeNr < myPokesAsObject.length) {
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(100%);';
     }
 }
@@ -137,7 +137,7 @@ function slideToDeck() {
 
 
 function slideRight() {
-    if (nextPokeNr < pokes.length) {
+    if (nextPokeNr < myPokesAsObject.length) {
         document.getElementById('pokedex' + nextPokeNr).style = 'transform: translateX(200%);';
     }
     document.getElementById('pokedex' + currentPokeNr).style = 'transform: translateX(100%);';

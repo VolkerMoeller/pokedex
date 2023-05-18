@@ -29,14 +29,25 @@ let functionRunning2 = false;
 let start = nextToLoadNr;
 let end = pokeCounter;
 let currentPokeNr = 1;
-
+let beforePokeNr = currentPokeNr - 1;
+let nextPokeNr = currentPokeNr + 1;
 let cardIdsPokeMini = ['10', '10', '10']
 let cardIdsPokeAll = ['1', '2', '3', '4']
+let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 
 
 async function init() {
     await load();
     pokeMiniAll();
+    pokeAll();
+}
+
+
+function pokeAll() {
+    for (let i = 1; i < myPokesAsObject.length; i++) {
+        renderPoke(i);
+    }
 }
 
 

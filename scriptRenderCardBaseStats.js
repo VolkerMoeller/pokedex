@@ -1,6 +1,7 @@
 async function renderPokeCardBaseStats(i) {
     for (let j = 0; j < baseStatNames.length; j++) {
-        let value = currentPoke['stats'][j]['base_stat'];
+        
+        let value = resp1GeneralInfoAsJSON['stats'][j]['base_stat'];
         let valuePerCent = perCent(value);
         let id = baseStatId[j] + i;
         renderStatsAndProgressLine(i, baseStatNames[j], value, valuePerCent, id);   
