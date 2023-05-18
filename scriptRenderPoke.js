@@ -4,8 +4,8 @@ async function renderPoke(i) {
     // await loadCurrentSpecie(i);
     await renderPokeTop(i);
     await renderPokeBottom(i);
-    await stylePokeBgnTop(i);
-    await renderPokeBottomNavigation(i);
+    // await stylePokeBgnTop(i);
+    // await renderPokeBottomNavigation(i);
     amountRenderdPokes = amountRenderdPokes + 1;
 }
 
@@ -93,7 +93,7 @@ async function renderPokeBottomNavigation(i) {
 
 async function renderPokeBottom(i) {
     renderPokeCardAbout(i);
-    renderPokeCardBaseStats(i);
+    // renderPokeCardBaseStats(i);
     // renderPokeCardEvolution(i);
     // renderPokeCardMoves(i);
 }

@@ -13,6 +13,9 @@ let myPokesAsObject = [
         "abilityGerman": '',
         "abilityUrl": '',
         "abilityFlavor": '',
+        "stats": [],
+        "statsGerman": [],
+        "statsGermanUrl": [],
     }
 ]
 
@@ -35,7 +38,7 @@ let cardIdsPokeMini = ['10', '10', '10']
 let cardIdsPokeAll = ['1', '2', '3', '4']
 let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
 let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
-
+let amountRenderdPokes = 0;
 
 async function init() {
     await load();
@@ -78,7 +81,7 @@ async function showNextPokeMini(start, end) {
             await renderPokeMini(i);
             await updateCounter(i);
         }
-        loadPokemonAbilitiesData();
+        loadPokemonAbilitiesAndStatsData();
         start = end + 1;
         end = end + pokeCounterStep;
     }
@@ -100,11 +103,14 @@ async function showSavedPokeMini(start, end) {
 }
 
 
-async function loadPokemonAbilitiesData() {
+async function loadPokemonAbilitiesAndStatsData() {
     for (let i = nextToLoadNr; i <= myPokesAsObject.length - 1; i++) {
         let url3 = myPokesAsObject[i]['abilityUrl'];
+        let url4 = myPokesAsObject[i]['statsGermanUrl'];
         await defResp3(url3);
         fillMyPokeObjectWithAbilitieData(i);
+        // await defResp4(url4);
+        fillMyPokeObjectWithStatsData(i);
     }
     save();
 }
@@ -140,6 +146,11 @@ async function defResp3(url3) {
     resp3AbilitiesInfoAsJSON = await resp3AsSthFromServer.json();
 }
 
+async function defResp4(url4) {
+    let resp4AsSthFromServer = await fetch(url4);
+    resp4StatsInfoAsJSON = await resp4AsSthFromServer.json();
+}
+
 
 async function buildMyPokeObject() {
     myPokesAsObject.push(
@@ -157,6 +168,9 @@ async function buildMyPokeObject() {
             "abilityGerman": '',
             "abilityUrl": '',
             "abilityFlavor": '',
+            "stats": [],
+            "statsGerman": [],
+            "statsGermanUrl": [],
         }
     );
 }
@@ -176,12 +190,23 @@ async function fillMyPokeObject(i) {
     myPokesAsObject[i]['abilityGerman'] = '';
     myPokesAsObject[i]['abilityUrl'] = resp1GeneralInfoAsJSON['abilities'][0]['ability']['url'];
     myPokesAsObject[i]['abilityFlavor'] = '';
+    myPokesAsObject[i]['statsValues'] = [];
+    myPokesAsObject[i]['statsGerman'] = [];
+    myPokesAsObject[i]['statsGermanUrl'] = [];
 }
 
 
 function fillMyPokeObjectWithAbilitieData(i) {
     myPokesAsObject[i]['abilityGerman'] = resp3AbilitiesInfoAsJSON['names'][searchIndexOfGermanAbilities('names')]['name'];
     myPokesAsObject[i]['abilityFlavor'] = resp3AbilitiesInfoAsJSON['flavor_text_entries'][searchIndexOfGermanAbilities('flavor_text_entries')]['flavor_text'];
+}
+
+
+function fillMyPokeObjectWithStatsData(i) {
+    for (let j = 0; j < resp1GeneralInfoAsJSON['stats'].length; j++) {
+        myPokesAsObject[i]['statsValues'].push(resp1GeneralInfoAsJSON['stats'][j]['base_stat']);
+        myPokesAsObject[i]['statsGermanUrl'].push(resp1GeneralInfoAsJSON['stats'][j]['stat']['url']);            
+    }
 }
 
 
