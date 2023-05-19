@@ -17,5 +17,6 @@ function updateProgress() {
 
 
 function generateHTMLAmountLoadedPokes() {
-    return 'Es wurden ' + amountLoadedPokes + ' von 1010 geladen';
+    let amountLoadedPokes = myPokesAsObject.length - 1;
+    return amountLoadedPokes + ' von ' + amountPokes + ' geladen';
 }

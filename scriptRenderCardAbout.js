@@ -1,6 +1,6 @@
 async function renderPokeCardAbout(i) {
     renderPokeGenera(i);
-    renderPokeGermanName(i);
+    // renderPokeGermanName(i);
     renderPokeFlavor(i);
     renderPokeWeightAndHeight(i);
     renderPokeAbility(i);
@@ -29,10 +29,10 @@ async function renderPokeFlavor(i) {
 };
 
 
-async function renderPokeGermanName(i) {
-    let pokeNameGerman = myPokesAsObject['nameGerman'];
-    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
-};
+// async function renderPokeGermanName(i) {
+//     let pokeNameGerman = myPokesAsObject['nameGerman'];
+//     document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
+// };
 
 
 function renderPokeGenera(i) {

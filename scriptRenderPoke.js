@@ -1,10 +1,8 @@
 async function renderPoke(i) {
     document.getElementById('pokedex-all').innerHTML += generateHTMLPokeAll(i);
-    // await loadCurrentPoke(i);
-    // await loadCurrentSpecie(i);
     await renderPokeTop(i);
     await renderPokeBottom(i);
-    // await stylePokeBgnTop(i);
+    await stylePokeBgnTop(i);
     // await renderPokeBottomNavigation(i);
     amountRenderdPokes = amountRenderdPokes + 1;
 }
@@ -15,6 +13,7 @@ async function renderPokeTop(i) {
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
     let pokeImg = myPokesAsObject[i]['imgUrl'];
+    renderPokeGermanName(i);
     renderPokeId(i);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
@@ -22,6 +21,12 @@ async function renderPokeTop(i) {
     renderPokeImage(i, pokeImg);
     renderPokeToBlack(i, pokeSlot1);
 }
+
+
+function renderPokeGermanName(i) {
+    let pokeNameGerman = myPokesAsObject[i]['nameGerman'];
+    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
+};
 
 
 function renderPokeToBlack(i, pokeSlot1){
@@ -104,3 +109,7 @@ async function stylePokeBgnTop(i) {
     setBgnByType(pokeType, i);
 }
 
+
+function setBgnByType(pokeType, i) {
+    document.getElementById('pokedex-top' + i).classList.add('bgn-type-' + pokeType);
+}

@@ -1,7 +1,7 @@
 async function renderPokMini() {
     document.getElementById('pokedexMinis-all').innerHTML = '';
     document.getElementById('pokedexMinis-all').innerHTML = generateHTMLPokeMiniAll();
- }
+}
 
 async function renderPokeMini(i) {
     let promises = [
@@ -97,14 +97,13 @@ function format3LeftHandZeros(value) {
 }
 
 
-async function renderPokeMiniNavigation(i, cards) {
+async function renderPokeMiniNavigation(cardIdsPokeMini) {
     let pokeSlot1 = 'grass';
     let bgnSlotType = 'bgn-type-' + pokeSlot1;
     let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
-    for (let k = 0; k < cards.length; k++) {
-        let l = k + 1;
-        document.getElementById('btn-card' + cards[k] + l).classList.add(`${bgnSlotType}`);
+    for (let k = 0; k < cardIdsPokeMini.length; k++) {
+        document.getElementById('btn-card' + cardIdsPokeMini[k] + 1).classList.add(`${bgnSlotType}`);
     }
-    document.getElementById('btn-card' + 10 + i).classList.remove(`${bgnSlotType}`);
-    document.getElementById('btn-card' + 10 + i).classList.add(`${bgnActiveType}`);
+    document.getElementById('btn-card101').classList.remove(`${bgnSlotType}`);
+    document.getElementById('btn-card101').classList.add(`${bgnActiveType}`);
 }

@@ -35,7 +35,8 @@ let end = pokeCounter;
 let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
-let cardIdsPokeMini = ['10', '10', '10']
+// let cardIdsPokeMini = ['10', '10', '10']
+let cardIdsPokeMini = ['10', '20', '30']
 let cardIdsPokeAll = ['1', '2', '3', '4']
 // let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
 // let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
@@ -44,12 +45,12 @@ let indexOfGermanData;
 let slot2FromServer;
 let millisec = 0;
 let amountPokes = 1010;
-let amountLoadedPokes = 0;
 let onScrollLoading = true;
+let pokesFavorites =[];
 
 async function init() {
     await load();
-    pokeMiniAll();
+    await pokeMiniAll();
     pokeAll();
 }
 
@@ -64,7 +65,7 @@ async function pokeAll() {
 async function pokeMiniAll() {
     await renderPokMini();
     await showPokeMinis();
-    renderPokeMiniNavigation(1, cardIdsPokeMini);
+    renderPokeMiniNavigation(cardIdsPokeMini);
     renderPokMiniSearch();
     renderPokMiniFavorites();
 }

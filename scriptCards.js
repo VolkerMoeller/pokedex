@@ -1,14 +1,13 @@
 function showCurrentCardById(i, j, cards) {
-    setAllCardsToDefault(cards);
+    setAllCardsToDefault(j, cards);
     setCurrentCardToActiv(i);
-    setCurrentSlideOnActiv(j, cards);
+    setCurrentSlideOnActiv(i, j, cards);
 }
 
 
-function setAllCardsToDefault(cards) {
-    for (let j = 0; j < cards.length; j++) {
-        let k = j + 1;
-        let cardToHide = 'card' + cards[j] + k;
+function setAllCardsToDefault(j, cards) {
+    for (let k = 0; k < cards.length; k++) {
+        let cardToHide = 'card' + cards[k] + j;
         document.getElementById(cardToHide).classList.add('display-none');
     }
 }
@@ -20,30 +19,33 @@ function setCurrentCardToActiv(i) {
 }
 
 
-function setCurrentSlideOnActiv(j, cards) {
-    setAllSliderToDefault(cards);
+function setCurrentSlideOnActiv(i,j, cards) {
+    setAllSliderToDefault(j,cards);
     let slot1 = myPokesAsObject[currentPokeNr]['slot1'];
     let bgnActiveType = 'bgn-slot-type-' + slot1;
     let bgnDefaultType = 'bgn-type-' + slot1;
-    let currentSlide = j;
+    let currentSlide = 'btn-' + i;
     document.getElementById(currentSlide).classList.remove(`${bgnDefaultType}`);
     document.getElementById(currentSlide).classList.add(`${bgnActiveType}`);
 }
 
 
-function setAllSliderToDefault(cards) {
+function setAllSliderToDefault(j, cards) {
     let slot1 = myPokesAsObject[currentPokeNr]['slot1'];
     let bgnActiveType = 'bgn-slot-type-' + slot1;
     let bgnDefaultType = 'bgn-type-' + slot1;
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     for (let i = 0; i < cards.length; i++) {
-        let j = i + 1;
         let sliderId = 'btn-card' + cards[i] + j;
         document.getElementById(sliderId).classList.remove(`${bgnActiveType}`);
         document.getElementById(sliderId).classList.remove(`${bgnHoverType}`);
         document.getElementById(sliderId).classList.add(`${bgnDefaultType}`);
     }
 }
+
+
+
+
 
 
 function hoverNavigationOver(j, i) {
@@ -58,6 +60,7 @@ function hoverNavigationOut(j, i) {
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     document.getElementById('btn-card' + j + i).classList.remove(`${bgnHoverType}`);
 }
+
 
 function hoverNavigationOverStandard(j, i) {
     let slot1 = myPokesAsObject[1]['slot1'];
