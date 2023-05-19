@@ -54,16 +54,16 @@ function generateHTMLPokeAll(i) {
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
         <div class="navigation">
             <div onmouseover="hoverNavigationOver(1, ${i})" onmouseout="hoverNavigationOut(1, ${i})">
-                <button onclick="showCurrentCardById('card1${i}', 'btn-card1${i}', cardIdsPokeAll)" id="btn-card1${i}">About</button>
+                <button onclick="showCurrentCardById('card1${i}', ${i}, cardIdsPokeAll)" id="btn-card1${i}">About</button>
             </div>
             <div onmouseover="hoverNavigationOver(2, ${i})" onmouseout="hoverNavigationOut(2, ${i})">
-                <button onclick="showCurrentCardById('card2${i}', 'btn-card2${i}', cardIdsPokeAll)" id="btn-card2${i}">Base Stats</button>
+                <button onclick="showCurrentCardById('card2${i}', ${i}, cardIdsPokeAll)" id="btn-card2${i}">Base Stats</button>
             </div>
             <div onmouseover="hoverNavigationOver(3, ${i})" onmouseout="hoverNavigationOut(3, ${i})">
-                <button onclick="showCurrentCardById('card3${i}', 'btn-card3${i}', cardIdsPokeAll)" id="btn-card3${i}">Evolution</button>
+                <button onclick="showCurrentCardById('card3${i}', ${i}, cardIdsPokeAll)" id="btn-card3${i}">Evolution</button>
             </div>
             <div onmouseover="hoverNavigationOver(4, ${i})" onmouseout="hoverNavigationOut(4, ${i})">
-                <button onclick="showCurrentCardById('card4${i}', 'btn-card4${i}', cardIdsPokeAll)" id="btn-card4${i}">5 Moves</button>
+                <button onclick="showCurrentCardById('card4${i}', ${i}, cardIdsPokeAll)" id="btn-card4${i}">5 Moves</button>
             </div>
         </div>
         <div id="card1${i}" class="cards"></div>

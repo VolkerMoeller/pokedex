@@ -3,7 +3,7 @@ async function renderPoke(i) {
     await renderPokeTop(i);
     await renderPokeBottom(i);
     await stylePokeBgnTop(i);
-    // await renderPokeBottomNavigation(i);
+    await renderPokeBottomNavigation(i);
     amountRenderdPokes = amountRenderdPokes + 1;
 }
 
@@ -85,10 +85,10 @@ function changeToBlack(i, pokeSlot1) {
 
 
 async function renderPokeBottomNavigation(i) {
-    let pokeSlot1 = pokes[i]['pokeSlot1'][0];
+    let pokeSlot1 = myPokesAsObject[i]['slot1'];
     let bgnSlotType = 'bgn-type-' + pokeSlot1;
     let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
-    for (let k = 1; k <= 4; k++) {
+    for (let k = 1; k <= cardIdsPokeAll.length; k++) {
         document.getElementById('btn-card' + k + i).classList.add(`${bgnSlotType}`);
     }
     document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
