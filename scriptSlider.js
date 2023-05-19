@@ -88,6 +88,7 @@ async function addTransitionToAll() {
 
 async function removeTransitionFromAll() {
     for (let i = 1; i < myPokesAsObject.length; i++) {
+        // minus 1, da dass Letzte (beiden Letzten?) geladene erst beim nächsten Scrollen gerendert wird.
         document.getElementById('pokedex' + i).classList.remove(`transition${millisec}`);
     }
 }

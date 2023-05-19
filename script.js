@@ -25,7 +25,7 @@ let resp2SpeciesInfoAsJSON;
 let resp3AbilitiesInfoAsJSON;
 let resp4StatsInfoAsJSON;
 let pokeCounter = 11;
-let pokeCounterStep = 2;
+let pokeCounterStep = 1;
 let scrollCounter = 1;
 let nextToLoadNr = 1;
 let functionRunning = false;
@@ -37,11 +37,15 @@ let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
 let cardIdsPokeMini = ['10', '10', '10']
 let cardIdsPokeAll = ['1', '2', '3', '4']
-let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
-let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
+// let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+// let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 let amountRenderdPokes = 0;
 let indexOfGermanData;
 let slot2FromServer;
+let millisec = 0;
+let amountPokes = 1010;
+let amountLoadedPokes = 0;
+let onScrollLoading = true;
 
 async function init() {
     await load();
@@ -50,9 +54,9 @@ async function init() {
 }
 
 
-function pokeAll() {
+async function pokeAll() {
     for (let i = 1; i < myPokesAsObject.length; i++) {
-        renderPoke(i);
+        await renderPoke(i);
     }
 }
 
@@ -82,6 +86,7 @@ async function showNextPokeMini(start, end) {
             await buildMyPokeObject(i);
             await fillMyPokeObject(i);
             await renderPokeMini(i);
+            await renderPoke(i);
             await updateCounter(i);
         }
         loadPokemonAbilitiesAndStatsData();

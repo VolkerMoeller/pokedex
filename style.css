@@ -594,3 +594,7 @@ h1 {
     align-items: center;
     justify-content: center;
 }
+
+.counter {
+    margin-bottom: 8px;
+}

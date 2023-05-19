@@ -10,8 +10,8 @@ function searchPokeByName(i) {
 
 
 function searchIndexOfName(searchName) {
-    for (let i = 0; i < pokes.length; i++) {
-        let nameGerman = pokes[i]['pokeNameGerman'][0];
+    for (let i = 0; i < myPokesAsObject.length; i++) {
+        let nameGerman = myPokesAsObject[i]['nameGerman'];
         if (nameGerman) {
             nameGerman = nameGerman.toLowerCase();
         }
@@ -41,7 +41,7 @@ async function showLastPoke() {
     currentWait = 0;
     let start = currentPokeNr;
     await addTransitionToAll();
-    for (let i = start; i < pokes.length; i++) {
+    for (let i = start; i < myPokesAsObject.length; i++) {
         let promise1st = [hideAll(), sliderOneRight()];
         await Promise.all(promise1st);
     }

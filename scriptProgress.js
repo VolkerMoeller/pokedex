@@ -11,7 +11,7 @@ function renderAmountLoadedPokes() {
 
 
 function updateProgress() {
-    let progressWidth = pokes.length / amountPokes * 100;
+    let progressWidth = myPokesAsObject.length / amountPokes * 100;
     document.getElementById('progress' + currentPokeNr).style = `width: ${progressWidth}%`;
 }
 
