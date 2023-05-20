@@ -93,6 +93,3 @@ async function getGermanEvolut2ndName(language, evolut2ndNames, j, i, evolut2ndI
         document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuletzt: <b><div class="evol-name">${germanEvolut2ndName}</b> # ${formatedId}</div></div>`;
     }
 }
-
-
-

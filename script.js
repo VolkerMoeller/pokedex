@@ -44,6 +44,9 @@ let millisec = 0;
 let amountPokes = 1010;
 let onScrollLoading = true;
 let pokesFavorites = [];
+let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
+
 
 
 async function init() {
