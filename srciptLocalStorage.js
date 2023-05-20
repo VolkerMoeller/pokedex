@@ -1,4 +1,4 @@
-function save() {
+async function save() {
     let pokesText = JSON.stringify(myPokesAsObject);
     localStorage.setItem('pokes', pokesText);
 }

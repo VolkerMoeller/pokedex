@@ -14,9 +14,9 @@ async function scrollFunction() {
     let tester = scrollCounter % interval;
     // console.log(tester);
     if (tester == 0 && onScrollLoading == true) {
-      let xstart = myPokesAsObject.length;
-      let xend = xstart + pokeCounterStep;
-      showNextPokeMini(xstart, xend);
+      let start = myPokesAsObject.length;
+      let end = start + pokeCounterStep;
+      // showNextPokeMini(start, end);
     }
   }
 }

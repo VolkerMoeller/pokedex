@@ -1,7 +1,7 @@
 let myPokesAsObject = [
     {
-        "id": '',
-        "name": '',
+        "id": 0,
+        "name": 'null',
         "nameGerman": '',
         "slot1": '',
         "slot2": '',
@@ -17,7 +17,7 @@ let myPokesAsObject = [
         "statsGerman": [],
         "statsGermanUrl": [],
     }
-]
+];
 
 
 let resp1GeneralInfoAsJSON;
@@ -25,7 +25,7 @@ let resp2SpeciesInfoAsJSON;
 let resp3AbilitiesInfoAsJSON;
 let resp4StatsInfoAsJSON;
 let pokeCounter = 11;
-let pokeCounterStep = 1;
+let pokeCounterStep = 10;
 let scrollCounter = 1;
 let nextToLoadNr = 1;
 let functionRunning = false;
@@ -35,27 +35,86 @@ let end = pokeCounter;
 let currentPokeNr = 1;
 let beforePokeNr = currentPokeNr - 1;
 let nextPokeNr = currentPokeNr + 1;
-// let cardIdsPokeMini = ['10', '10', '10']
 let cardIdsPokeMini = ['10', '20', '30']
 let cardIdsPokeAll = ['1', '2', '3', '4']
-// let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
-// let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 let amountRenderdPokes = 0;
 let indexOfGermanData;
 let slot2FromServer;
 let millisec = 0;
 let amountPokes = 1010;
 let onScrollLoading = true;
-let pokesFavorites =[];
+let pokesFavorites = [];
+
 
 async function init() {
     await load();
+    await startMyPokesAsObject();
+    await renderMyPokes();
+}
+
+async function renderMyPokes() {
     await pokeMiniAll();
-    pokeAll();
+    await pokeSliderAll();
+    
+    // if (functionRunning == false) {
+        // functionRunning == true;
+        // for (let i = 1; i < myPokesAsObject.length; i++) {
+            // await loadBasicPokemonData(i);
+            // await buildMyPokeObject(i);
+            // await fillMyPokeObject(i);
+            // renderPokeMini(1);
+            // await renderPoke(i);
+            // await updateCounter(i);
+            // }
+            // loadPokemonAbilitiesAndStatsData();
+            // start = end + 1;
+        // end = end + pokeCounterStep;
+        // }
+        // functionRunning == false;
+        
+        
+};
+
+async function startMyPokesAsObject() {
+    if (functionRunning == false) {
+        functionRunning == true;
+        let start = myPokesAsObject.length;
+        let end = myPokesAsObject.length + pokeCounterStep;
+        for (let pokeNr = start; pokeNr <= end; pokeNr++) {
+            await makeMyPokeObjekt(pokeNr);
+            // das goldene await!!!
+        }
+        console.log(myPokesAsObject);
+    }
+    functionRunning == false;
 }
 
 
-async function pokeAll() {
+async function makeMyPokeObjekt(i) {
+    await loadBasicPokemonData(i);
+    await buildMyPokeObject();
+    await fillAndSavePokeObject(i);
+    await loadPokemonDataAblility(i);
+    await fillMyPokeObjectWithAbilitieData(i);
+    await fillMyPokeObjectWithStatsData(i);
+    await getStatsGermanNames(i);
+    await save();
+}
+
+
+async function fillAndSavePokeObject(i) {
+    await fillMyPokeObject(i);
+    await save();
+};
+
+
+async function loadPokemonDataAblility(i) {
+    let url3 = myPokesAsObject[i]['abilityUrl'];
+    await defResp3(url3);
+};
+
+
+async function pokeSliderAll() {
     for (let i = 1; i < myPokesAsObject.length; i++) {
         await renderPoke(i);
     }
@@ -70,11 +129,10 @@ async function pokeMiniAll() {
     renderPokMiniFavorites();
 }
 
+
 async function showPokeMinis() {
     if (myPokesAsObject.length > 1) {
         showSavedPokeMini(1, myPokesAsObject.length - 1);
-    } else {
-        showNextPokeMini(start, end);
     }
 }
 
@@ -83,7 +141,7 @@ async function showNextPokeMini(start, end) {
     if (functionRunning == false) {
         functionRunning == true;
         for (let i = start; i <= end; i++) {
-            await loadPokemonData(i);
+            await loadBasicPokemonData(i);
             await buildMyPokeObject(i);
             await fillMyPokeObject(i);
             await renderPokeMini(i);
@@ -116,8 +174,8 @@ async function loadPokemonAbilitiesAndStatsData() {
     for (let i = nextToLoadNr; i <= myPokesAsObject.length - 1; i++) {
         let url3 = myPokesAsObject[i]['abilityUrl'];
         await defResp3(url3);
-        fillMyPokeObjectWithAbilitieData(i);
-        fillMyPokeObjectWithStatsData(i);
+        await fillMyPokeObjectWithAbilitieData(i);
+        await fillMyPokeObjectWithStatsData(i);
         await getStatsGermanNames(i);
     }
     save();
@@ -135,26 +193,28 @@ async function getStatsGermanNames(i) {
 
 async function updateCounter(i) {
     document.getElementById('miniPokesCounter').innerHTML = generateHTMLCounter(i);
-
 }
 
 
-async function loadPokemonData(i) {
+async function loadBasicPokemonData(i) {
     const url1 = 'https://pokeapi.co/api/v2/pokemon/' + i;
     const url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + i;
     await Promise.all([defResp1(url1), defResp2(url2)]);
+    return resp1GeneralInfoAsJSON, resp2SpeciesInfoAsJSON;
 }
 
 
 async function defResp1(url1) {
     let resp1AsSthFromServer = await fetch(url1);
     resp1GeneralInfoAsJSON = await resp1AsSthFromServer.json();
+    return resp1AsSthFromServer;
 }
 
 
 async function defResp2(url2) {
     let resp2AsSthFromServer = await fetch(url2);
     resp2SpeciesInfoAsJSON = await resp2AsSthFromServer.json();
+    return resp2AsSthFromServer;
 }
 
 
@@ -162,6 +222,7 @@ async function defResp3(url3) {
     let resp3AsSthFromServer = await fetch(url3);
     resp3AbilitiesInfoAsJSON = await resp3AsSthFromServer.json();
 }
+
 
 async function defResp4(url4) {
     let resp4AsSthFromServer = await fetch(url4);
@@ -217,7 +278,7 @@ async function fillMyPokeObject(i) {
 }
 
 
-function fillMyPokeObjectWithAbilitieData(i) {
+async function fillMyPokeObjectWithAbilitieData(i) {
     searchIndexOfGermanData(resp3AbilitiesInfoAsJSON, 'names');
     myPokesAsObject[i]['abilityGerman'] = resp3AbilitiesInfoAsJSON['names'][indexOfGermanData]['name'];
     searchIndexOfGermanData(resp3AbilitiesInfoAsJSON, 'flavor_text_entries');
