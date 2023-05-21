@@ -13,7 +13,7 @@ let myPokesAsObject = [
         "abilityGerman": '',
         "abilityUrl": '',
         "abilityFlavor": '',
-        "stats": [],
+        "speciesUrl": [],
         "statsGerman": [],
         "statsGermanUrl": [],
     }
@@ -24,8 +24,10 @@ let resp1GeneralInfoAsJSON;
 let resp2SpeciesInfoAsJSON;
 let resp3AbilitiesInfoAsJSON;
 let resp4StatsInfoAsJSON;
+// let resp5SpeciesInfoAsJSON;
+let resp6EvolutionInfoAsJSON;
 let pokeCounter = 11;
-let pokeCounterStep = 10;
+let pokeCounterStep = 2;
 let scrollCounter = 1;
 let nextToLoadNr = 1;
 let functionRunning = false;
@@ -46,7 +48,10 @@ let onScrollLoading = true;
 let pokesFavorites = [];
 let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
 let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
-
+let currentGermanStartPokeName;
+let currentGermanEvolut1stName;
+let currentGermanEvolut2ndName;
+let countMoves = 5;
 
 
 async function init() {
@@ -57,31 +62,16 @@ async function init() {
 
 async function renderMyPokes() {
     await pokeMiniAll();
-    await pokeSliderAll();
-    
-    // if (functionRunning == false) {
-        // functionRunning == true;
-        // for (let i = 1; i < myPokesAsObject.length; i++) {
-            // await loadBasicPokemonData(i);
-            // await buildMyPokeObject(i);
-            // await fillMyPokeObject(i);
-            // renderPokeMini(1);
-            // await renderPoke(i);
-            // await updateCounter(i);
-            // }
-            // loadPokemonAbilitiesAndStatsData();
-            // start = end + 1;
-        // end = end + pokeCounterStep;
-        // }
-        // functionRunning == false;
-        
-        
+    await pokeSliderAll();    
 };
 
 async function startMyPokesAsObject() {
     if (functionRunning == false) {
         functionRunning == true;
         let start = myPokesAsObject.length;
+        if (myPokesAsObject.length == 1) {
+            pokeCounterStep = 11;
+        }
         let end = myPokesAsObject.length + pokeCounterStep;
         for (let pokeNr = start; pokeNr <= end; pokeNr++) {
             await makeMyPokeObjekt(pokeNr);
@@ -101,6 +91,7 @@ async function makeMyPokeObjekt(i) {
     await fillMyPokeObjectWithAbilitieData(i);
     await fillMyPokeObjectWithStatsData(i);
     await getStatsGermanNames(i);
+    // await loadPokemonDataSpecies(i);
     await save();
 }
 
@@ -115,6 +106,12 @@ async function loadPokemonDataAblility(i) {
     let url3 = myPokesAsObject[i]['abilityUrl'];
     await defResp3(url3);
 };
+
+
+// async function loadPokemonDataSpecies(i) {
+//     let url5 = myPokesAsObject[i]['speciesUrl'];
+//     await defResp5(url5);
+// };
 
 
 async function pokeSliderAll() {
@@ -233,6 +230,18 @@ async function defResp4(url4) {
 }
 
 
+// async function defResp5(url5) {
+//     let resp5AsSthFromServer = await fetch(url5);
+//     resp5SpeciesInfoAsJSON = await resp5AsSthFromServer.json();
+// }
+
+
+async function defResp6(url6) {
+    let resp6AsSthFromServer = await fetch(url6);
+    resp6EvolutionInfoAsJSON = await resp6AsSthFromServer.json();
+}
+
+
 async function buildMyPokeObject() {
     myPokesAsObject.push(
         {
@@ -249,7 +258,7 @@ async function buildMyPokeObject() {
             "abilityGerman": '',
             "abilityUrl": '',
             "abilityFlavor": '',
-            "stats": [],
+            "speciesUrl": [],
             "statsGerman": [],
             "statsGermanUrl": [],
         }
@@ -276,6 +285,7 @@ async function fillMyPokeObject(i) {
     myPokesAsObject[i]['abilityUrl'] = resp1GeneralInfoAsJSON['abilities'][0]['ability']['url'];
     myPokesAsObject[i]['abilityFlavor'] = '';
     myPokesAsObject[i]['statsValues'] = [];
+    myPokesAsObject[i]['speciesUrl'] = resp1GeneralInfoAsJSON['species']['url'];
     myPokesAsObject[i]['statsGerman'] = [];
     myPokesAsObject[i]['statsGermanUrl'] = [];
 }
@@ -297,9 +307,16 @@ async function fillMyPokeObjectWithStatsData(i) {
 }
 
 
+
 async function fillMyPokeObjectWithStatsDataGerman(i) {
     searchIndexOfGermanData(resp4StatsInfoAsJSON, 'names')
     myPokesAsObject[i]['statsGerman'].push(resp4StatsInfoAsJSON['names'][indexOfGermanData]['name']);
+}
+
+
+async function fillMyPokeObjectWithSpeciesDataGerman(i) {
+    searchIndexOfGermanData(resp5SpeciesInfoAsJSON, 'names')
+    myPokesAsObject[i]['statsGerman'].push(resp5SpeciesInfoAsJSON['names'][indexOfGermanData]['name']);
 }
 
 
@@ -367,4 +384,29 @@ function generateHTMLCounter(i) {
     return `
     <div class="counter">${i} von 1010 geladen.</div>
     `
+}
+
+// 
+
+async function loadGermanStartPokeName(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentGermanStartPokeName = responseAsJSON;
+    return currentGermanStartPokeName;
+}
+
+
+async function loadGermanEvolut1stName(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentGermanEvolut1stName = responseAsJSON;
+    return currentGermanEvolut1stName;
+}
+
+
+async function loadGermanEvolut2ndName(url) {
+    let response = await fetch(url);
+    let responseAsJSON = await response.json();
+    currentGermanEvolut2ndName = responseAsJSON;
+    return currentGermanEvolut2ndName;
 }

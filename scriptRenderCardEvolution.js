@@ -1,24 +1,24 @@
 async function renderPokeCardEvolution(i) {
-    await loadCurrentSpecie(i);
-    let evolutionChainURL = currentSpecie['evolution_chain']['url'];
-    await loadCurrentEvolution(evolutionChainURL);
-    await getNamePokeStart(currentEvolution, i);
+    // await loadCurrentSpecie(i);
+    let evolutionChainURL =  resp2SpeciesInfoAsJSON['evolution_chain']['url'];
+    await defResp6(evolutionChainURL);
+    await getNamePokeStart(resp6EvolutionInfoAsJSON, i);
 }
 
 
-async function getNamePokeStart(currentEvolution, i) {
-    let startPokeNameURL = currentEvolution['chain']['species']['url'];
+async function getNamePokeStart(resp6EvolutionInfoAsJSON, i) {
+    let startPokeNameURL =  resp6EvolutionInfoAsJSON['chain']['species']['url'];
     await loadGermanStartPokeName(startPokeNameURL);
     let startPokeId = currentGermanStartPokeName['id'];
     let startPokeNames = currentGermanStartPokeName['names'];
     await searchGermanStartPokeName(startPokeNames, i, startPokeId);
-    await getNamePokeEvolut1st(currentEvolution, i);
+    await getNamePokeEvolut1st(resp6EvolutionInfoAsJSON, i);
 }
 
 
-async function getNamePokeEvolut1st(currentEvolution, i) {
-    if (currentEvolution['chain']['evolves_to'].length >= 1) {
-        let evolut1stNameURL = currentEvolution['chain']['evolves_to'][0]['species']['url']
+async function getNamePokeEvolut1st(resp6EvolutionInfoAsJSON, i) {
+    if (resp6EvolutionInfoAsJSON['chain']['evolves_to'].length >= 1) {
+        let evolut1stNameURL = resp6EvolutionInfoAsJSON['chain']['evolves_to'][0]['species']['url']
         await loadGermanEvolut1stName(evolut1stNameURL);
         let evolut1stId = currentGermanEvolut1stName['id'];
         let evolut1stNames = currentGermanEvolut1stName['names'];
@@ -27,13 +27,13 @@ async function getNamePokeEvolut1st(currentEvolution, i) {
         document.getElementById('card3' + i).innerHTML += `<div>Keine Weiterentwicklung</div>`;
         return;
     }
-    await getNamePokeEvolut2nd(currentEvolution, i);
+    await getNamePokeEvolut2nd(resp6EvolutionInfoAsJSON, i);
 }
 
 
-async function getNamePokeEvolut2nd(currentEvolution, i) {
-    if (currentEvolution['chain']['evolves_to'][0]['evolves_to'].length >= 1) {
-        let evolut2ndNameURL = currentEvolution['chain']['evolves_to'][0]['evolves_to'][0]['species']['url']
+async function getNamePokeEvolut2nd(resp6EvolutionInfoAsJSON, i) {
+    if (resp6EvolutionInfoAsJSON['chain']['evolves_to'][0]['evolves_to'].length >= 1) {
+        let evolut2ndNameURL = resp6EvolutionInfoAsJSON['chain']['evolves_to'][0]['evolves_to'][0]['species']['url']
         await loadGermanEvolut2ndName(evolut2ndNameURL);
         let evolut2ndId = currentGermanEvolut2ndName['id'];
         let evolut2ndNames = currentGermanEvolut2ndName['names'];
