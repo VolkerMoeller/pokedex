@@ -1,8 +1,15 @@
 async function renderPokeCardEvolution(i) {
-    // await loadCurrentSpecie(i);
-    let evolutionChainURL =  resp2SpeciesInfoAsJSON['evolution_chain']['url'];
-    await defResp6(evolutionChainURL);
-    await getNamePokeStart(resp6EvolutionInfoAsJSON, i);
+    let formatedId = format3LeftHandZeros(startPokeId);
+    document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuerst: <b><div class="evol-name">${germanStartPokeName}</b> # ${formatedId}</div></div>`;
+    let formatedId = format3LeftHandZeros(evolut1stId);
+    document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Danach: <b><div class="evol-name">${germanEvolut1stName}</b> # ${formatedId}</div></div>`;
+    let formatedId = format3LeftHandZeros(evolut2ndId);
+    document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuletzt: <b><div class="evol-name">${germanEvolut2ndName}</b> # ${formatedId}</div></div>`;
+    // await loadBasicPokemonData(i);
+    // let evolutionChainURL =  resp2SpeciesInfoAsJSON['evolution_chain']['url'];
+    // let evolutionChainURL =  myPokesAsObject['evolutionUrl'];
+    // await defResp6(evolutionChainURL);
+    await getNamePokeStart(i);
 }
 
 

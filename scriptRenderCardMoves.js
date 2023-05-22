@@ -1,6 +1,7 @@
 async function renderPokeCardMoves(i) {
     for (let j = 0; j < countMoves; j++) {
-    let moveURL = resp1GeneralInfoAsJSON['moves'][j]['move']['url'];
+        await loadBasicPokemonData(i);
+        let moveURL = resp1GeneralInfoAsJSON['moves'][j]['move']['url'];
         await loadMoveInfo(moveURL);
         let moveNames = currentMoveInfo['names'];
         let moveText = currentMoveInfo['flavor_text_entries']
@@ -41,8 +42,8 @@ async function getGermanMoveName(moveNames, language, i, j, k, count) {
 
 
 async function getGermanMoveText(moveText, languageTxt, i, j, m) {
-        if (languageTxt == 'de') {
-            germanText = moveText[m]['flavor_text'];
-            return germanText;
-        }
+    if (languageTxt == 'de') {
+        germanText = moveText[m]['flavor_text'];
+        return germanText;
+    }
 }

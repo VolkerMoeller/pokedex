@@ -52,7 +52,7 @@ function generateHTMLPokeAll(i) {
             </div>
         </div>
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
-        <div class="navigation">
+        <div class="navigationPoke">
             <div onmouseover="hoverNavigationOver(1, ${i})" onmouseout="hoverNavigationOut(1, ${i})">
                 <button onclick="showCurrentCardById('card1${i}', ${i}, cardIdsPokeAll)" id="btn-card1${i}">About</button>
             </div>

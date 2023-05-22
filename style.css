@@ -289,7 +289,26 @@ h1 {
     padding-bottom: 16px;
 }
 
+.navigationPoke {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 13px;
+    padding-bottom: 16px;
+}
+
 .navigation button {
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 54px;
+    width: 86px;
+    color: white;
+    font-size: 16px;
+    letter-spacing: 0.25px;
+}
+
+.navigationPoke button {
     border: none;
     border-radius: 10px;
     cursor: pointer;
