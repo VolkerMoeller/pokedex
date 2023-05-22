@@ -1,15 +1,11 @@
 async function renderPokeCardMoves(i) {
     for (let j = 0; j < countMoves; j++) {
-        let count = j + 1;
-        document.getElementById('card4' + i).innerHTML += `<div id="moveId${i}${j}"><b>${count} ${myPokesAsObject[i]['moveNames'][j]}</b></div>`;
-        document.getElementById('card4' + i).innerHTML += `<div>${myPokesAsObject[i]['moveFlavors'][j]}</div>`;
-        count++;
-        // await loadBasicPokemonData(i);
-        // let moveURL = resp1GeneralInfoAsJSON['moves'][j]['move']['url'];
-        // await loadMoveInfo(moveURL);
-        // let moveNames = currentMoveInfo['names'];
-        // let moveText = currentMoveInfo['flavor_text_entries']
-        // await searchGermanMoveName(moveNames, moveText, i, j);
+        await loadBasicPokemonData(i);
+        let moveURL = resp1GeneralInfoAsJSON['moves'][j]['move']['url'];
+        await loadMoveInfo(moveURL);
+        let moveNames = currentMoveInfo['names'];
+        let moveText = currentMoveInfo['flavor_text_entries']
+        await searchGermanMoveName(moveNames, moveText, i, j);
     }
 }
 

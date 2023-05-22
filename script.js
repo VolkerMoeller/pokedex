@@ -19,8 +19,12 @@ let myPokesAsObject = [
         "evolutionChainUrlSecond": '',
         "evolutionChainUrlThird": '',
         "evolutionChainNames": [],
+        "evolutionChainIds": [],
         "statsGerman": [],
         "statsGermanUrl": [],
+        "moveUrls": [],
+        "moveNames": [],
+        "moveFlavors": [],
     }
 ];
 
@@ -34,6 +38,7 @@ let resp6EvolutionChainInfoAsJSON;
 let resp7EvolutionChainFirstInfoAsJSON;
 let resp8EvolutionChainSecondInfoAsJSON;
 let resp9EvolutionChainThirdInfoAsJSON;
+let resp10MoveInfoAsJSON;
 let pokeCounter = 11;
 let pokeCounterStep = 2;
 let scrollCounter = 1;
@@ -114,8 +119,10 @@ async function makeMyPokeObjekt(i) {
     await loadEvolutionDataThird(i);
     await fillMyPokeObjectWithEvolutionDataThirdName(i);
 
+    await fillMyPokeObjectWithMoveUrls(i);
+    await loadAndFillMovesData(i);
 
-    // await loadPokemonDataEvolutionChain(i);
+
     await save();
 }
 
@@ -123,18 +130,21 @@ async function makeMyPokeObjekt(i) {
 async function fillMyPokeObjectWithEvolutionDataFirstName(i) {
     searchIndexOfGermanData(resp7EvolutionChainFirstInfoAsJSON, 'names');
     myPokesAsObject[i]['evolutionChainNames'].push(resp7EvolutionChainFirstInfoAsJSON['names'][indexOfGermanData]['name']);
+    myPokesAsObject[i]['evolutionChainIds'].push(resp7EvolutionChainFirstInfoAsJSON['id']);
 }
 
 
 async function fillMyPokeObjectWithEvolutionDataSecondName(i) {
     searchIndexOfGermanData(resp8EvolutionChainSecondInfoAsJSON, 'names');
     myPokesAsObject[i]['evolutionChainNames'].push(resp8EvolutionChainSecondInfoAsJSON['names'][indexOfGermanData]['name']);
+    myPokesAsObject[i]['evolutionChainIds'].push(resp8EvolutionChainSecondInfoAsJSON['id']);
 }
 
 
 async function fillMyPokeObjectWithEvolutionDataThirdName(i) {
     searchIndexOfGermanData(resp9EvolutionChainThirdInfoAsJSON, 'names');
     myPokesAsObject[i]['evolutionChainNames'].push(resp9EvolutionChainThirdInfoAsJSON['names'][indexOfGermanData]['name']);
+    myPokesAsObject[i]['evolutionChainIds'].push(resp9EvolutionChainThirdInfoAsJSON['id']);
 }
 
 
@@ -156,6 +166,18 @@ async function loadEvolutionDataThird(i) {
 }
 
 
+async function loadAndFillMovesData(i) {
+    for (let j = 0; j < myPokesAsObject[i]['moveUrls'].length; j++) {
+        let url10 = myPokesAsObject[i]['moveUrls'][j];
+        await defResp10(url10);
+        searchIndexOfGermanData(resp10MoveInfoAsJSON, 'names');
+        myPokesAsObject[i]['moveNames'].push(resp10MoveInfoAsJSON['names'][indexOfGermanData]['name']);
+        searchIndexOfGermanData(resp10MoveInfoAsJSON, 'flavor_text_entries');
+        myPokesAsObject[i]['moveFlavors'].push(resp10MoveInfoAsJSON['flavor_text_entries'][indexOfGermanData]['flavor_text']);
+    }
+}
+
+
 async function fillMyPokeObjectWithEvolutionDataFirstUrl(i) {
     myPokesAsObject[i]['evolutionChainUrlFirst'] = resp5EvolutionInfoAsJSON['chain']['species']['url'];
 }
@@ -174,6 +196,12 @@ async function fillMyPokeObjectWithEvolutionDataThirdUrl(i) {
     }
 }
 
+
+async function fillMyPokeObjectWithMoveUrls(i) {
+    for (let j = 0; j < countMoves; j++) {
+        myPokesAsObject[i]['moveUrls'].push(resp1GeneralInfoAsJSON['moves'][j]['move']['url']);
+    }
+}
 
 
 async function fillAndSavePokeObject(i) {
@@ -346,6 +374,12 @@ async function defResp9(url9) {
 }
 
 
+async function defResp10(url10) {
+    let resp10AsSthFromServer = await fetch(url10);
+    resp10MoveInfoAsJSON = await resp10AsSthFromServer.json();
+}
+
+
 async function buildMyPokeObject() {
     myPokesAsObject.push(
         {
@@ -366,8 +400,12 @@ async function buildMyPokeObject() {
             "evolutionUrl": '',
             "evolutionChainUrlFirst": '',
             "evolutionChainNames": [],
+            "evolutionChainIds": [],
             "statsGerman": [],
             "statsGermanUrl": [],
+            "moveUrls": [],
+            "moveNames": [],
+            "moveFlavors": [],
         }
     );
 }
@@ -435,9 +473,6 @@ async function checkIfThereIsSlot2() {
         slot2FromServer;
     }
 }
-
-
-
 
 
 function searchIndexOfGerman(index) {
