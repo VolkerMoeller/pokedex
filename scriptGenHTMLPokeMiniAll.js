@@ -2,14 +2,15 @@ function generateHTMLPokeMiniAll() {
     return /*html*/`
     <div id="miniHeader" class="miniHeader">
         <h1>PokeMöller</h1>
-        <div id="miniPokesCounter" class="miniPokesCounter">
+        <div class="miniPokesCounter">
+            <div id="miniPokesCounter">
             </div>
             <div class="loadLine">
-                    <div id="amount-pokes-loadedMiniAll">...
-                    <button onclick="">+4</button>
-                    </div>
-                </div> 
+                <button onclick="">+4</button>
+            </div>
+        </div> 
         <div class="navigation">
+            <div class="navigation-line">
              <div onmouseover="hoverNavigationOver(10, 1)" onmouseout="hoverNavigationOut(10, 1)">
                  <button onclick="showCurrentCardPokeMiniAllById('card101', '1', cardIdsPokeMini)" id="btn-card101">Minis</button>
              </div>
@@ -18,6 +19,10 @@ function generateHTMLPokeMiniAll() {
              </div>
              <div onmouseover="hoverNavigationOver(30, 1)" onmouseout="hoverNavigationOut(30, 1)">
                  <button onclick="showCurrentCardPokeMiniAllById('card301', '1', cardIdsPokeMini)" id="btn-card301">Favorites</button>
+             </div>
+            </div>
+             <div class="menu">
+                 <button onclick="showMenu()">Menu</button>
              </div>
          </div>
         </div>

@@ -293,12 +293,17 @@ h1 {
     padding-bottom: 16px;
 }
 
-.navigationPoke {
+.navigation-line {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 13px;
+    justify-content: space-between;
+    gap: 15px;
+    padding-left: 96px;
+    padding-right: 96px;
     padding-bottom: 16px;
+}
+
+.menu {
+    display: none;
 }
 
 .navigation button {
@@ -309,8 +314,37 @@ h1 {
     width: 120px;
     color: white;
     font-size: 20px;
-    letter-spacing: 0.25px;
+    letter-spacing: 1px;
+    font-size: 24px;
 }
+
+@media (max-width: 500px) {
+    .navigation-line {
+        display: none;
+    }
+
+    .menu {
+        display: flex;
+    }
+
+    .navigation button {
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        height: 60px;
+        width: 190px;
+        background-color: rgba(39, 203, 79, 0.7)
+    }
+}
+
+.navigationPoke {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 13px;
+    padding-bottom: 16px;
+}
+
 
 .navigationPoke button {
     border: none;
@@ -610,7 +644,7 @@ h1 {
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 650px) {
     .content {
         width: 95%;
     }
@@ -633,6 +667,22 @@ h1 {
     justify-content: center;
 }
 
-.counter {
+/* .counter {
     margin-bottom: 16px;
+} */
+
+
+.miniPokesCounter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+    gap: 32px;
+}
+
+.miniPokesCounter button {
+    font-size: 24px;
+    letter-spacing: 2px;
 }
