@@ -23,18 +23,13 @@ function generateHTMLPokeAll(i) {
                 </div>
             </div>
             <div class="loadLine">
-                <div id="amount-pokes-loaded${i}">...
+                <div id="amount-pokes-loaded${i}" class="amount-pokes-loaded">...
                 </div>
-                <!-- <button onclick="showNextCountPokes()">+4</button> -->
             </div>
             <div id="progress-bar${i}" class="progress-bar">
                 <div id="progress${i}" class="progress">
                 </div>
             </div>
-            <div id="searchByNameLine${i}" class="searchByName">
-                <span>Suche nach </span>
-                <input id="search-name${i}" placeholder="Name" onkeydown="searchPokeByName(${i})">
-            </div> 
         </div>
             <div class="pokedex-above">
                 <div id="pokedex-name${i}" class="pokedex-name">

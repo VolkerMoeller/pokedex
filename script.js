@@ -68,19 +68,27 @@ let countMoves = 5;
 
 
 async function init() {
+    await load();
+    await startMyPokesAsObject();
+    await renderMyPokes();
+}
+
+
+async function getNextPokes() {
     if (functionRunning == false) {
         functionRunning == true;
-        await load();
         await startMyPokesAsObject();
-        await renderMyPokes();
+        await renderMyPokes();  
     }
     functionRunning == false;
 }
+
 
 async function renderMyPokes() {
     await pokeMiniAll();
     await pokeSliderAll();
 };
+
 
 async function startMyPokesAsObject() {
     if (functionRunning == false) {

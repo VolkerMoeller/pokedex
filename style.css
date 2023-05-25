@@ -19,6 +19,8 @@ body {
 h1 {
     margin-top: 8px;
     margin-bottom: 24px;
+    margin-left: 16px;
+    margin-right: 16px;
 }
 
 .content {
@@ -110,7 +112,7 @@ h1 {
 
 .search button {
     font-family: 'Noto Sans';
-    font-size: 20px;
+    font-size: 24px;
     letter-spacing: 0.05px;
     padding: 4px;
     cursor: pointer;
@@ -129,7 +131,7 @@ h1 {
     padding: 4px;
     border: none;
     border-radius: 5px 0px 0px 5px;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .pokedexBgn {
@@ -178,7 +180,7 @@ h1 {
     border-top-right-radius: 30px;
     border-radius: 30px;
     padding-top: 48px;
-    min-height: 280px;
+    min-height: 430px;
 }
 
 @media (max-width: 480px) {
@@ -210,6 +212,7 @@ h1 {
     align-items: center;
     justify-content: center;
     width: 86px;
+    font-size: 24px;;
 }
 
 .color-black {
@@ -290,7 +293,7 @@ h1 {
     gap: 15px;
     padding-left: 96px;
     padding-right: 96px;
-    padding-bottom: 16px;
+    /* padding-bottom: 16px; */
 }
 
 .navigation-line {
@@ -302,7 +305,7 @@ h1 {
     padding-bottom: 16px;
 }
 
-.menu {
+.menu-btn {
     display: none;
 }
 
@@ -323,15 +326,16 @@ h1 {
         display: none;
     }
 
-    .menu {
+    .menu-btn {
         display: flex;
     }
 
-    .navigation button {
-        border: none;
+    .menu-btn:hover {
+        background-color: rgba(39, 203, 79, 0.7);
         border-radius: 10px;
-        cursor: pointer;
-        height: 60px;
+    }
+
+    .navigation button {
         width: 190px;
         background-color: rgba(39, 203, 79, 0.7)
     }
@@ -350,10 +354,10 @@ h1 {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    height: 54px;
-    width: 86px;
+    height: 70px;
+    width: 116px;
     color: white;
-    font-size: 16px;
+    font-size: 24px;
     letter-spacing: 0.25px;
 }
 
@@ -374,6 +378,7 @@ h1 {
     justify-content: center;
     align-items: start;
     width: 100%;
+    font-size: 24px;
 }
 
 .slot-line {
@@ -408,6 +413,7 @@ h1 {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
 }
 
 @media (max-width: 300px) {
@@ -446,7 +452,7 @@ h1 {
 .stat {
     display: flex;
     justify-content: space-between;
-    width: 48%;
+    width: 70%;
 }
 
 @media (max-width: 480px) {
@@ -553,18 +559,19 @@ h1 {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    font-size: 24px;
 }
 
 .searchByName input {
     outline: none;
     font-family: 'Noto Sans';
-    font-size: 16px;
+    font-size: 24px;
     padding: 4px;
     border: none;
     border-radius: 5px;
     margin-top: 8px;
     width: 100%;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .evol-name-line {
@@ -685,4 +692,8 @@ h1 {
 .miniPokesCounter button {
     font-size: 24px;
     letter-spacing: 2px;
+}
+
+.amount-pokes-loaded {
+    font-size: 24px;
 }

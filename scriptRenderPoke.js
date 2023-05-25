@@ -1,4 +1,5 @@
 async function renderPoke(i) {
+    // document.getElementById('pokedex-all').innerHTML = '';
     document.getElementById('pokedex-all').innerHTML += generateHTMLPokeAll(i);
     await renderPokeTop(i);
     await renderPokeBottom(i);
@@ -38,10 +39,10 @@ function renderPokeToBlack(i, pokeSlot1){
 
 function renderPokeSlot2(i) {
     if (myPokesAsObject[i]['slot2']) {
-    } else {
         let pokeSlot2 = myPokesAsObject[i]['slot2'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
+    } else {
     }
 };
 

@@ -1,7 +1,7 @@
 function generateHTMLPokeMiniAll() {
     return /*html*/`
     <div id="miniHeader" class="miniHeader">
-        <h1>PokeMöller</h1>
+        <h1>Poke<wbr>Möller</h1>
         <div class="miniPokesCounter">
             <div id="miniPokesCounter">
             </div>
@@ -21,7 +21,7 @@ function generateHTMLPokeMiniAll() {
                  <button onclick="showCurrentCardPokeMiniAllById('card301', '1', cardIdsPokeMini)" id="btn-card301">Favorites</button>
              </div>
             </div>
-             <div class="menu">
+             <div class="menu-btn">
                  <button onclick="showMenu()">Menu</button>
              </div>
          </div>

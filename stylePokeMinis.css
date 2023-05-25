@@ -8,10 +8,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 85vh;
+    min-height: 60vh;
     padding: 16px;
     border: solid 5px rgba(0, 0, 0, 0.8);
-    padding: 16px;
+}
+
+
+@media (max-width: 400px) {
+    .pokeMinis-all {
+        margin-top: 310px;
+    }
+}
+
+@media (max-width: 360px) {
+    .pokeMinis-all {
+        margin-top: 360px;
+    }
 }
 
 .miniHeader {
@@ -27,6 +39,7 @@
     font-size: 24px;
     letter-spacing: 0.05px;
     width: 600px;
+    padding-bottom: 16px;
 }
 
 @media (max-width: 650px) {
