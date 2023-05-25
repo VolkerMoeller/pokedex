@@ -1,6 +1,8 @@
 async function renderPokeCardEvolution(i) {
-    let formatedId1st = format3LeftHandZeros(myPokesAsObject[i]['evolutionChainIds'][0]);
-    document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuerst: <b><div class="evol-name">${myPokesAsObject[i]['evolutionChainNames'][0]}</b> # ${formatedId1st}</div></div>`;
+    if (myPokesAsObject[i]['evolutionChainIds'].length > 0) {
+        let formatedId1st = format3LeftHandZeros(myPokesAsObject[i]['evolutionChainIds'][0]);
+        document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Zuerst: <b><div class="evol-name">${myPokesAsObject[i]['evolutionChainNames'][0]}</b> # ${formatedId1st}</div></div>`;
+    }
     if (myPokesAsObject[i]['evolutionChainIds'].length > 1) {
         let formatedId2nd = format3LeftHandZeros(myPokesAsObject[i]['evolutionChainIds'][1]);
         document.getElementById('card3' + i).innerHTML += `<div class="evol-name-line">Danach: <b><div class="evol-name">${myPokesAsObject[i]['evolutionChainNames'][1]}</b> # ${formatedId2nd}</div></div>`;

@@ -19,8 +19,8 @@ function setCurrentCardToActiv(i) {
 }
 
 
-function setCurrentSlideOnActiv(i,j, cards) {
-    setAllSliderToDefault(j,cards);
+function setCurrentSlideOnActiv(i, j, cards) {
+    setAllSliderToDefault(j, cards);
     let slot1 = myPokesAsObject[currentPokeNr]['slot1'];
     let bgnActiveType = 'bgn-slot-type-' + slot1;
     let bgnDefaultType = 'bgn-type-' + slot1;
@@ -42,10 +42,6 @@ function setAllSliderToDefault(j, cards) {
         document.getElementById(sliderId).classList.add(`${bgnDefaultType}`);
     }
 }
-
-
-
-
 
 
 function hoverNavigationOver(j, i) {

@@ -37,7 +37,7 @@ function renderPokeToBlack(i, pokeSlot1){
 
 
 function renderPokeSlot2(i) {
-    if (myPokesAsObject[i]['slot2'] == 'none') {
+    if (myPokesAsObject[i]['slot2']) {
     } else {
         let pokeSlot2 = myPokesAsObject[i]['slot2'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;

@@ -39,7 +39,7 @@ let resp7EvolutionChainFirstInfoAsJSON;
 let resp8EvolutionChainSecondInfoAsJSON;
 let resp9EvolutionChainThirdInfoAsJSON;
 let resp10MoveInfoAsJSON;
-let pokeCounter = 11;
+let pokeCounter = 2;
 let pokeCounterStep = 2;
 let scrollCounter = 1;
 let nextToLoadNr = 1;
@@ -68,9 +68,13 @@ let countMoves = 5;
 
 
 async function init() {
-    await load();
-    await startMyPokesAsObject();
-    await renderMyPokes();
+    if (functionRunning == false) {
+        functionRunning == true;
+        await load();
+        await startMyPokesAsObject();
+        await renderMyPokes();
+    }
+    functionRunning == false;
 }
 
 async function renderMyPokes() {
@@ -83,7 +87,7 @@ async function startMyPokesAsObject() {
         functionRunning == true;
         let start = myPokesAsObject.length;
         if (myPokesAsObject.length == 1) {
-            pokeCounterStep = 11;
+            pokeCounterStep = 2;
         }
         let end = myPokesAsObject.length + pokeCounterStep;
         for (let pokeNr = start; pokeNr <= end; pokeNr++) {
@@ -115,9 +119,13 @@ async function makeMyPokeObjekt(i) {
     await loadEvolutionDataSecond(i);
     await fillMyPokeObjectWithEvolutionDataSecondName(i);
 
-    await fillMyPokeObjectWithEvolutionDataThirdUrl(i);
-    await loadEvolutionDataThird(i);
-    await fillMyPokeObjectWithEvolutionDataThirdName(i);
+
+    if (myPokesAsObject[i]['evolutionChainIds'].length > 2) {
+        await fillMyPokeObjectWithEvolutionDataThirdUrl(i);
+        await loadEvolutionDataThird(i);
+        await fillMyPokeObjectWithEvolutionDataThirdName(i);
+    }
+
 
     await fillMyPokeObjectWithMoveUrls(i);
     await loadAndFillMovesData(i);
@@ -199,7 +207,9 @@ async function fillMyPokeObjectWithEvolutionDataThirdUrl(i) {
 
 async function fillMyPokeObjectWithMoveUrls(i) {
     for (let j = 0; j < countMoves; j++) {
-        myPokesAsObject[i]['moveUrls'].push(resp1GeneralInfoAsJSON['moves'][j]['move']['url']);
+        if (resp1GeneralInfoAsJSON['moves'].length >= j) {
+            myPokesAsObject[i]['moveUrls'].push(resp1GeneralInfoAsJSON['moves'][j]['move']['url']);
+        }
     }
 }
 
@@ -470,7 +480,7 @@ async function checkIfThereIsSlot2() {
     if (resp1GeneralInfoAsJSON['types'][1]) {
         slot2FromServer = resp1GeneralInfoAsJSON['types'][1]['type']['name'];
     } else {
-        slot2FromServer;
+        slot2FromServer = '';
     }
 }
 

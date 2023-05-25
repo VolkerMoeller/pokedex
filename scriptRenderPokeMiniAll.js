@@ -99,8 +99,8 @@ function format3LeftHandZeros(value) {
 
 async function renderPokeMiniNavigation(cardIdsPokeMini) {
     let pokeSlot1 = 'grass';
-    let bgnSlotType = 'bgn-type-' + pokeSlot1;
-    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
+    let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
+    let bgnActiveType = 'bgn-type-' + pokeSlot1;
     for (let k = 0; k < cardIdsPokeMini.length; k++) {
         document.getElementById('btn-card' + cardIdsPokeMini[k] + 1).classList.add(`${bgnSlotType}`);
     }

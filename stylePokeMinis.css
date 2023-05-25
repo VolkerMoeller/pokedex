@@ -2,14 +2,16 @@
     border-radius: 30px;
     background-color: white;
     position: relative;
-    margin-top: 204px;
-    width: 480px;
+    margin-top: 255px;
+    width: 581px;
     overflow-x: clip;
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    /* padding: 24px; */
+    min-height: 85vh;
+    padding: 16px;
+    border: solid 5px rgba(0, 0, 0, 0.8);
+    padding: 16px;
 }
 
 .miniHeader {
@@ -17,11 +19,14 @@
     top: 16px;
     color: white;
     border-radius: 30px;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;  
+    justify-content: center;
+    font-size: 24px;
+    letter-spacing: 0.05px;
+    width: 90%;
 }
 
 
@@ -31,23 +36,28 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+    width: 100%;
 }
 
 .mini-poke-card {
     border-radius: 15px;
     padding: 8px;
     display: flex;
+    border: solid 5px rgba(0, 0, 0, 0.2);
 }
 
 .mini-poke-card div {
-    font-size: 16px;
+    font-size: 24px;
+    letter-spacing: 0.05px;
 }
 
 .mini-poke-card button {
     border: none;
     cursor: pointer;
     background: none;
-    border-radius: 10px;;
+    border-radius: 10px;
+    font-size:20px;
+    color: white;
 }
 
 .mini-poke-card:hover button {
@@ -99,4 +109,15 @@
     object-fit: contain;
     height: 50px;
     width: 100px;
+}
+
+.pokedex-top-MiniAll {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    letter-spacing: 0.125px;
+    font-size: 20px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    width: 100%;
 }
