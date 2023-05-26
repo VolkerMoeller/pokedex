@@ -16,7 +16,7 @@ async function scrollFunction() {
     if (tester == 0 && onScrollLoading == true) {
       let start = myPokesAsObject.length;
       let end = start + pokeCounterStep;
-      // showNextPokeMini(start, end);
+    //  getNextPokes();
     }
   }
 }

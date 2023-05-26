@@ -6,7 +6,7 @@ function generateHTMLPokeMiniAll() {
             <div id="miniPokesCounter">
             </div>
             <div class="loadLine">
-                <button onclick="">+4</button>
+                <button onclick="getNextPokes()">+1</button>
             </div>
         </div> 
         <div class="navigation">

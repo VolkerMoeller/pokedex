@@ -4,6 +4,7 @@ function setFavorite(i) {
         document.getElementById(`fill0${i}`).classList.remove('display-none');
         document.getElementById(`fill1${i}`).classList.add('display-none');
         removeFavorite(i);
+        
     } else {
         document.getElementById(`fill0${i}`).classList.add('display-none');
         document.getElementById(`fill1${i}`).classList.remove('display-none');
@@ -16,6 +17,8 @@ function addFavorite(i) {
     pokesFavorites.push(i);
     pokesFavorites.sort(function(a, b){return a-b});
     saveFavorites();
+    loadFavorites();
+    showPokeMiniFavorites();
 }
 
 
@@ -23,4 +26,6 @@ function removeFavorite(i) {
     let index = pokesFavorites.indexOf(i);
     pokesFavorites.splice(index,1);
     saveFavorites();
+    loadFavorites();
+    showPokeMiniFavorites();
 }

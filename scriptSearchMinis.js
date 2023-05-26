@@ -14,12 +14,10 @@ function sortMiniPokes(searchName) {
         if (result == true) {
             // document.getElementById('search-results').innerHTML += `<p>${searchText}</p><img src="${myPokesAsObject[k]['imgUrl']}" style="width: 100px">`;
             let formatedId = format3LeftHandZeros(myPokesAsObject[k]['id']);
-            document.getElementById('search-results').innerHTML += generateHTMLMiniAllSearch(k, searchText, formatedId);
+            document.getElementById('search-results').innerHTML += generateHTMLMiniAllSearch(k, formatedId);
             renderBackgroundMiniSearch(k);
             // renderGermanNameMiniSearch(searchId);
             changeMiniToBlackMiniSearch(k);
-        
-        
         };
     }
 }
@@ -32,6 +30,20 @@ function renderBackgroundMiniSearch(i) {
 }
 
 
+function renderBackgroundMiniSearchByNr(i) {
+    let miniSlot1 = myPokesAsObject[i]['slot1'];
+    let bgnType = 'bgn-type-' + miniSlot1;
+    document.getElementById('miniPokeCardSearchByNr' + i).classList.add(`${bgnType}`);
+}
+
+
+function renderBackgroundMiniFavorites(i) {
+    let miniSlot1 = myPokesAsObject[i]['slot1'];
+    let bgnType = 'bgn-type-' + miniSlot1;
+    document.getElementById('miniPokeCardFavorites' + i).classList.add(`${bgnType}`);
+}
+
+
 function changeMiniToBlackMiniSearch(i) {
     let miniSlot1 = myPokesAsObject[i]['slot1'];
     if (miniSlot1 == 'electric' || miniSlot1 == 'ice') {
@@ -41,18 +53,18 @@ function changeMiniToBlackMiniSearch(i) {
 }
 
 
-function generateHTMLMiniAllSearch(k, searchText, formatedId) {
+function generateHTMLMiniAllSearch(k, formatedId) {
     return `
-        <div id="miniPokeCardSearch${k}"class="mini-poke-card">
+    <div id="miniPokeCardSearch${k}"class="mini-poke-card">
             <button onclick="showPokeCard(${k})">
-                <div id="germanNameSearch${k}" style="color: white">${myPokesAsObject[k]['nameGerman']}</div>
-                <div id="pokeMiniSearch${k}" style="color: white"># ${formatedId}</div>
-                <div class="mini-poke-img-place" id="imageSearch${k}">
-                <img src="${myPokesAsObject[k]['imgUrl']}" style="width: 160px">
-                </div>
-                </button>
-                </div>
-                `
+            <div id="germanNameSearch${k}" style="color: white">${myPokesAsObject[k]['nameGerman']}</div>
+            <div id="pokeMiniSearch${k}" style="color: white"># ${formatedId}</div>
+            <div class="mini-poke-img-place" id="imageSearch${k}">
+                    <img src="${myPokesAsObject[k]['imgUrl']}" style="width: 160px">
+                    </div>
+            </button>
+        </div>
+    `
 }
 
 
@@ -65,6 +77,23 @@ function showByNrMiniAll() {
 
 function showPokeMiniAllBy(searchId) {
     document.getElementById('search-results').innerHTML = '';
-    document.getElementById('search-results').innerHTML += `<p><img src="${myPokesAsObject[searchId]['imgUrl']}" style="width: 100px">`;
+    let formatedId = format3LeftHandZeros(myPokesAsObject[searchId]['id']);
+    document.getElementById('search-results').innerHTML += generateHTMLMiniAllSearchByNr(searchId, formatedId);
+    renderBackgroundMiniSearchByNr(searchId);
+    changeMiniToBlackMiniSearch(searchId);
 };
 
+
+function generateHTMLMiniAllSearchByNr(k, formatedId) {
+    return `
+        <div id="miniPokeCardSearchByNr${k}"class="mini-poke-card">
+            <button onclick="showPokeCard(${k})">
+                <div id="germanNameSearchByNr${k}" style="color: white">${myPokesAsObject[k]['nameGerman']}</div>
+                <div id="pokeMiniSearchByNr${k}" style="color: white"># ${formatedId}</div>
+                <div class="mini-poke-img-place" id="imageSearchByNr${k}">
+                    <img src="${myPokesAsObject[k]['imgUrl']}" style="width: 160px">
+                </div>
+            </button>
+        </div>
+        `
+}

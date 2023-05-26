@@ -1,4 +1,11 @@
 function showCurrentCardPokeMiniAllById(i, j, cards) {
+    loadFavorites();
+    if (pokesFavorites.length == 0) {
+        document.getElementById('miniPokesFavorites').innerHTML = 'Keiner hier';
+    }
+    if (pokesFavorites.length > 0) {
+        showPokeMiniFavorites();
+    }
     setAllCardsToDefault(j, cards);
     setCurrentCardToActiv(i);
     setCurrentSlideOnActivPokeMiniAll(i, j, cards);

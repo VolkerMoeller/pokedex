@@ -13,14 +13,6 @@ function generateHTMLPokeMiniSearch() {
                 <button onclick="showByNrMiniAll()">Suche</button>
             </div>
         </div>
-
-
-        <!-- <div class="pokedex-above">
-            <div id="pokedex-nameMiniAll" class="pokedex-name">
-            </div>
-            <div id="pokedex-idMiniAll" class="pokedex-id">
-            </div>
-        </div> -->
         <div class="slot-line">
             <div id="pokedex-slotsMiniAll" class="pokedex-slots">
             </div>

@@ -77,8 +77,9 @@ async function init() {
 async function getNextPokes() {
     if (functionRunning == false) {
         functionRunning == true;
+        pokeCounterStep = 0;
         await startMyPokesAsObject();
-        await renderMyPokes();  
+        await renderMyPokes();
     }
     functionRunning == false;
 }
@@ -95,7 +96,7 @@ async function startMyPokesAsObject() {
         functionRunning == true;
         let start = myPokesAsObject.length;
         if (myPokesAsObject.length == 1) {
-            pokeCounterStep = 2;
+            pokeCounterStep = 1;
         }
         let end = myPokesAsObject.length + pokeCounterStep;
         for (let pokeNr = start; pokeNr <= end; pokeNr++) {
@@ -128,11 +129,9 @@ async function makeMyPokeObjekt(i) {
     await fillMyPokeObjectWithEvolutionDataSecondName(i);
 
 
-    if (myPokesAsObject[i]['evolutionChainIds'].length > 2) {
-        await fillMyPokeObjectWithEvolutionDataThirdUrl(i);
-        await loadEvolutionDataThird(i);
-        await fillMyPokeObjectWithEvolutionDataThirdName(i);
-    }
+    await fillMyPokeObjectWithEvolutionDataThirdUrl(i);
+    await loadEvolutionDataThird(i);
+    await fillMyPokeObjectWithEvolutionDataThirdName(i);
 
 
     await fillMyPokeObjectWithMoveUrls(i);
@@ -247,6 +246,7 @@ async function loadPokemonDataEvolutionChain(i) {
 
 
 async function pokeSliderAll() {
+    document.getElementById('pokedex-all').innerHTML = '';
     for (let i = 1; i < myPokesAsObject.length; i++) {
         await renderPoke(i);
     }
