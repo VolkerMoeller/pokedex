@@ -20,18 +20,33 @@ async function performServerRequests(i) {
         let arrayPokemonSpecies = await fetchDataFromServer(url2);
         console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
 
-        let dynamicUrlIndex = arrayPokemon['abilities'].length - 1;
-        // nimm immer die letzte Url. Hier ist die ability nicht hidden
-        let dynamicUrl = arrayPokemon['abilities'][dynamicUrlIndex]['ability']['url'];
-
-        let url3 = dynamicUrl; // Verwende die dynamische URL für die zweite Abfrage
-        let response = await fetch(url3);
-        let arrayPokemonAbilities = await response.json();
-        console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
+        getAbiltiesData(arrayPokemon, i);
 
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
+}
+
+
+async function getAbiltiesData(arrayPokemon, i) {
+    let url = await takeDynamikUrl(arrayPokemon);
+    let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(url);
+    console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
+}
+
+
+async function takeDynamikUrl(arrayPokemon) {
+    let dynamicUrlIndex = arrayPokemon['abilities'].length - 1;
+    // nimm immer die letzte Url. Hier ist die ability nicht hidden
+    let dynamicUrl = arrayPokemon['abilities'][dynamicUrlIndex]['ability']['url'];
+    return dynamicUrl;
+}
+
+
+async function fetchAbilitiesDataFromServer(url) {
+    let response = await fetch(url);
+    let arrayPokemonAbilities = await response.json();
+    return arrayPokemonAbilities;
 }
 
 
