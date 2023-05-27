@@ -1,5 +1,3 @@
-let dataByUrl = [];
-
 async function fetchDataFromServer(url) {
     try {
         const response = await fetch(url);
@@ -13,16 +11,24 @@ async function fetchDataFromServer(url) {
 
 async function performServerRequests(i) {
     try {
-        const url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
-        const url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
-        
-        const data1 = await fetchDataFromServer(url1);
-        console.log(i + ' pokemonData:', data1);
-        await getAbilityUrl(data1);
-        
-        const data2 = await fetchDataFromServer(url2);
-        console.log(i + ' pokemon-speciesData:', data2);
-        
+        let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
+        let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
+
+        let arrayPokemon = await fetchDataFromServer(url1);
+        console.log(i + ' pokemonData:', arrayPokemon);
+
+        let arrayPokemonSpecies = await fetchDataFromServer(url2);
+        console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
+
+        let dynamicUrlIndex = arrayPokemon['abilities'].length - 1;
+        // nimm immer die letzte Url. Hier ist die ability nicht hidden
+        let dynamicUrl = arrayPokemon['abilities'][dynamicUrlIndex]['ability']['url'];
+
+        let url3 = dynamicUrl; // Verwende die dynamische URL für die zweite Abfrage
+        let response = await fetch(url3);
+        let arrayPokemonAbilities = await response.json();
+        console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
+
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
@@ -32,16 +38,16 @@ async function performServerRequests(i) {
 async function performServerRequestBy(url) {
     try {
         dataByUrl = await fetchDataFromServer(url);
-        // console.log('dataByUrl', dataByUrl);
     } catch (error) {
         console.error('Fehler beim Ausführen des Serverzugriffs "dataByUrl":', error);
     }
 }
 
-async function getAbilityUrl(data1) {
-    let abilityUrl = data1['abilities'][1]['ability']['url'];
+
+async function getAbilityUrl() {
+    let abilityUrl = arrayPokemon['abilities'][1]['ability']['url'];
     // [1] hidden = false
-    // console.log('ablitityUrl: ', abilityUrl);
+    console.log('ablitityUrl: ', abilityUrl);
     await performServerRequestBy(abilityUrl);
     console.log('ablitityData: ', dataByUrl);
 }
