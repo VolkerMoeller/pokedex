@@ -1,23 +1,26 @@
 let initEnd = 50;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs =  2;
+let stepPokeNrs = 1;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let scrollCounter = 0;
+let maxPokeNr = 1010;
 
 
-function getData() {
+async function getData() {
     document.getElementById('myPlace').innerHTML = '';
     for (let i = 1; i <= initEnd; i++) {
-        performServerRequests(i); 
+        await performServerRequests(i);
     }
 }
 
 
 function getNextData() {
-    for (let j = nextPokeNr;  j <= endPokeNr; j++) {
-        performServerRequests(j);
+    if (nextPokeNr <= maxPokeNr) {
+        for (let j = nextPokeNr; j <= endPokeNr; j++) {
+            performServerRequests(j);
+        }
+        updateCountNrs();
     }
-    updateCountNrs();
 }
 
 
@@ -54,10 +57,10 @@ async function performServerRequests(i) {
         let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
         let arrayPokemon = await fetchDataFromServer(url1);
         console.log(i + ' pokemonData:', arrayPokemon);
+        renderPokeMinis1stLevel(i, arrayPokemon);
         let arrayPokemonSpecies = await fetchDataFromServer(url2);
         console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
         getAbiltiesData(arrayPokemon, i);
-        renderPokeMinis1st(i, arrayPokemon, arrayPokemonSpecies);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
@@ -71,7 +74,7 @@ async function getAbiltiesData(arrayPokemon, i) {
 }
 
 
-async function takeDynamikUrl(arrayPokemon) {
+function takeDynamikUrl(arrayPokemon) {
     let dynamicUrlIndex = arrayPokemon['abilities'].length - 1;
     let dynamicUrl = arrayPokemon['abilities'][dynamicUrlIndex]['ability']['url'];
     return dynamicUrl;
@@ -89,27 +92,33 @@ async function fetchAbilitiesDataFromServer(url) {
 window.onscroll = function () { scrollFunction() };
 
 
-async function scrollFunction() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    scrollCounter++;
-    let interval = 10;
-    let tester = scrollCounter % interval;
-    if (tester == 0) {
-      getNextData();
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollCounter++;
+        let interval = 1;
+        let tester = scrollCounter % interval;
+        if (tester == 0) {
+            getNextData();
+        }
     }
-  }
 }
 
 // render PokeMinis
 
-function renderPokeMinis1st(i, arrayPokemon, arrayPokemonSpecies) {
+async function renderPokeMinis1stLevel(i, arrayPokemon) {
     let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
-    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, imgSrc); 
+    let pokeId = arrayPokemon['id'];
+    let pokeName = arrayPokemon['name'];
+    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, imgSrc, pokeId, pokeName);
 }
 
-function generateHTMLPokeMini(i, imgSrc) {
+function generateHTMLPokeMini(i, imgSrc, pokeId, pokeName) {
     return `
     <div id="pokeMini${i}" class="pokeMini">
+        <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
+            <div id="pokeMiniId${i}" class="pokeMiniId">${pokeId}</div>
+            <div id="pokeMiniName${i}" class="pokeMiniName">${pokeName}</div>
+        </div>
         <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
             <img src=${imgSrc}>
         </div>
