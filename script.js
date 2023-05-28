@@ -1,3 +1,41 @@
+let initEnd = 50;
+let nextPokeNr = initEnd + 1;
+let stepPokeNrs =  1;
+let endPokeNr = nextPokeNr + stepPokeNrs;
+let scrollCounter = 0;
+
+
+function getData() {
+    document.getElementById('myPlace').innerHTML = '';
+    for (let i = 1; i <= initEnd; i++) {
+        performServerRequests(i); 
+    }
+}
+
+
+function getNextData() {
+    for (let j = nextPokeNr;  j <= endPokeNr; j++) {
+        performServerRequests(j);
+    }
+    updateCountNrs();
+}
+
+
+function updateCountNrs() {
+    nextPokeNr = endPokeNr + 1;
+    endPokeNr = nextPokeNr + stepPokeNrs;
+}
+
+
+async function performServerRequestBy(url) {
+    try {
+        dataByUrl = await fetchDataFromServer(url);
+    } catch (error) {
+        console.error('Fehler beim Ausführen des Serverzugriffs "dataByUrl":', error);
+    }
+}
+
+
 async function fetchDataFromServer(url) {
     try {
         const response = await fetch(url);
@@ -9,6 +47,7 @@ async function fetchDataFromServer(url) {
     }
 }
 
+
 async function performServerRequests(i) {
     try {
         let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
@@ -18,6 +57,7 @@ async function performServerRequests(i) {
         let arrayPokemonSpecies = await fetchDataFromServer(url2);
         console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
         getAbiltiesData(arrayPokemon, i);
+        renderPokeMinis1st(i, arrayPokemon, arrayPokemonSpecies);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
@@ -25,8 +65,8 @@ async function performServerRequests(i) {
 
 
 async function getAbiltiesData(arrayPokemon, i) {
-    let url = await takeDynamikUrl(arrayPokemon);
-    let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(url);
+    let dynamikUrl = await takeDynamikUrl(arrayPokemon);
+    let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(dynamikUrl);
     console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
 }
 
@@ -44,26 +84,35 @@ async function fetchAbilitiesDataFromServer(url) {
     return arrayPokemonAbilities;
 }
 
+// onscroll
 
-async function performServerRequestBy(url) {
-    try {
-        dataByUrl = await fetchDataFromServer(url);
-    } catch (error) {
-        console.error('Fehler beim Ausführen des Serverzugriffs "dataByUrl":', error);
+window.onscroll = function () { scrollFunction() };
+
+
+async function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    scrollCounter++;
+    let interval = 40;
+    let tester = scrollCounter % interval;
+    if (tester == 0) {
+      getNextData();
     }
+  }
 }
 
+// render PokeMinis
 
-async function getAbilityUrl() {
-    let abilityUrl = arrayPokemon['abilities'][1]['ability']['url'];
-    console.log('ablitityUrl: ', abilityUrl);
-    await performServerRequestBy(abilityUrl);
-    console.log('ablitityData: ', dataByUrl);
+function renderPokeMinis1st(i, arrayPokemon, arrayPokemonSpecies) {
+    let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
+    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, imgSrc); 
 }
 
-
-function test() {
-    for (let i = 1; i < 3; i++) {
-        performServerRequests(i);
-    }
+function generateHTMLPokeMini(i, imgSrc) {
+    return `
+    <div id="PokeMini${i}" class="PokeMini">
+        <div id="PokeMiniImgDiv${i}" class="PokeMiniImgDiv">
+            <img src=${imgSrc}>
+        </div>
+    </div>
+    `
 }
