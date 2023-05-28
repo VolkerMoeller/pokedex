@@ -1,9 +1,23 @@
 body {
     margin: 0px;
     font-family: 'Bangers';
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    color: rgba(234, 19, 105);
+    background-color: rgba(0,0,0,0.2);
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: start;
 }
 
 .myPlace {
+    margin-top: 100px;
     display: grid;
     /* justify-content: center; */
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

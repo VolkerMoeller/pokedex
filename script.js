@@ -98,7 +98,7 @@ function scrollFunction() {
         let interval = 1;
         let tester = scrollCounter % interval;
         if (tester == 0) {
-            getNextData();
+            // getNextData();
         }
     }
 }
