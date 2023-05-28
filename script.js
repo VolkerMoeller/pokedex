@@ -1,6 +1,6 @@
 let initEnd = 50;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs =  1;
+let stepPokeNrs =  2;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let scrollCounter = 0;
 
@@ -92,7 +92,7 @@ window.onscroll = function () { scrollFunction() };
 async function scrollFunction() {
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
     scrollCounter++;
-    let interval = 40;
+    let interval = 10;
     let tester = scrollCounter % interval;
     if (tester == 0) {
       getNextData();
@@ -109,8 +109,8 @@ function renderPokeMinis1st(i, arrayPokemon, arrayPokemonSpecies) {
 
 function generateHTMLPokeMini(i, imgSrc) {
     return `
-    <div id="PokeMini${i}" class="PokeMini">
-        <div id="PokeMiniImgDiv${i}" class="PokeMiniImgDiv">
+    <div id="pokeMini${i}" class="pokeMini">
+        <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
             <img src=${imgSrc}>
         </div>
     </div>

@@ -1,0 +1,18 @@
+.myPlace {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 8px;
+}
+
+.pokeMiniImgDiv {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+}
+
+.pokeMiniImgDiv img {
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+}
