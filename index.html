@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js"></script>
+    <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="stylesheet" href="colors.css">
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="style.css">
@@ -16,6 +17,19 @@
     <div id="content" class="content">
         <div id="header" class="header">
             <h1>MöllerDex</h1>
+
+            <div id="load" class="load">
+                <div id="loadLine" class="loadLine">
+                    <div id="amount-pokes-loaded" class="amount-pokes-loaeded"></div>
+                </div>
+                <div id="progress-bar" class="progress-bar">
+                    <div id="progress" class="progress"></div>
+                </div>
+            </div>
+            <div id="loadBtns" class="loadBtns">
+                <button id="loadBtnStop" class="display-none" onclick="stopRepeatedExecution()">stopRepeatedExecution()</button>
+                <button id="loadBtnStart" class="display-start" onclick="startRepeatedExecution()">startRepeatedExecution()</button>
+            </div>
         </div>
         <div id="myPlace" class="myPlace"></div>
     </div>

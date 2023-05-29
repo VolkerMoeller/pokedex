@@ -5,23 +5,50 @@ body {
     flex-direction: column;
 }
 
+
+.display-none {
+    display: none;
+}
+
+.display-flex {
+    display: flex;
+}
+
+
+/* header */
+
 .header {
     position: fixed;
     z-index: 1;
+    padding-top: 16px;
+    padding-bottom: 16px;
     width: 100%;
     color: rgba(234, 19, 105);
-    background-color: rgba(0,0,0,0.2);
+    background-color: white;
     letter-spacing: 2px;
+    box-shadow: -2px 4px 2px rgba(0, 0, 0, 0.2);
     display: flex;
+    flex-direction: column;
     justify-content: start;
 }
 
+.header h1 {
+    padding-left: 16px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    letter-spacing: 4px;
+}
+
+
+/* myPlace */
+
 .myPlace {
-    margin-top: 100px;
+    margin-top: 136px;
+    padding: 8px;
     display: grid;
-    /* justify-content: center; */
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 8px;
+    background-color: grey;
 }
 
 .pokeMini {
@@ -33,7 +60,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid black;
 }
 
 .pokeMiniImgDiv {
@@ -47,7 +75,44 @@ body {
     height: 100px;
 }
 
-.pokeMini1stLine{
+.pokeMini1stLine {
     display: flex;
     gap: 8px;
+}
+
+
+/* progress */
+
+
+.load {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    margin-top: 8px;
+    border-radius: 5px;
+    height: 10px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.progress {
+    border-radius: 5px;
+    height: 10px;
+    background-color: rgba(234, 19, 105);
+}
+
+/* load buttons */
+
+
+.loadBtns {
+    display: flex;
+    justify-content: center;
 }

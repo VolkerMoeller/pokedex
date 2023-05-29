@@ -23,7 +23,7 @@
 }
 
 .bgn-type-fire {
-    background-color: rgba(253, 76, 90);
+    background: linear-gradient(135deg, rgba(171, 31, 35), rgba(253, 76, 90), rgba(171, 31, 35));
 }
 
 .bgn-type-flying {
@@ -35,7 +35,8 @@
 }
 
 .bgn-type-grass {
-    background-color: rgba(39, 203, 79);
+    background: linear-gradient(135deg, rgba(22, 122, 59), rgba(39, 203, 79), rgba(22, 122, 59));
+    /* background-color: rgba(39, 203, 79); */
 }
 
 .bgn-type-ground {
