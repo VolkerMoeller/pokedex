@@ -1,21 +1,21 @@
 .bgn-type-bug {
-    background-color: rgba(28, 75, 39);
+    background: linear-gradient(135deg, rgba(28, 75, 39), rgba(59, 153, 80), rgba(28, 75, 39));
 }
 
 .bgn-type-dark {
-    background-color: rgba(4, 7, 4);
+    background: linear-gradient(135deg,  rgba(4, 7, 4), rgba(90, 89, 121),  rgba(4, 7, 4));
 }
 
 .bgn-type-dragon {
-    background-color: rgba(96, 202, 215);
+    background: linear-gradient(135deg,  rgba(68, 139, 149), rgba(96, 202, 215),  rgba(68, 139, 149));
 }
 
 .bgn-type-electric {
-    background-color: rgba(251, 251, 112);
+    background: linear-gradient(135deg,  rgba(227, 227, 43), rgba(251, 251, 112),  rgba(227, 227, 43));
 }
 
 .bgn-type-fairy {
-    background-color: rgba(234, 19, 105);
+    background: linear-gradient(135deg,  rgba(151, 25, 68), rgba(234, 19, 105),  rgba(151, 25, 68));
 }
 
 .bgn-type-fighting {
@@ -36,7 +36,6 @@
 
 .bgn-type-grass {
     background: linear-gradient(135deg, rgba(22, 122, 59), rgba(39, 203, 79), rgba(22, 122, 59));
-    /* background-color: rgba(39, 203, 79); */
 }
 
 .bgn-type-ground {
@@ -71,7 +70,13 @@
     background-color: rgba(134, 168, 254);
 }
 
+
+
+
 /* slot-colors */
+
+
+
 
 .bgn-slot-type-bug {
     background-color: rgba(59, 153, 80);

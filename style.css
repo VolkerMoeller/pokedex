@@ -98,6 +98,7 @@ body {
 .progress-bar {
     margin-top: 8px;
     border-radius: 5px;
+    border: 1px solid black;
     height: 10px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.2);
