@@ -19,7 +19,7 @@
 }
 
 .bgn-type-fighting {
-    background-color: rgba(239, 97, 56);
+    background: linear-gradient(135deg, rgba(153, 64, 34), rgba(239, 97, 56), rgba(153, 64, 34));
 }
 
 .bgn-type-fire {
@@ -27,11 +27,11 @@
 }
 
 .bgn-type-flying {
-    background-color: rgba(147, 178, 199);
+    background: linear-gradient(135deg, rgba(74, 103, 125), rgba(147, 178, 199), rgba(74, 103, 125));
 }
 
 .bgn-type-ghost {
-    background-color: rgba(144, 103, 144);
+    background: linear-gradient(135deg, rgba(51, 51, 107), rgba(144, 103, 144), rgba(51, 51, 107));
 }
 
 .bgn-type-grass {
@@ -39,35 +39,35 @@
 }
 
 .bgn-type-ground {
-    background-color: rgba(110, 73, 31);
+    background: linear-gradient(135deg, rgba(110, 73, 31), rgba(169, 112, 44), rgba(110, 73, 31));
 }
 
 .bgn-type-ice {
-    background-color: rgba(215, 241, 250);
+    background: linear-gradient(135deg, rgba(134, 210, 245),  rgba(215, 241, 250), rgba(134, 210, 245));
 }
 
 .bgn-type-normal {
-    background-color: rgba(202, 152, 167);
+    background: linear-gradient(135deg, rgba(117, 81, 91),  rgba(202, 152, 167), rgba(117, 81, 91));
 }
 
 .bgn-type-poison {
-    background-color: rgba(155, 105, 217);
+    background: linear-gradient(135deg, rgba(94, 45, 136),  rgba(155, 105, 217), rgba(94, 45, 136));
 }
 
 .bgn-type-psychic {
-    background-color: rgba(248, 28, 145);
+    background: linear-gradient(135deg, rgba(163, 41, 107),  rgba(248, 28, 145), rgba(163, 41, 107));
 }
 
 .bgn-type-rock {
-    background-color: rgba(139, 62, 33);
+    background: linear-gradient(135deg, rgba(72, 24, 11),  rgba(139, 62, 33), rgba(72, 24, 11));
 }
 
 .bgn-type-steel {
-    background-color: rgba(66, 189, 148);
+    background: linear-gradient(135deg, rgba(95, 117, 109),  rgba(66, 189, 148), rgba(95, 117, 109));
 }
 
 .bgn-type-water {
-    background-color: rgba(134, 168, 254);
+    background: linear-gradient(135deg, rgba(21, 82, 226),  rgba(134, 168, 254), rgba(21, 82, 226));
 }
 
 
