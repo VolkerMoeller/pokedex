@@ -13,7 +13,7 @@
     <title>Document</title>
 </head>
 
-<body onload="getData()">
+<body onload="init()">
     <div id="content" class="content">
         <div id="header" class="header">
             <h1>MöllerDex</h1>
@@ -27,12 +27,12 @@
                 </div>
             </div>
             <div id="loadBtns" class="loadBtns">
-                <button id="loadBtnStop" class="display-none" onclick="stopRepeatedExecution()">stop</button>
-                <button id="loadBtnStart" class="display-start" onclick="startRepeatedExecution()">continue</button>
+                <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 50</button>
             </div>
         </div>
         <div id="myPlace" class="myPlace"></div>
     </div>
+    <div id="overlay" class="overlay display-none" onclick="switchContent()"></div>
 </body>
 
 </html>

@@ -5,6 +5,9 @@ body {
     flex-direction: column;
 }
 
+content {
+    position: relative;
+}
 
 .display-none {
     display: none;
@@ -13,7 +16,6 @@ body {
 .display-flex {
     display: flex;
 }
-
 
 /* header */
 
@@ -43,7 +45,7 @@ body {
 /* myPlace */
 
 .myPlace {
-    margin-top: 136px;
+    margin-top: 158px;
     padding: 8px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -67,6 +69,11 @@ body {
 .pokeMiniImgDiv {
     height: 100px;
     width: 100px;
+    transition: transform 0.3s;
+}
+
+.pokeMiniImgDiv:hover {
+    transform: scale(1.05);
 }
 
 .pokeMiniImgDiv img {
@@ -80,9 +87,16 @@ body {
     gap: 8px;
 }
 
+.pokeButton {
+    font-family: 'Bangers';
+    cursor: pointer;
+    margin: 0px;
+    padding: 0px;
+    border-radius: 15px;
+    border: none;
+}
 
 /* progress */
-
 
 .load {
     display: flex;
@@ -110,8 +124,7 @@ body {
     background-color: rgba(234, 19, 105);
 }
 
-/* load buttons */
-
+/* button load */
 
 .loadBtns {
     display: flex;
@@ -119,20 +132,35 @@ body {
     font-family: 'Bangers';
 }
 
-.loadBtns button{
+.loadBtns button {
     justify-content: center;
     align-items: center;
     font-family: 'Bangers';
     color: rgba(234, 19, 105);
-    letter-spacing: 1px; 
-    font-size: 16px; 
+    letter-spacing: 1px;
+    font-size: 16px;
     width: 78px;
     height: 39px;
     border-radius: 10px;
-    border: 1px solid black; 
+    border: 1px solid black;
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
+
 .loadBtns button:hover {
     background-color: rgba(0, 0, 0, 0.4);
 }
+
+/* overlay */
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+  }
+

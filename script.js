@@ -1,57 +1,35 @@
 let initEnd = 20;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs = 1;
+let stepPokeNrs = 49;
 let endPokeNr = nextPokeNr + stepPokeNrs;
-let scrollCounter = 0;
 let maxPokeNr = 1010;
-let currentPokeNr = 0;
-let intervalId;
+let currentPokeNr = 0
+let indexOfGermanData;
 
 
-async function getData() {
+function init() {
     document.getElementById('myPlace').innerHTML = '';
-    for (let i = 1; i <= initEnd; i++) {
+    getData(1, initEnd);
+}
+
+
+function initNext() {
+    getData(nextPokeNr, endPokeNr);
+}
+
+
+async function getData(begin, end) {
+    for (let i = begin; i <= end; i++) {
         await performServerRequests(i);
         updateAmountPokesAndProgress(i);
     }
+    updateCountNrs(end);
 }
 
 
-function getNextData() {
-    if (nextPokeNr <= maxPokeNr) {
-        for (let j = nextPokeNr; j <= endPokeNr; j++) {
-            performServerRequests(j);
-            updateAmountPokesAndProgress(j);
-        }
-        updateCountNrs();
-    }
-}
-
-
-function startRepeatedExecution() {
-    switchButton();
-    intervalId = setInterval(getNextData, 5);
-}
-
-
-function stopRepeatedExecution() {
-    switchButton();
-    clearInterval(intervalId);
-}
-
-
-function updateCountNrs() {
-    nextPokeNr = endPokeNr + 1;
+function updateCountNrs(end) {
+    nextPokeNr = end + 1;
     endPokeNr = nextPokeNr + stepPokeNrs;
-}
-
-
-async function performServerRequestBy(url) {
-    try {
-        dataByUrl = await fetchDataFromServer(url);
-    } catch (error) {
-        console.error('Fehler beim Ausführen des Serverzugriffs "dataByUrl":', error);
-    }
 }
 
 
@@ -71,20 +49,31 @@ async function performServerRequests(i) {
     try {
         let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
         let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
-        let arrayPokemon = await fetchDataFromServer(url1);
-        console.log(i + ' pokemonData:', arrayPokemon);
-        renderPokeMinis1stLevel(i, arrayPokemon);
-        stylePokeBgn(i, arrayPokemon);
-        let arrayPokemonSpecies = await fetchDataFromServer(url2);
-        console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
-        getAbiltiesData(arrayPokemon, i);
+        await fetchArrayPokemon(i, url1);
+        await fetchArrayPokemonSpecies(i, url2);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
 }
 
 
-async function getAbiltiesData(arrayPokemon, i) {
+async function fetchArrayPokemon(i, url1) {
+    let arrayPokemon = await fetchDataFromServer(url1);
+    console.log(i + ' pokemonData:', arrayPokemon);
+    await renderPokeMinis1stLevel(i, arrayPokemon);
+    await stylePokeBgn(i, arrayPokemon);
+    await getAbiltiesData(i, arrayPokemon);
+}
+
+
+async function fetchArrayPokemonSpecies(i, url2) {
+    let arrayPokemonSpecies = await fetchDataFromServer(url2);
+    console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
+    await renderPokeMinis2ndLevel(i, arrayPokemonSpecies);
+}
+
+
+async function getAbiltiesData(i, arrayPokemon) {
     let dynamikUrl = await takeDynamikUrl(arrayPokemon);
     let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(dynamikUrl);
     console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
@@ -104,44 +93,39 @@ async function fetchAbilitiesDataFromServer(url) {
     return arrayPokemonAbilities;
 }
 
-// onscroll
-
-window.onscroll = function () { scrollFunction() };
-
-
-function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        scrollCounter++;
-        let interval = 1;
-        let tester = scrollCounter % interval;
-        if (tester == 0) {
-            // getNextData();
-        }
-    }
-}
 
 // render PokeMinis
+
 
 async function renderPokeMinis1stLevel(i, arrayPokemon) {
     let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
     let pokeId = arrayPokemon['id'];
-    let pokeName = arrayPokemon['name'];
-    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, imgSrc, pokeId, pokeName);
+    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini1st(i, imgSrc, pokeId);
 }
 
 
-function generateHTMLPokeMini(i, imgSrc, pokeId, pokeName) {
+function generateHTMLPokeMini1st(i, imgSrc, pokeId) {
     return `
+    <button id="pokeButton" class="pokeButton" onclick="switchContent()">
     <div id="pokeMini${i}" class="pokeMini">
-        <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
-            <div id="pokeMiniId${i}" class="pokeMiniId">${pokeId}</div>
-            <div id="pokeMiniName${i}" class="pokeMiniName">${pokeName}</div>
-        </div>
-        <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
-            <img src=${imgSrc}>
-        </div>
+    <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
+    <div id="pokeMiniId${i}" class="pokeMiniId">${pokeId}</div>
+    <div id="pokeMiniGermanName${i}" class="pokeMiniName"></div>
     </div>
+    <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
+    <img src=${imgSrc}>
+    </div>
+    </div>
+    </button>
     `
+}
+
+
+async function renderPokeMinis2ndLevel(i, arrayPokemonSpecies) {
+    searchIndexOfGermanData(arrayPokemonSpecies, 'names');
+    let germanName = arrayPokemonSpecies['names'][indexOfGermanData]['name'];
+    console.log(germanName);
+    document.getElementById('pokeMiniGermanName' + i).innerHTML = germanName;
 }
 
 
@@ -174,7 +158,6 @@ function updateProgress(currentPokeNr) {
 // background-color
 
 
-
 async function stylePokeBgn(currentPokeNr, arrayPokemon) {
     let pokeType = arrayPokemon['types'][0]['type']['name'];
     setBgnByType(pokeType, currentPokeNr);
@@ -186,20 +169,21 @@ function setBgnByType(pokeType, i) {
 }
 
 
-// switch button
+// switch PokeCard-Overlay 
 
 
-function switchButton() {
-    let loadBtnStop = document.getElementById('loadBtnStop');
-    let loadBtnStart = document.getElementById('loadBtnStart');
-    if (loadBtnStop.classList.contains('display-none') == true) {
-        displayOn(loadBtnStop);
-        displayOff(loadBtnStart);
+function switchContent() {
+    let overlay = document.getElementById('overlay');
+    if (overlay.classList.contains('display-none') == true) {
+        displayOn(overlay);
     } else {
-        displayOff(loadBtnStop);
-        displayOn(loadBtnStart);
+        displayOff(overlay);
     }
+    topFunction();
 }
+
+
+// display OnOff
 
 
 function displayOn(element) {
@@ -211,4 +195,26 @@ function displayOn(element) {
 function displayOff(element) {
     element.classList.add('display-none');
     element.classList.remove('display-flex');
+}
+
+
+//  onTop
+
+
+function topFunction() {
+    document.documentElement.scrollTop = 0;
+}
+
+
+//   germanData
+
+
+function searchIndexOfGermanData(arrayAsJSON, index) {
+    for (let j = 0; j < arrayAsJSON[index].length; j++) {
+        const language = arrayAsJSON[index][j]['language']['name'];
+        if (language == 'de') {
+            indexOfGermanData = j;
+            return indexOfGermanData;
+        }
+    }
 }
