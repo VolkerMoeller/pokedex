@@ -84,6 +84,7 @@ async function useArrayPokemon(i, arrayPokemon) {
 
 async function noticeDisplayedPokeId(i, arrayPokemon) {
     let pokeId = arrayPokemon['id'];
+    pokeId = pokeId.toString();
     loadedPokeIds.push(pokeId);
 }
 
@@ -258,29 +259,34 @@ function searchIndexOfGermanData(arrayAsJSON, index) {
 }
 
 
-// searchByName
+// searchBy
 
-// function searchIndexOfName(searchName) {
-//     for (let i = 0; i < pokes.length; i++) {
-//         let nameGerman = pokes[i]['pokeNameGerman'][0];
-//         if (nameGerman) {
-//             nameGerman = nameGerman.toLowerCase();
-//         }
-//         if (searchName == nameGerman) {
-//             let index = i;
-//             return index;
-//         }
-//     }
-// }
 
 function searchByName() {
+    for (let i = 0; i < loadedPokeIds.length; i++) {
+        document.getElementById('pokeButton' + loadedPokeIds[i]).classList.add('display-none')
+    }
     for (let i = 0; i < loadedPokeNames.length; i++) {
         let searchName = document.getElementById('searchName').value;
         searchName = searchName.toLowerCase();
         let loadedPokeName = loadedPokeNames[i].toLowerCase();
         let result = loadedPokeName.startsWith(searchName);
         if (result == true) {
-            console.log(result + i);
-        } else {console.log('sch')}
+            document.getElementById('pokeButton' + loadedPokeIds[i]).classList.remove('display-none')
+        }
+    }
+}
+
+function searchByNr() {
+    for (let i = 0; i < loadedPokeIds.length; i++) {
+        document.getElementById('pokeButton' + loadedPokeIds[i]).classList.add('display-none')
+    }
+    for (let i = 0; i < loadedPokeIds.length; i++) {
+        let searchId = document.getElementById('searchId').value;
+        searchId = searchId.toString();
+        let result = loadedPokeIds[i].startsWith(searchId);
+        if (result == true) {
+            document.getElementById('pokeButton' + loadedPokeIds[i]).classList.remove('display-none')
+        }
     }
 }

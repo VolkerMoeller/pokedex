@@ -3,6 +3,7 @@ body {
     font-family: 'Bangers';
     display: flex;
     flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.4)
 }
 
 content {
@@ -45,14 +46,23 @@ content {
     letter-spacing: 4px;
 }
 
+.headerLine {
+    display: flex;
+}
+
 .searchLine {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 16px;
+}
+
+.searchLine span {
+    margin: 4px;
 }
 
 .searchLine input {
+    margin: 4px;
     font-family: 'Bangers';
     font-size: 16px;
     letter-spacing: 1px;
@@ -63,15 +73,19 @@ content {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+.searchLine button {
+    margin: 4px;
+}
+
+
 /* myPlace */
 
 .myPlace {
-    margin-top: 158px;
+    margin-top: 170px;
     padding: 8px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 8px;
-    background-color: grey;
 }
 
 .pokeMini {

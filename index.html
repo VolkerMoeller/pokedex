@@ -16,8 +16,9 @@
 <body onload="init()">
     <div id="content" class="content">
         <div id="header" class="header">
-            <h1>MöllerDex</h1>
-
+            <div id="headerLine" class="headerLine">
+                <h1>MöllerDex</h1>
+            </div>
             <div id="load" class="load">
                 <div id="loadLine" class="loadLine">
                     <div id="amount-pokes-loaded" class="amount-pokes-loaeded"></div>
@@ -27,8 +28,12 @@
                 </div>
             </div>
             <div id="searchLine" class="searchLine">
-                <span>Such nach: </span>
+                <span>Suche</span>
                 <input id="searchName" placeholder="Name" onkeydown="searchByName()">
+
+                <span>oder</span>
+                <input id="searchId" placeholder="Nr" onkeydown="searchByNr()">
+
                 <div id="loadBtns" class="loadBtns">
                     <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 20</button>
                 </div>
