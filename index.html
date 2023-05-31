@@ -26,8 +26,12 @@
                     <div id="progress" class="progress"></div>
                 </div>
             </div>
-            <div id="loadBtns" class="loadBtns">
-                <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 50</button>
+            <div id="searchLine" class="searchLine">
+                <span>Such nach: </span>
+                <input id="searchName" placeholder="Name" onkeydown="searchByName()">
+                <div id="loadBtns" class="loadBtns">
+                    <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 20</button>
+                </div>
             </div>
         </div>
         <div id="myPlace" class="myPlace"></div>

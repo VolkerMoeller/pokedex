@@ -9,6 +9,10 @@ content {
     position: relative;
 }
 
+.color-black {
+    color: black;
+}
+
 .display-none {
     display: none;
 }
@@ -41,6 +45,23 @@ content {
     letter-spacing: 4px;
 }
 
+.searchLine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.searchLine input {
+    font-family: 'Bangers';
+    font-size: 16px;
+    letter-spacing: 1px;
+    outline: none;
+    border: solid 1px black;
+    border-radius: 10px;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
 
 /* myPlace */
 
@@ -162,5 +183,4 @@ content {
     backdrop-filter: blur(8px);
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
-  }
-
+}
