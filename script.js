@@ -8,6 +8,9 @@ let indexOfGermanData;
 let functionRunning = false;
 let loadedPokeNames = [];
 let loadedPokeIds = [];
+let loadedPokeSlots1 = [];
+let loadedPokeSlots2 = [];
+let pokesFavorites = [];
 
 
 function init() {
@@ -75,10 +78,13 @@ async function fetchArrayPokemon(i, url1) {
 
 async function useArrayPokemon(i, arrayPokemon) {
     await renderPokeMinis1stLevel(i, arrayPokemon);
-    await stylePokeBgn(i, arrayPokemon);
+    await stylePokeBgn(i, arrayPokemon, 'pokeMini');
     await getAbiltiesData(i, arrayPokemon);
     await changeMiniToBlack(i, arrayPokemon);
     await noticeDisplayedPokeId(i, arrayPokemon);
+    await noticeDisplayedPokeSlots(i, arrayPokemon);
+    await renderPokeCards1stLevel(i, arrayPokemon);
+    await stylePokeBgn(i, arrayPokemon, 'pokedex');
 }
 
 
@@ -86,6 +92,32 @@ async function noticeDisplayedPokeId(i, arrayPokemon) {
     let pokeId = arrayPokemon['id'];
     pokeId = pokeId.toString();
     loadedPokeIds.push(pokeId);
+}
+
+
+async function noticeDisplayedPokeSlots(i, arrayPokemon) {
+    if (arrayPokemon['types'].length == 1) {
+        let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+        let pokeSlot2 = '';
+        loadedPokeSlots1.push(pokeSlot1);
+        loadedPokeSlots2.push(pokeSlot2);
+    } else
+        if (arrayPokemon['types'].length == 2) {
+            let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+            let pokeSlot2 = arrayPokemon['types'][1]['type']['name'];
+            loadedPokeSlots1.push(pokeSlot1);
+            loadedPokeSlots2.push(pokeSlot2);
+        }
+}
+
+
+async function noticeDisplayedPokeSlot2(i, arrayPokemon) {
+    if (arrayPokemon['types'].length = 2) {
+        let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+        loadedPokeSlots1.push(pokeSlot1);
+        let pokeSlot2 = arrayPokemon['types'][1]['type']['name'];
+        loadedPokeSlots2.push(pokeSlot2);
+    }
 }
 
 
@@ -118,8 +150,6 @@ async function fetchAbilitiesDataFromServer(url) {
 
 
 // render PokeMinis
-
-
 async function renderPokeMinis1stLevel(i, arrayPokemon) {
     let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
     let pokeId = arrayPokemon['id'];
@@ -128,8 +158,8 @@ async function renderPokeMinis1stLevel(i, arrayPokemon) {
 
 
 function generateHTMLPokeMini1st(i, imgSrc, pokeId) {
-    return `
-    <button id="pokeButton${i}" class="pokeButton" onclick="switchContent()">
+    return /*html*/`
+    <button id="pokeButton${i}" class="pokeButton" onclick="showPokeCard(${i})">
         <div id="pokeMini${i}" class="pokeMini">
             <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
                 <div id="pokeMiniId${i}" class="pokeMiniId">${pokeId}</div>
@@ -142,6 +172,18 @@ function generateHTMLPokeMini1st(i, imgSrc, pokeId) {
     </button>
     `
 }
+
+function showPokeCard(i) {
+    switchContent();
+    document.getElementById('pokedex' + i).classList.remove('display-none');
+}
+
+function hideAllPokeCards() {
+    for (let i = 1; i < loadedPokeIds.length; i++) {
+        document.getElementById('pokedex' + i).classList.add('display-none');
+    }
+}
+
 
 
 async function renderPokeMinis2ndLevel(i, arrayPokemonSpecies) {
@@ -169,8 +211,6 @@ async function changeMiniToBlack(i, arrayPokemon) {
 
 
 // progressBar
-
-
 function updateAmountPokesAndProgress(currentPokeNr) {
     renderAmountLoadedPokes(currentPokeNr);
     updateProgress(currentPokeNr);
@@ -195,36 +235,34 @@ function updateProgress(currentPokeNr) {
 
 
 // background-color
-
-
-async function stylePokeBgn(currentPokeNr, arrayPokemon) {
+async function stylePokeBgn(currentPokeNr, arrayPokemon, index) {
     let pokeType = arrayPokemon['types'][0]['type']['name'];
-    setBgnByType(pokeType, currentPokeNr);
+    setBgnByType(pokeType, currentPokeNr, index);
 }
 
 
-function setBgnByType(pokeType, i) {
-    document.getElementById('pokeMini' + i).classList.add('bgn-type-' + pokeType);
+function setBgnByType(pokeType, i, index) {
+    document.getElementById(index + i).classList.add('bgn-type-' + pokeType);
 }
 
 
 // switch PokeCard-Overlay 
-
-
 function switchContent() {
     let overlay = document.getElementById('overlay');
+    let pokeCardContent = document.getElementById('pokeCardContent');
     if (overlay.classList.contains('display-none') == true) {
         displayOn(overlay);
+        displayOn(pokeCardContent);
     } else {
         displayOff(overlay);
+        displayOff(pokeCardContent);
+        hideAllPokeCards();
     }
     topFunction();
 }
 
 
 // display OnOff
-
-
 function displayOn(element) {
     element.classList.remove('display-none');
     element.classList.add('display-flex');
@@ -238,16 +276,12 @@ function displayOff(element) {
 
 
 //  onTop
-
-
 function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
 
-//   germanData
-
-
+//  germanData
 function searchIndexOfGermanData(arrayAsJSON, index) {
     for (let j = 0; j < arrayAsJSON[index].length; j++) {
         const language = arrayAsJSON[index][j]['language']['name'];
@@ -260,12 +294,8 @@ function searchIndexOfGermanData(arrayAsJSON, index) {
 
 
 // searchBy
-
-
 function searchByName() {
-    for (let i = 0; i < loadedPokeIds.length; i++) {
-        document.getElementById('pokeButton' + loadedPokeIds[i]).classList.add('display-none')
-    }
+    hidePokeMinis();
     for (let i = 0; i < loadedPokeNames.length; i++) {
         let searchName = document.getElementById('searchName').value;
         searchName = searchName.toLowerCase();
@@ -277,10 +307,9 @@ function searchByName() {
     }
 }
 
+
 function searchByNr() {
-    for (let i = 0; i < loadedPokeIds.length; i++) {
-        document.getElementById('pokeButton' + loadedPokeIds[i]).classList.add('display-none')
-    }
+    hidePokeMinis();
     for (let i = 0; i < loadedPokeIds.length; i++) {
         let searchId = document.getElementById('searchId').value;
         searchId = searchId.toString();
@@ -289,4 +318,125 @@ function searchByNr() {
             document.getElementById('pokeButton' + loadedPokeIds[i]).classList.remove('display-none')
         }
     }
+}
+
+
+// hide PokeMinis
+function hidePokeMinis() {
+    for (let i = 0; i < loadedPokeIds.length; i++) {
+        document.getElementById('pokeButton' + loadedPokeIds[i]).classList.add('display-none')
+    }
+}
+
+
+// pokeCards
+async function renderPokeCards1stLevel(i) {
+    document.getElementById('pokeCardPlace').classList.remove('display-none');
+    document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i);
+}
+
+function generateHTMLPokeCard(i) {
+    return /*html*/`
+    <div id="pokedex${i}" class="pokedex display-none">
+        <div id="pokedex-top${i}" class="pokedex-top">
+            <div>
+                <button onclick="switchContent()" class="btn-back">
+                    <img src="./img/backspace.png">
+                </button>
+            </div>
+            <div class="pokedex-above">
+                <div id="pokedex-name${i}" class="pokedex-name">
+                </div>
+                <div id="pokedex-id${i}" class="pokedex-id">
+                </div>
+            </div>
+            <div class="slot-line">
+                <div id="pokedex-slots${i}" class="pokedex-slots">
+                </div>
+                <div class="favorite">
+                    <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>
+                    <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill1${i}" src="./img/favorite_FILL1.png"></button></div>
+                </div>
+            </div>
+        </div>
+        <div id="pokedex-bottom${i}" class="pokedex-bottom">
+        <div class="navigationPoke">
+            <div onmouseover="hoverNavigationOver(1, ${i})" onmouseout="hoverNavigationOut(1, ${i})">
+                <button onclick="showCurrentCardById('card1${i}', ${i}, cardIdsPokeAll)" id="btn-card1${i}">About</button>
+            </div>
+            <div onmouseover="hoverNavigationOver(2, ${i})" onmouseout="hoverNavigationOut(2, ${i})">
+                <button onclick="showCurrentCardById('card2${i}', ${i}, cardIdsPokeAll)" id="btn-card2${i}">Base Stats</button>
+            </div>
+            <div onmouseover="hoverNavigationOver(3, ${i})" onmouseout="hoverNavigationOut(3, ${i})">
+                <button onclick="showCurrentCardById('card3${i}', ${i}, cardIdsPokeAll)" id="btn-card3${i}">Evolution</button>
+            </div>
+            <div onmouseover="hoverNavigationOver(4, ${i})" onmouseout="hoverNavigationOut(4, ${i})">
+                <button onclick="showCurrentCardById('card4${i}', ${i}, cardIdsPokeAll)" id="btn-card4${i}">5 Moves</button>
+            </div>
+        </div>
+        <div id="card1${i}" class="cards"></div>
+        <div id="card2${i}" class="cards display-none"></div>
+        <div id="card3${i}" class="cards display-none"></div>
+        <div id="card4${i}" class="cards display-none"></div>
+    </div> 
+    `
+}
+
+// favorites
+function setFavorite(i) {
+    let hidden = document.getElementById(`fill0${i}`).classList.contains('display-none');
+    if (hidden == true) {
+        document.getElementById(`fill0${i}`).classList.remove('display-none');
+        document.getElementById(`fill1${i}`).classList.add('display-none');
+        removeFavorite(i);
+
+    } else {
+        document.getElementById(`fill0${i}`).classList.add('display-none');
+        document.getElementById(`fill1${i}`).classList.remove('display-none');
+        addFavorite(i);
+    }
+}
+
+
+function addFavorite(i) {
+    pokesFavorites.push(i);
+    pokesFavorites.sort(function (a, b) { return a - b });
+    saveFavorites();
+    loadFavorites();
+}
+
+
+function removeFavorite(i) {
+    let index = pokesFavorites.indexOf(i);
+    pokesFavorites.splice(index, 1);
+    saveFavorites();
+    loadFavorites();
+}
+
+
+function saveFavorites() {
+    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
+    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
+}
+
+
+function loadFavorites() {
+    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
+    if (pokesFavoritesAsText) {
+        pokesFavorites = JSON.parse(pokesFavoritesAsText);
+    }
+}
+
+// Navigation PokeCard
+function hoverNavigationOver(cardNr, i) {
+    let slot1 = loadedPokeSlots1[i];
+    let bgnHoverType = 'bgn-hover-type-' + slot1;
+    document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
+}
+
+
+function hoverNavigationOut(cardNr, i) {
+    let slot1 = loadedPokeSlots1[i];
+    let bgnHoverType = 'bgn-hover-type-' + slot1;
+    document.getElementById('btn-card' + cardNr + i).classList.remove(`${bgnHoverType}`);
 }
