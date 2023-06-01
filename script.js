@@ -470,9 +470,9 @@ async function renderPokeTop(i, arrayPokemon) {
     renderPokeId(i, arrayPokemon);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
-    // renderPokeFavorite(i, bgnType);
-    // renderPokeImage(i, pokeImg);
-    // renderPokeToBlack(i, pokeSlot1);
+    renderPokeFavorite(i, bgnType);
+    renderPokeImage(i, pokeImg);
+    renderPokeToBlack(i, pokeSlot1);
 }
 
 
