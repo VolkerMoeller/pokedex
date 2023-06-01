@@ -209,7 +209,7 @@ body {
     position: absolute;
     top: 0px;
     width: 480px;
-    height: 600px;
+    height: 100%;
     background-color: white;
     z-index: 3;
 }
@@ -265,12 +265,22 @@ body {
     background-color: rgba(251, 251, 251, 0.9);
 }
 
+.pokedex-above {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pokedex-name {
+    font-size: 24px;
+}
+
 .pokedex-name::first-letter {
     text-transform: capitalize;
 }
 
 .pokedex-id {
-    font-size: 32px;
+    font-size: 24px;
     margin-top: 8px;
     margin-bottom: 8px
 }
@@ -294,7 +304,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 86px;
-    font-size: 24px; 
+    font-size: 24px;
 }
 
 .favorite {
@@ -332,6 +342,23 @@ body {
     margin-right: 8px;
 }
 
+.pokedex-image-place {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.pokedex-image {
+    display: flex;
+}
+
+.pokedex-image img {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
 .navigationPoke {
     display: flex;
     flex-wrap: wrap;
@@ -344,10 +371,10 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    height: 70px;
-    width: 116px;
+    height: 48px;
+    width: 96px;
     color: white;
-    font-size: 24px;
+    font-size: 16px;
     letter-spacing: 0.25px;
 }
 

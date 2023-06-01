@@ -369,6 +369,9 @@ function generateHTMLPokeCard(i) {
                     <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill1${i}" src="./img/favorite_FILL1.png"></button></div>
                 </div>
             </div>
+            <div id="pokedex-image-place${i}" class="pokedex-image-place">
+                <div id="pokedex-image${i}" class="pokedex-image"></div>
+            </div>
         </div>
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
         <div class="navigationPoke">
@@ -495,7 +498,7 @@ function renderPokeSlot2(i) {
 
 
 function renderPokeImage(i, pokeImg) {
-    document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
+    document.getElementById('pokedex-image' + i).innerHTML += `<img src="${pokeImg}">`;
 }
 
 
