@@ -4,13 +4,14 @@ let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
+let currentGermanName = '';
 let indexOfGermanData;
 let functionRunning = false;
-let loadedPokeNames = [];
-let loadedPokeIds = [];
-let loadedPokeSlots1 = [];
-let loadedPokeSlots2 = [];
-let pokesFavorites = [];
+let loadedPokeNames = [0];
+let loadedPokeIds = [0];
+let loadedPokeSlots1 = [0];
+let loadedPokeSlots2 = [0];
+let pokesFavorites = [0];
 
 
 function init() {
@@ -103,8 +104,8 @@ async function noticeDisplayedPokeSlots(i, arrayPokemon) {
         loadedPokeSlots1.push(pokeSlot1);
         loadedPokeSlots2.push(pokeSlot2);
     } else
-    if (arrayPokemon['types'].length == 2) {
-        let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+        if (arrayPokemon['types'].length == 2) {
+            let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
             let pokeSlot2 = arrayPokemon['types'][1]['type']['name'];
             loadedPokeSlots1.push(pokeSlot1);
             loadedPokeSlots2.push(pokeSlot2);
@@ -130,10 +131,15 @@ async function fetchArrayPokemonSpecies(i, url2) {
 
 
 async function useArrayPokemonSpecies(i, arrayPokemonSpecies) {
-    await renderPokeGermanName(i, arrayPokemonSpecies, 'pokeMiniGermanName');
-
+    await getPokeGermanName(arrayPokemonSpecies);
+    await fillPokeWithName(currentGermanName, i)
+    await noticeDisplayedPokeName(currentGermanName);
 }
 
+
+async function fillPokeWithName(currentGermanName, i) {
+    document.getElementById('pokeMiniGermanName' + i).innerHTML = currentGermanName;
+}
 
 async function getAbiltiesData(i, arrayPokemon) {
     let dynamikUrl = await takeDynamikUrl(arrayPokemon);
@@ -172,9 +178,9 @@ function generateHTMLPokeMini1st(i, imgSrc, pokeId) {
                 <div id="pokeMiniId${i}" class="pokeMiniId">${pokeId}</div>
                 <div id="pokeMiniGermanName${i}" class="pokeMiniName"></div>
             </div>
-        <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
-            <img src=${imgSrc}>
-        </div>
+            <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
+                <img src=${imgSrc}>
+            </div>
         </div>
     </button>
     `
@@ -192,12 +198,11 @@ function hideAllPokeCards() {
 }
 
 
-async function renderPokeGermanName(i, arrayPokemonSpecies, index) {
-    searchIndexOfGermanData(arrayPokemonSpecies, 'names');
-    let germanName = arrayPokemonSpecies['names'][indexOfGermanData]['name'];
+async function getPokeGermanName(array) {
+    searchIndexOfGermanData(array, 'names');
+    let germanName = array['names'][indexOfGermanData]['name'];
     console.log(germanName);
-    await noticeDisplayedPokeName(germanName);
-    document.getElementById(index + i).innerHTML = germanName;
+    currentGermanName = germanName;
 }
 
 
@@ -461,42 +466,37 @@ async function renderPokeTop(i, arrayPokemon) {
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
     let pokeImg = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
-    renderPokeGermanName(i);
-    renderPokeId(i);
+    document.getElementById('pokedex-name' + i).innerHTML = currentGermanName;
+    renderPokeId(i, arrayPokemon);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
-    renderPokeFavorite(i, bgnType);
-    renderPokeImage(i, pokeImg);
-    renderPokeToBlack(i, pokeSlot1);
+    // renderPokeFavorite(i, bgnType);
+    // renderPokeImage(i, pokeImg);
+    // renderPokeToBlack(i, pokeSlot1);
 }
 
 
-function renderPokeGermanName(i) {
-    let pokeNameGerman = myPokesAsObject[i]['nameGerman'];
-    document.getElementById('pokedex-name' + i).innerHTML += `<h1>${pokeNameGerman}</h1>`;
-};
-
-
-function renderPokeToBlack(i, pokeSlot1){
+function renderPokeToBlack(i, pokeSlot1) {
     if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
         changeToBlack(i, pokeSlot1);
     }
-};
+}
 
 
 function renderPokeSlot2(i) {
-    if (myPokesAsObject[i]['slot2']) {
-        let pokeSlot2 = myPokesAsObject[i]['slot2'];
+    if (loadedPokeSlots2[i] == '') {
+        return;
+    } else {
+        let pokeSlot2 = loadedPokeSlots2[i];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
-    } else {
     }
-};
+}
 
 
 function renderPokeImage(i, pokeImg) {
     document.getElementById('pokedex-top' + i).innerHTML += `<div id="pokeImg"><img src="${pokeImg}"></div>`;
-};
+}
 
 
 function renderPokeSlot1(i, bgnSlotType, pokeSlot1) {
@@ -510,8 +510,8 @@ function renderPokeFavorite(i, bgnType) {
 };
 
 
-function renderPokeId(i) {
-    let pokeId = myPokesAsObject[i]['id'];
+function renderPokeId(i, arrayPokemon) {
+    let pokeId = arrayPokemon['id'];
     let formatPokeId = format3LeftHandZeros(pokeId);
     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
 };
@@ -552,12 +552,10 @@ async function renderPokeBottom(i) {
 }
 
 
-// async function stylePokeBgnTop(i) {
-//     let pokeType = document.getElementById('base-type' + i).innerHTML;
-//     setBgnByType(pokeType, i);
-// }
+// format Id
 
-
-// function setBgnByType(pokeType, i) {
-//     document.getElementById('pokedex-top' + i).classList.add('bgn-type-' + pokeType);
-// }
+function format3LeftHandZeros(value) {
+    value = value.toString();
+    let formatValue = value.padStart(4, '0');
+    return formatValue;
+}
