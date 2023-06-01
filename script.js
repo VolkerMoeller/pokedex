@@ -85,7 +85,7 @@ async function useArrayPokemon(i, arrayPokemon) {
     await noticeDisplayedPokeSlots(i, arrayPokemon);
     await renderPokeCards1stLevel(i, arrayPokemon);
     await stylePokeBgn(i, arrayPokemon, 'pokedex');
-    // await renderPokeCards2ndLevel(i, arrayPokemon);
+    await renderPokeCards2ndLevel(i, arrayPokemon);
 }
 
 
@@ -103,8 +103,8 @@ async function noticeDisplayedPokeSlots(i, arrayPokemon) {
         loadedPokeSlots1.push(pokeSlot1);
         loadedPokeSlots2.push(pokeSlot2);
     } else
-        if (arrayPokemon['types'].length == 2) {
-            let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+    if (arrayPokemon['types'].length == 2) {
+        let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
             let pokeSlot2 = arrayPokemon['types'][1]['type']['name'];
             loadedPokeSlots1.push(pokeSlot1);
             loadedPokeSlots2.push(pokeSlot2);
@@ -125,7 +125,13 @@ async function noticeDisplayedPokeSlot2(i, arrayPokemon) {
 async function fetchArrayPokemonSpecies(i, url2) {
     let arrayPokemonSpecies = await fetchDataFromServer(url2);
     console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
-    await renderPokeMinis2ndLevel(i, arrayPokemonSpecies);
+    await useArrayPokemonSpecies(i, arrayPokemonSpecies);
+}
+
+
+async function useArrayPokemonSpecies(i, arrayPokemonSpecies) {
+    await renderPokeGermanName(i, arrayPokemonSpecies, 'pokeMiniGermanName');
+
 }
 
 
@@ -186,13 +192,12 @@ function hideAllPokeCards() {
 }
 
 
-
-async function renderPokeMinis2ndLevel(i, arrayPokemonSpecies) {
+async function renderPokeGermanName(i, arrayPokemonSpecies, index) {
     searchIndexOfGermanData(arrayPokemonSpecies, 'names');
     let germanName = arrayPokemonSpecies['names'][indexOfGermanData]['name'];
     console.log(germanName);
     await noticeDisplayedPokeName(germanName);
-    document.getElementById('pokeMiniGermanName' + i).innerHTML = germanName;
+    document.getElementById(index + i).innerHTML = germanName;
 }
 
 
