@@ -87,7 +87,8 @@ async function fetchDataFromServer(url) {
     }
 }
 
-// useArray
+
+// useArrays
 async function fetchArrayPokemon(i, url1) {
     let arrayPokemon = await fetchDataFromServer(url1);
     await getAbiltiesData(i, arrayPokemon);
@@ -100,7 +101,6 @@ async function getAbiltiesData(i, arrayPokemon) {
     let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(dynamikUrl);
     useArrayPokemonAbilities(i, arrayPokemonAbilities);
 }
-
 
 
 async function fetchArrayPokemonSpecies(i, url2) {
@@ -174,8 +174,6 @@ async function fillPokeWithName(currentGermanName, i) {
 }
 
 
-
-
 // render PokeMinis
 async function renderPokeMinis1stLevel(i, arrayPokemon) {
     let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
@@ -184,12 +182,11 @@ async function renderPokeMinis1stLevel(i, arrayPokemon) {
 }
 
 
-
-
 function showPokeCard(i) {
     switchContent();
     document.getElementById('pokedex' + i).classList.remove('display-none');
 }
+
 
 function hideAllPokeCards() {
     for (let i = 1; i < loadedPokeIds.length; i++) {

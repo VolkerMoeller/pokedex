@@ -1,22 +1,22 @@
-/* background  */
+/* background  (stylish)*/
 .bgn-type-bug {
     background: linear-gradient(135deg, rgba(28, 75, 39), rgba(59, 153, 80), rgba(28, 75, 39));
 }
 
 .bgn-type-dark {
-    background: linear-gradient(135deg,  rgba(4, 7, 4), rgba(90, 89, 121),  rgba(4, 7, 4));
+    background: linear-gradient(135deg, rgba(4, 7, 4), rgba(90, 89, 121), rgba(4, 7, 4));
 }
 
 .bgn-type-dragon {
-    background: linear-gradient(135deg,  rgba(68, 139, 149), rgba(96, 202, 215),  rgba(68, 139, 149));
+    background: linear-gradient(135deg, rgba(68, 139, 149), rgba(96, 202, 215), rgba(68, 139, 149));
 }
 
 .bgn-type-electric {
-    background: linear-gradient(135deg,  rgba(227, 227, 43), rgba(251, 251, 112),  rgba(227, 227, 43));
+    background: linear-gradient(135deg, rgba(227, 227, 43), rgba(251, 251, 112), rgba(227, 227, 43));
 }
 
 .bgn-type-fairy {
-    background: linear-gradient(135deg,  rgba(151, 25, 68), rgba(234, 19, 105),  rgba(151, 25, 68));
+    background: linear-gradient(135deg, rgba(151, 25, 68), rgba(234, 19, 105), rgba(151, 25, 68));
 }
 
 .bgn-type-fighting {
@@ -44,37 +44,37 @@
 }
 
 .bgn-type-ice {
-    background: linear-gradient(135deg, rgba(134, 210, 245),  rgba(215, 241, 250), rgba(134, 210, 245));
+    background: linear-gradient(135deg, rgba(134, 210, 245), rgba(215, 241, 250), rgba(134, 210, 245));
 }
 
 .bgn-type-normal {
-    background: linear-gradient(135deg, rgba(117, 81, 91),  rgba(202, 152, 167), rgba(117, 81, 91));
+    background: linear-gradient(135deg, rgba(117, 81, 91), rgba(202, 152, 167), rgba(117, 81, 91));
 }
 
 .bgn-type-poison {
-    background: linear-gradient(135deg, rgba(94, 45, 136),  rgba(155, 105, 217), rgba(94, 45, 136));
+    background: linear-gradient(135deg, rgba(94, 45, 136), rgba(155, 105, 217), rgba(94, 45, 136));
 }
 
 .bgn-type-psychic {
-    background: linear-gradient(135deg, rgba(163, 41, 107),  rgba(248, 28, 145), rgba(163, 41, 107));
+    background: linear-gradient(135deg, rgba(163, 41, 107), rgba(248, 28, 145), rgba(163, 41, 107));
 }
 
 .bgn-type-rock {
-    background: linear-gradient(135deg, rgba(72, 24, 11),  rgba(139, 62, 33), rgba(72, 24, 11));
+    background: linear-gradient(135deg, rgba(72, 24, 11), rgba(139, 62, 33), rgba(72, 24, 11));
 }
 
 .bgn-type-steel {
-    background: linear-gradient(135deg, rgba(95, 117, 109),  rgba(66, 189, 148), rgba(95, 117, 109));
+    background: linear-gradient(135deg, rgba(95, 117, 109), rgba(66, 189, 148), rgba(95, 117, 109));
 }
 
 .bgn-type-water {
-    background: linear-gradient(135deg, rgba(21, 82, 226),  rgba(134, 168, 254), rgba(21, 82, 226));
+    background: linear-gradient(135deg, rgba(21, 82, 226), rgba(134, 168, 254), rgba(21, 82, 226));
 }
 
 
 
 
-/* background normal */
+/* background normal (dark)*/
 .bgn-bug {
     background: rgba(28, 75, 39);
 }
@@ -84,7 +84,7 @@
 }
 
 .bgn-dragon {
-    background:  rgba(68, 139, 149);
+    background: rgba(68, 139, 149);
 }
 
 .bgn-electric {
@@ -148,7 +148,7 @@
 }
 
 
-/* slot-colors */
+/* slot-colors bright*/
 .bgn-slot-type-bug {
     background-color: rgba(59, 153, 80);
 }
@@ -222,11 +222,11 @@
 }
 
 
-/* hover colors */
+/* hover colors 0.7*/
 
 
 .bgn-hover-type-bug {
-    background-color: rgba(28, 75, 39, 0.8);
+    background-color: rgba(28, 75, 39, 0.7);
 }
 
 .bgn-hover-type-dark {
