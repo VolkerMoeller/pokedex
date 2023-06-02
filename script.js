@@ -111,7 +111,7 @@ async function fetchArrayPokemonSpecies(i, url2) {
 async function useArrayPokemon(i, arrayPokemon) {
     console.log(i + ' pokemonData:', arrayPokemon);
     let arrayPokemonAbilities = await getAbiltiesData(arrayPokemon);
-    await renderPokeMinis1stLevel(i, arrayPokemon);
+    await renderPokeMinisImgAndId(i, arrayPokemon);
     await stylePokeBgn(i, arrayPokemon, 'pokeMini');
     await changeMiniToBlack(i, arrayPokemon);
     await noticeDisplayedPokeId(arrayPokemon);
@@ -120,15 +120,17 @@ async function useArrayPokemon(i, arrayPokemon) {
     await stylePokeBgn(i, arrayPokemon, 'pokedex');
     await renderPokeCardsTopAndNavigation(i, arrayPokemon);
     await useArrayPokemonAbilities(i, arrayPokemonAbilities);
+    await renderPokeWeightAndHeight(i, arrayPokemon)
 }
 
 
 async function useArrayPokemonSpecies(i, arrayPokemonSpecies) {
     console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
-    let germanData = await getPokeGermanName(arrayPokemonSpecies, 'names', 'name');
+    let germanData = await getPokeGermanData(arrayPokemonSpecies, 'names', 'name');
     await fillPokeWithName(germanData, i)
     await noticeDisplayedPokeName(germanData);
     await renderPokeGenera(i, arrayPokemonSpecies);
+    await renderPokeFlavor(i, arrayPokemonSpecies)
 }
 
 
@@ -174,11 +176,12 @@ async function noticeDisplayedPokeSlot2(i, arrayPokemon) {
 
 async function fillPokeWithName(currentGermanName, i) {
     document.getElementById('pokeMiniGermanName' + i).innerHTML = currentGermanName;
+    document.getElementById('pokedex-name' + i).innerHTML = currentGermanName;
 }
 
 
 // render PokeMinis
-async function renderPokeMinis1stLevel(i, arrayPokemon) {
+async function renderPokeMinisImgAndId(i, arrayPokemon) {
     let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
     let pokeId = arrayPokemon['id'];
     document.getElementById('myPlace').innerHTML += generateHTMLPokeMini1st(i, imgSrc, pokeId);
@@ -198,7 +201,7 @@ function hideAllPokeCards() {
 }
 
 
-async function getPokeGermanName(array, index1st, index2nd) {
+async function getPokeGermanData(array, index1st, index2nd) {
     searchIndexOfGermanData(array, index1st);
     let germanData = array[index1st][indexOfGermanData][index2nd];
     return germanData;
@@ -297,6 +300,7 @@ function searchIndexOfGermanData(arrayAsJSON, index) {
         const language = arrayAsJSON[index][j]['language']['name'];
         if (language == 'de') {
             indexOfGermanData = j;
+            j = arrayAsJSON[index].length;
             return indexOfGermanData;
         }
     }
@@ -421,7 +425,6 @@ async function renderPokeTop(i, arrayPokemon) {
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
     let pokeImg = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
-    // document.getElementById('pokedex-name' + i).innerHTML = currentGermanData;
     renderPokeId(i, arrayPokemon);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
@@ -503,12 +506,27 @@ async function renderPokeGenera(i, arrayPokemonSpecies) {
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
 }
 
-async function renderPokeAbility(i, arrayPokemonAbilities) {
-    let germanData = await getPokeGermanName(arrayPokemonAbilities, 'names', 'name');
-    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${germanData}:</div>`;
 
-    // let pokeFlavor2nd = arrayPokemonAbilities['flavor_text_entries'][index]['flavor_text'];
-    // document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor2nd}</div>`;
+async function renderPokeAbility(i, arrayPokemonAbilities) {
+    let germanData1st = await getPokeGermanData(arrayPokemonAbilities, 'names', 'name');
+    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${germanData1st}:</div>`;
+    
+    let germanData2nd = await getPokeGermanData(arrayPokemonAbilities, 'flavor_text_entries', 'flavor_text');
+    document.getElementById('card1' + i).innerHTML += `<div>${germanData2nd}</div>`;
+}
+
+
+async function renderPokeWeightAndHeight(i, arrayPokemon) {
+    let pokeWeight = arrayPokemon['weight'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
+    let pokeHeight = arrayPokemon['height'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
+};
+
+
+async function renderPokeFlavor(i, arrayPokemonSpecies) {
+    let germanText = await getPokeGermanData(arrayPokemonSpecies, 'flavor_text_entries', 'flavor_text')
+    document.getElementById('card1' + i).innerHTML += `<div>${germanText}</div>`;
 };
 
 
