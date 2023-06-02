@@ -104,11 +104,11 @@
 }
 
 .bgn-flying {
-    background: rgba(74, 103, 125), r;
+    background: rgba(74, 103, 125);
 }
 
 .bgn-ghost {
-    background: rgba(51, 51, 107), ;
+    background: rgba(51, 51, 107);
 }
 
 .bgn-grass {
@@ -158,35 +158,35 @@
 }
 
 .bgn-slot-type-dragon {
-    background-color: rgba(68, 139, 149);
+    background-color: rgba(96, 202, 215);
 }
 
 .bgn-slot-type-electric {
-    background-color: rgba(227, 227, 43);
+    background-color: rgba(251, 251, 112);
 }
 
 .bgn-slot-type-fairy {
-    background-color: rgba(151, 25, 68);
+    background-color: rgba(234, 19, 105);
 }
 
 .bgn-slot-type-fighting {
-    background-color: rgba(153, 64, 34);
+    background-color: rgba(239, 97, 56);
 }
 
 .bgn-slot-type-fire {
-    background-color: rgba(171, 31, 35);
+    background-color: rgba(253, 76, 90);
 }
 
 .bgn-slot-type-flying {
-    background-color: rgba(74, 103, 125);
+    background-color: rgba(147, 178, 199);
 }
 
 .bgn-slot-type-ghost {
-    background-color: rgba(51, 51, 107);
+    background-color: rgba(144, 103, 144);
 }
 
 .bgn-slot-type-grass {
-    background-color: rgba(22, 122, 59);
+    background-color: rgba(39, 203, 79);
 }
 
 .bgn-slot-type-ground {
@@ -194,35 +194,35 @@
 }
 
 .bgn-slot-type-ice {
-    background-color: rgba(134, 210, 245);
+    background-color: rgba(215, 241, 250);
 }
 
 .bgn-slot-type-normal {
-    background-color: rgba(117, 81, 91);
+    background-color: rgba(202, 152, 167);
 }
 
 .bgn-slot-type-poison {
-    background-color: rgba(94, 45, 136);
+    background-color: rgba(155, 105, 217);
 }
 
 .bgn-slot-type-psychic {
-    background-color: rgba(163, 41, 107);
+    background-color: rgba(248, 28, 145);
 }
 
 .bgn-slot-type-rock {
-    background-color: rgba(72, 24, 11);
+    background-color: rgba(139, 62, 33);
 }
 
 .bgn-slot-type-steel {
-    background-color: rgba(95, 117, 109);
+    background-color: rgba(66, 189, 148);
 }
 
 .bgn-slot-type-water {
-    background-color: rgba(21, 82, 226);
+    background-color: rgba(134, 168, 254);
 }
 
 
-/* hover colors 0.7*/
+/* hover colors = normal (dark) 0.7*/
 
 
 .bgn-hover-type-bug {
