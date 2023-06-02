@@ -18,7 +18,7 @@ body {
 }
 
 .color-black {
-    color: black;
+    color: black !important;
 }
 
 .display-none {
@@ -379,6 +379,7 @@ body {
     color: white;
     font-family: 'Noto Sans';
     font-size: 16px;
+    font-weight: bold;
     letter-spacing: 0.25px;
 }
 
@@ -390,6 +391,36 @@ body {
     align-items: start;
     width: 100%;
     font-size: 24px;
+}
+
+.stats-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.progess-stats-line {
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    height: 7px;
+    width: 48%;
+    background-color: rgb(119, 119, 119, 0.2);
+}
+
+.progress-stats {
+    border-radius: 5px;
+    height: 7px;
+    background-color: red;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
 }
 
 @media(max-width: 525px) {

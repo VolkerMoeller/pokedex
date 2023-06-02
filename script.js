@@ -7,7 +7,7 @@ let currentPokeNr = 0
 
 let indexOfGermanData;
 let functionRunning = false;
-// for search
+// for search - 1 = PokeNr 1
 let loadedPokeNames = [0];
 let loadedPokeIds = [0];
 
@@ -16,6 +16,9 @@ let loadedPokeSlots1 = [0];
 let loadedPokeSlots2 = [0];
 let pokesFavorites = [0];
 let pokesFlavorText = [0];
+
+let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 
 
 function init() {
@@ -98,7 +101,7 @@ async function fetchDataFromServer(url) {
 // useArrays
 async function fetchArrayPokemon(i, url1) {
     let arrayPokemon = await fetchDataFromServer(url1);
-    await useArrayPokemon(i, arrayPokemon);
+    await useArrayPokemonAndAbilities(i, arrayPokemon);
 }
 
 
@@ -108,7 +111,7 @@ async function fetchArrayPokemonSpecies(i, url2) {
 }
 
 
-async function useArrayPokemon(i, arrayPokemon) {
+async function useArrayPokemonAndAbilities(i, arrayPokemon) {
     console.log(i + ' pokemonData:', arrayPokemon);
     let arrayPokemonAbilities = await getAbiltiesData(arrayPokemon);
     await renderPokeMinisImgAndId(i, arrayPokemon);
@@ -121,6 +124,7 @@ async function useArrayPokemon(i, arrayPokemon) {
     await renderPokeCardsTopAndNavigation(i, arrayPokemon);
     await useArrayPokemonAbilities(i, arrayPokemonAbilities);
     await renderPokeWeightAndHeight(i, arrayPokemon)
+    await   renderPokeCardBaseStats(i,arrayPokemon)
 }
 
 
@@ -397,19 +401,6 @@ function loadFavorites() {
 }
 
 
-// Navigation PokeCard
-function hoverNavigationOver(cardNr, i) {
-    let slot1 = loadedPokeSlots1[i];
-    let bgnHoverType = 'bgn-hover-type-' + slot1;
-    document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
-}
-
-
-function hoverNavigationOut(cardNr, i) {
-    let slot1 = loadedPokeSlots1[i];
-    let bgnHoverType = 'bgn-hover-type-' + slot1;
-    document.getElementById('btn-card' + cardNr + i).classList.remove(`${bgnHoverType}`);
-}
 
 
 // XXX
@@ -546,7 +537,7 @@ async function renderPokeNavigation(i, arrayPokemon) {
 }
 
 
-// render About, BaseStats, Evolution, Moves
+// render About
 async function renderPokeGenera(i, arrayPokemonSpecies) {
     let pokeGenera = arrayPokemonSpecies['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
@@ -581,4 +572,52 @@ function format3LeftHandZeros(value) {
     value = value.toString();
     let formatValue = value.padStart(4, '0');
     return formatValue;
+}
+
+
+// Navigation PokeCard
+function hoverNavigationOver(cardNr, i) {
+    let slot1 = loadedPokeSlots1[i];
+    let bgnHoverType = 'bgn-hover-type-' + slot1;
+    document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
+}
+
+
+function hoverNavigationOut(cardNr, i) {
+    let slot1 = loadedPokeSlots1[i];
+    let bgnHoverType = 'bgn-hover-type-' + slot1;
+    document.getElementById('btn-card' + cardNr + i).classList.remove(`${bgnHoverType}`);
+}
+
+
+// render BaseStats
+async function renderPokeCardBaseStats(i,arrayPokemon) {
+    for (let j = 0; j < arrayPokemon['stats'].length; j++) { 
+        let value = arrayPokemon['stats'][j]['base_stat'];
+        let valuePerCent = perCent(value);
+        let id = baseStatId[j] + i;
+        renderStatsAndProgressLine(i, baseStatNames[j], value, valuePerCent, id);   
+    }
+}
+
+
+function perCent(value) {
+    let valuePerCent = value / 255 * 100;
+    return valuePerCent;
+}
+
+
+function renderStatsAndProgressLine(i, name, value, valuePerCent, id) {
+    renderStatsLine(i, name, value, id);
+    renderProgressLine(valuePerCent, id);
+}
+
+
+function renderStatsLine(i, name, absoluteValue, id) {
+    document.getElementById('card2' + i).innerHTML += `<div class="stats-line"><div class="stat"><div>${name}: </div><div><b>${absoluteValue}</b></div></div><div class="progess-stats-line" id="${id}"></div></div>`;
+}
+
+
+function renderProgressLine(value, id) {
+    document.getElementById(id).innerHTML += `<div class="progress-stats" style="width: ${value}%"></div>`;
 }

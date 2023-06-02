@@ -58,7 +58,7 @@ function generateHTMLPokeCard(i) {
             </div>
         </div>
         <div id="card1${i}" class="cards"></div>
-        <div id="card2${i}" class="cards display-none">card2</div>
+        <div id="card2${i}" class="cards display-none"></div>
         <div id="card3${i}" class="cards display-none">card3</div>
         <div id="card4${i}" class="cards display-none">card4</div>
     </div> 
