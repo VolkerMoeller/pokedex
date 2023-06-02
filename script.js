@@ -4,7 +4,7 @@ let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
-let currentGermanName = '';
+
 let indexOfGermanData;
 let functionRunning = false;
 // for search
@@ -62,6 +62,13 @@ async function performServerRequests(i) {
 }
 
 
+async function getAbiltiesData(arrayPokemon) {
+    let dynamikUrl = await takeDynamikUrl(arrayPokemon);
+    let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(dynamikUrl);
+    return arrayPokemonAbilities;
+}
+
+
 function takeDynamikUrl(arrayPokemon) {
     let dynamicUrlIndex = arrayPokemon['abilities'].length - 1;
     let dynamicUrl = arrayPokemon['abilities'][dynamicUrlIndex]['ability']['url'];
@@ -91,26 +98,19 @@ async function fetchDataFromServer(url) {
 // useArrays
 async function fetchArrayPokemon(i, url1) {
     let arrayPokemon = await fetchDataFromServer(url1);
-    await getAbiltiesData(i, arrayPokemon);
-    useArrayPokemon(i, arrayPokemon);
-}
-
-
-async function getAbiltiesData(i, arrayPokemon) {
-    let dynamikUrl = await takeDynamikUrl(arrayPokemon);
-    let arrayPokemonAbilities = await fetchAbilitiesDataFromServer(dynamikUrl);
-    useArrayPokemonAbilities(i, arrayPokemonAbilities);
+    await useArrayPokemon(i, arrayPokemon);
 }
 
 
 async function fetchArrayPokemonSpecies(i, url2) {
     let arrayPokemonSpecies = await fetchDataFromServer(url2);
-    useArrayPokemonSpecies(i, arrayPokemonSpecies);
+    await useArrayPokemonSpecies(i, arrayPokemonSpecies);
 }
 
 
 async function useArrayPokemon(i, arrayPokemon) {
     console.log(i + ' pokemonData:', arrayPokemon);
+    let arrayPokemonAbilities = await getAbiltiesData(arrayPokemon);
     await renderPokeMinis1stLevel(i, arrayPokemon);
     await stylePokeBgn(i, arrayPokemon, 'pokeMini');
     await changeMiniToBlack(i, arrayPokemon);
@@ -118,20 +118,23 @@ async function useArrayPokemon(i, arrayPokemon) {
     await noticeDisplayedPokeSlots(arrayPokemon);
     await renderPokeCards1stLevel(i, arrayPokemon);
     await stylePokeBgn(i, arrayPokemon, 'pokedex');
-    await renderPokeCards2ndLevel(i, arrayPokemon);
+    await renderPokeCardsTopAndNavigation(i, arrayPokemon);
+    await useArrayPokemonAbilities(i, arrayPokemonAbilities);
 }
 
 
 async function useArrayPokemonSpecies(i, arrayPokemonSpecies) {
     console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
-    await getPokeGermanName(arrayPokemonSpecies);
-    await fillPokeWithName(currentGermanName, i)
-    await noticeDisplayedPokeName(currentGermanName);
+    let germanData = await getPokeGermanName(arrayPokemonSpecies, 'names', 'name');
+    await fillPokeWithName(germanData, i)
+    await noticeDisplayedPokeName(germanData);
+    await renderPokeGenera(i, arrayPokemonSpecies);
 }
 
 
 async function useArrayPokemonAbilities(i, arrayPokemonAbilities) {
     console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
+    await renderPokeAbility(i, arrayPokemonAbilities);
 }
 
 
@@ -195,11 +198,10 @@ function hideAllPokeCards() {
 }
 
 
-async function getPokeGermanName(array) {
-    searchIndexOfGermanData(array, 'names');
-    let germanName = array['names'][indexOfGermanData]['name'];
-    console.log(germanName);
-    currentGermanName = germanName;
+async function getPokeGermanName(array, index1st, index2nd) {
+    searchIndexOfGermanData(array, index1st);
+    let germanData = array[index1st][indexOfGermanData][index2nd];
+    return germanData;
 }
 
 
@@ -405,10 +407,11 @@ function hoverNavigationOut(cardNr, i) {
     document.getElementById('btn-card' + cardNr + i).classList.remove(`${bgnHoverType}`);
 }
 
-// render pokeCards 2nd
-async function renderPokeCards2ndLevel(i, arrayPokemon) {
+
+// renderPokeCardsTopAndNavigation
+async function renderPokeCardsTopAndNavigation(i, arrayPokemon) {
     await renderPokeTop(i, arrayPokemon);
-    await renderPokeBottomNavigation(i, arrayPokemon);
+    await renderPokeNavigation(i, arrayPokemon);
     // await renderPokeBottom(i);
     // await stylePokeBgnTop(i);
 }
@@ -418,7 +421,7 @@ async function renderPokeTop(i, arrayPokemon) {
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
     let pokeImg = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
-    document.getElementById('pokedex-name' + i).innerHTML = currentGermanName;
+    // document.getElementById('pokedex-name' + i).innerHTML = currentGermanData;
     renderPokeId(i, arrayPokemon);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
@@ -476,31 +479,40 @@ function changeToBlack(i, pokeSlot1) {
     document.getElementById('pokedex-name' + i).classList.add('color-black');
     document.getElementById('pokedex-id' + i).classList.add('color-black');
     document.getElementById('pokedex-slots' + i).classList.add('color-black');
-    document.getElementById('amount-pokes-loaded' + i).classList.add('color-black');
-    document.getElementById('searchByNameLine' + i).classList.add('color-black');
-    for (let j = 1; j <= 4; j++) {
-        document.getElementById('btn-card' + j + i).classList.add('color-black');
+    for (let cardNr = 1; cardNr <= 4; cardNr++) {
+        document.getElementById('btn-card' + cardNr + i).classList.add('color-black');
     }
 }
 
 
-async function renderPokeBottomNavigation(i, arrayPokemon) {
+async function renderPokeNavigation(i, arrayPokemon) {
     let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
     let bgnSlotType = 'bgn-' + pokeSlot1;
     let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
-    for (let k = 1; k <= 4; k++) {
-        document.getElementById('btn-card' + k + i).classList.add(`${bgnSlotType}`);
+    for (let cardNr = 1; cardNr <= 4; cardNr++) {
+        document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnSlotType}`);
     }
     document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
     document.getElementById('btn-card' + 1 + i).classList.add(`${bgnActiveType}`);
 }
 
 
-// renderPokeBottom
-// XXX
+// render About, BaseStats, Evolution, Moves
+async function renderPokeGenera(i, arrayPokemonSpecies) {
+    let pokeGenera = arrayPokemonSpecies['genera'][4]['genus'];
+    document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
+}
+
+async function renderPokeAbility(i, arrayPokemonAbilities) {
+    let germanData = await getPokeGermanName(arrayPokemonAbilities, 'names', 'name');
+    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${germanData}:</div>`;
+
+    // let pokeFlavor2nd = arrayPokemonAbilities['flavor_text_entries'][index]['flavor_text'];
+    // document.getElementById('card1' + i).innerHTML += `<div>${pokeFlavor2nd}</div>`;
+};
+
 
 // format Id
-
 function format3LeftHandZeros(value) {
     value = value.toString();
     let formatValue = value.padStart(4, '0');
