@@ -412,6 +412,52 @@ function hoverNavigationOut(cardNr, i) {
 }
 
 
+// XXX
+function showCurrentCardById(cardId, i) {
+    setAllCardsToDefault(i);
+    setCurrentCardToActiv(cardId);
+    setCurrentSlideOnActiv(cardId, i);
+}
+
+
+function setAllCardsToDefault(i) {
+    for (let k = 1; k <= 4; k++) {
+        let cardToHide = 'card' + k + i;
+        document.getElementById(cardToHide).classList.add('display-none');
+    }
+}
+
+
+function setCurrentCardToActiv(cardId) {
+    document.getElementById(cardId).classList.remove('display-none');
+}
+
+
+function setCurrentSlideOnActiv(cardId, i) {
+    setAllSliderToDefault(i);
+    let slot1 = document.getElementById('base-type1' + i).innerHTML;
+    let bgnActiveType = 'bgn-slot-type-' + slot1;
+    let bgnDefaultType = 'bgn-' + slot1;
+    let currentSlide = 'btn-' + cardId;
+    document.getElementById(currentSlide).classList.remove(`${bgnDefaultType}`);
+    document.getElementById(currentSlide).classList.add(`${bgnActiveType}`);
+}
+
+
+function setAllSliderToDefault(i) {
+    let slot1 = document.getElementById('base-type1' + i).innerHTML;
+    let bgnActiveType = 'bgn-slot-type-' + slot1;
+    let bgnDefaultType = 'bgn-' + slot1;
+    let bgnHoverType = 'bgn-hover-type-' + slot1;
+    for (let j = 1; j <= 4; j++) {
+        let sliderId = 'btn-card' + j + i;
+        document.getElementById(sliderId).classList.remove(`${bgnActiveType}`);
+        document.getElementById(sliderId).classList.remove(`${bgnHoverType}`);
+        document.getElementById(sliderId).classList.add(`${bgnDefaultType}`);
+    }
+}
+
+
 // renderPokeCardsTopAndNavigation
 async function renderPokeCardsTopAndNavigation(i, arrayPokemon) {
     await renderPokeTop(i, arrayPokemon);
@@ -447,7 +493,7 @@ function renderPokeSlot2(i) {
     } else {
         let pokeSlot2 = loadedPokeSlots2[i];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-        document.getElementById('pokedex-slots' + i).innerHTML += `<div class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
+        document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type2${i}" class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
     }
 }
 
@@ -458,7 +504,7 @@ function renderPokeImage(i, pokeImg) {
 
 
 function renderPokeSlot1(i, bgnSlotType, pokeSlot1) {
-    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
+    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type1${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
 };
 
 

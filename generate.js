@@ -45,22 +45,22 @@ function generateHTMLPokeCard(i) {
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
         <div class="navigationPoke">
             <div onmouseover="hoverNavigationOver(1, ${i})" onmouseout="hoverNavigationOut(1, ${i})">
-                <button onclick="showCurrentCardById('card1${i}', ${i}, cardIdsPokeAll)" id="btn-card1${i}">About</button>
+                <button onclick="showCurrentCardById('card1${i}', ${i})" id="btn-card1${i}">About</button>
             </div>
             <div onmouseover="hoverNavigationOver(2, ${i})" onmouseout="hoverNavigationOut(2, ${i})">
-                <button onclick="showCurrentCardById('card2${i}', ${i}, cardIdsPokeAll)" id="btn-card2${i}">Base Stats</button>
+                <button onclick="showCurrentCardById('card2${i}', ${i})" id="btn-card2${i}">Base Stats</button>
             </div>
             <div onmouseover="hoverNavigationOver(3, ${i})" onmouseout="hoverNavigationOut(3, ${i})">
-                <button onclick="showCurrentCardById('card3${i}', ${i}, cardIdsPokeAll)" id="btn-card3${i}">Evolution</button>
+                <button onclick="showCurrentCardById('card3${i}', ${i})" id="btn-card3${i}">Evolution</button>
             </div>
             <div onmouseover="hoverNavigationOver(4, ${i})" onmouseout="hoverNavigationOut(4, ${i})">
-                <button onclick="showCurrentCardById('card4${i}', ${i}, cardIdsPokeAll)" id="btn-card4${i}">5 Moves</button>
+                <button onclick="showCurrentCardById('card4${i}', ${i})" id="btn-card4${i}">5 Moves</button>
             </div>
         </div>
         <div id="card1${i}" class="cards"></div>
-        <div id="card2${i}" class="cards display-none"></div>
-        <div id="card3${i}" class="cards display-none"></div>
-        <div id="card4${i}" class="cards display-none"></div>
+        <div id="card2${i}" class="cards display-none">card2</div>
+        <div id="card3${i}" class="cards display-none">card3</div>
+        <div id="card4${i}" class="cards display-none">card4</div>
     </div> 
     `
 }
