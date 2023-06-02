@@ -12,6 +12,9 @@ let loadedPokeIds = [0];
 let loadedPokeSlots1 = [0];
 let loadedPokeSlots2 = [0];
 let pokesFavorites = [0];
+let pokesFlavorText = [0];
+let currentArrayPokemon = [];
+let currentArrayPokemonSpecies = [];
 
 
 function init() {
@@ -73,6 +76,7 @@ async function performServerRequests(i) {
 async function fetchArrayPokemon(i, url1) {
     let arrayPokemon = await fetchDataFromServer(url1);
     console.log(i + ' pokemonData:', arrayPokemon);
+    currentArrayPokemon = arrayPokemon;
     useArrayPokemon(i, arrayPokemon);
 }
 
@@ -82,22 +86,22 @@ async function useArrayPokemon(i, arrayPokemon) {
     await stylePokeBgn(i, arrayPokemon, 'pokeMini');
     await getAbiltiesData(i, arrayPokemon);
     await changeMiniToBlack(i, arrayPokemon);
-    await noticeDisplayedPokeId(i, arrayPokemon);
-    await noticeDisplayedPokeSlots(i, arrayPokemon);
+    await noticeDisplayedPokeId(arrayPokemon);
+    await noticeDisplayedPokeSlots(arrayPokemon);
     await renderPokeCards1stLevel(i, arrayPokemon);
     await stylePokeBgn(i, arrayPokemon, 'pokedex');
     await renderPokeCards2ndLevel(i, arrayPokemon);
 }
 
 
-async function noticeDisplayedPokeId(i, arrayPokemon) {
+async function noticeDisplayedPokeId(arrayPokemon) {
     let pokeId = arrayPokemon['id'];
     pokeId = pokeId.toString();
     loadedPokeIds.push(pokeId);
 }
 
 
-async function noticeDisplayedPokeSlots(i, arrayPokemon) {
+async function noticeDisplayedPokeSlots(arrayPokemon) {
     if (arrayPokemon['types'].length == 1) {
         let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
         let pokeSlot2 = '';
@@ -126,6 +130,7 @@ async function noticeDisplayedPokeSlot2(i, arrayPokemon) {
 async function fetchArrayPokemonSpecies(i, url2) {
     let arrayPokemonSpecies = await fetchDataFromServer(url2);
     console.log(i + ' pokemon-speciesData:', arrayPokemonSpecies);
+    currentArrayPokemonSpecies = arrayPokemonSpecies;
     await useArrayPokemonSpecies(i, arrayPokemonSpecies);
 }
 
@@ -459,9 +464,9 @@ function hoverNavigationOut(cardNr, i) {
 // render pokeCards 2nd
 async function renderPokeCards2ndLevel(i, arrayPokemon) {
     await renderPokeTop(i, arrayPokemon);
+    await renderPokeBottomNavigation(i, arrayPokemon);
     // await renderPokeBottom(i);
     // await stylePokeBgnTop(i);
-    // await renderPokeBottomNavigation(i);
 }
 
 async function renderPokeTop(i, arrayPokemon) {
@@ -535,11 +540,11 @@ function changeToBlack(i, pokeSlot1) {
 }
 
 
-async function renderPokeBottomNavigation(i) {
-    let pokeSlot1 = myPokesAsObject[i]['slot1'];
-    let bgnSlotType = 'bgn-type-' + pokeSlot1;
+async function renderPokeBottomNavigation(i, arrayPokemon) {
+    let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+    let bgnSlotType = 'bgn-' + pokeSlot1;
     let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
-    for (let k = 1; k <= cardIdsPokeAll.length; k++) {
+    for (let k = 1; k <= 4; k++) {
         document.getElementById('btn-card' + k + i).classList.add(`${bgnSlotType}`);
     }
     document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
@@ -547,13 +552,8 @@ async function renderPokeBottomNavigation(i) {
 }
 
 
-async function renderPokeBottom(i) {
-    renderPokeCardAbout(i);
-    renderPokeCardBaseStats(i);
-    renderPokeCardEvolution(i);
-    renderPokeCardMoves(i);
-}
-
+// renderPokeBottom
+// XXX
 
 // format Id
 

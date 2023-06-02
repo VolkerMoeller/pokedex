@@ -1,3 +1,4 @@
+/* background  */
 .bgn-type-bug {
     background: linear-gradient(135deg, rgba(28, 75, 39), rgba(59, 153, 80), rgba(28, 75, 39));
 }
@@ -73,11 +74,81 @@
 
 
 
+/* background normal */
+.bgn-bug {
+    background: rgba(28, 75, 39);
+}
+
+.bgn-dark {
+    background: rgba(4, 7, 4);
+}
+
+.bgn-dragon {
+    background:  rgba(68, 139, 149);
+}
+
+.bgn-electric {
+    background: rgba(227, 227, 43);
+}
+
+.bgn-fairy {
+    background: rgba(151, 25, 68);
+}
+
+.bgn-fighting {
+    background: rgba(153, 64, 34);
+}
+
+.bgn-fire {
+    background: rgba(171, 31, 35);
+}
+
+.bgn-flying {
+    background: rgba(74, 103, 125), r;
+}
+
+.bgn-ghost {
+    background: rgba(51, 51, 107), ;
+}
+
+.bgn-grass {
+    background: rgba(22, 122, 59);
+}
+
+.bgn-ground {
+    background: rgba(110, 73, 31);
+}
+
+.bgn-ice {
+    background: rgba(134, 210, 245);
+}
+
+.bgn-normal {
+    background: rgba(117, 81, 91);
+}
+
+.bgn-poison {
+    background: rgba(94, 45, 136);
+}
+
+.bgn-psychic {
+    background: rgba(163, 41, 107);
+}
+
+.bgn-rock {
+    background: rgba(72, 24, 11);
+}
+
+.bgn-steel {
+    background: rgba(95, 117, 109);
+}
+
+.bgn-water {
+    background: rgba(21, 82, 226);
+}
+
+
 /* slot-colors */
-
-
-
-
 .bgn-slot-type-bug {
     background-color: rgba(59, 153, 80);
 }
