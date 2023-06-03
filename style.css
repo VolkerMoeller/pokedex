@@ -393,9 +393,14 @@ body {
     font-size: 24px;
 }
 
+.cards div {
+    margin-bottom: 4px;
+}
+
 .stats-line {
-    display: flex;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
@@ -413,19 +418,42 @@ body {
 
 .progress-stats {
     border-radius: 5px;
-    height: 7px;
+    height: 100%;
     background-color: red;
 }
 
 .stat {
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    width: 48%;
 }
 
 @media(max-width: 525px) {
     .pokeCardContent {
         width: 95%;
+        height: 1000px;
+    }
+
+    .stat {
+        width: 100%;
+    }
+
+    .progess-stats-line {
+        width: 100%;
+    }
+
+    .stats-line {
+        margin-top: 8px;
+        flex-direction: column;
+    }
+
+
+    .cards div {
+        margin-bottom: 0px;
+    }
+
+    .pokedex-bottom {
+        min-height: 570px
     }
 
 }

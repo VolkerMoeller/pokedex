@@ -64,3 +64,15 @@ function generateHTMLPokeCard(i) {
     </div> 
     `
 }
+
+function generateHTMLAbout() {
+    return /*html*/`
+    <div id="abouts" class="abouts">
+    <span id="" class="about">Kraftpunkte</span>
+    <span id="" class="about">Angriff</span>
+    <span id="" class="about">Verteidigung'</span>
+    <span id="" class="about">Spezialangriff</span>
+    <span id="" class="about">Spezialverteidigung</span>
+    <span id="" class="about">Initiative</span>
+    </div>
+    `}

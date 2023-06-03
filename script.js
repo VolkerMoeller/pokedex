@@ -124,7 +124,7 @@ async function useArrayPokemonAndAbilities(i, arrayPokemon) {
     await renderPokeCardsTopAndNavigation(i, arrayPokemon);
     await useArrayPokemonAbilities(i, arrayPokemonAbilities);
     await renderPokeWeightAndHeight(i, arrayPokemon)
-    await   renderPokeCardBaseStats(i,arrayPokemon)
+    await renderPokeCardBaseStats(i, arrayPokemon)
 }
 
 
@@ -547,7 +547,7 @@ async function renderPokeGenera(i, arrayPokemonSpecies) {
 async function renderPokeAbility(i, arrayPokemonAbilities) {
     let germanData1st = await getPokeGermanData(arrayPokemonAbilities, 'names', 'name');
     document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${germanData1st}:</div>`;
-    
+
     let germanData2nd = await getPokeGermanData(arrayPokemonAbilities, 'flavor_text_entries', 'flavor_text');
     document.getElementById('card1' + i).innerHTML += `<div>${germanData2nd}</div>`;
 }
@@ -591,12 +591,12 @@ function hoverNavigationOut(cardNr, i) {
 
 
 // render BaseStats
-async function renderPokeCardBaseStats(i,arrayPokemon) {
-    for (let j = 0; j < arrayPokemon['stats'].length; j++) { 
+async function renderPokeCardBaseStats(i, arrayPokemon) {
+    for (let j = 0; j < arrayPokemon['stats'].length; j++) {
         let value = arrayPokemon['stats'][j]['base_stat'];
         let valuePerCent = perCent(value);
         let id = baseStatId[j] + i;
-        renderStatsAndProgressLine(i, baseStatNames[j], value, valuePerCent, id);   
+        renderStatsAndProgressLine(i, baseStatNames[j], value, valuePerCent, id);
     }
 }
 
