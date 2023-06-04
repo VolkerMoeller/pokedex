@@ -72,8 +72,8 @@ function generateHTMLAbout(i) {
       <td id="stat-name${i}">HP</td>
       <td id="stat-value${i}">150</td>
       <td>
-        <div class="progress-bar">
-          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 75%;"></div>
+        <div class="progress-about-bar">
+          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 75%;"></div>
         </div>
       </td>
     </tr>
@@ -81,8 +81,8 @@ function generateHTMLAbout(i) {
       <td id="stat-name${i}">Attack</td>
       <td id="stat-value${i}">100</td>
       <td>
-        <div class="progress-bar">
-          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 50%;"></div>
+        <div class="progress-about-bar">
+          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 50%;"></div>
         </div>
       </td>
     </tr>
@@ -90,8 +90,8 @@ function generateHTMLAbout(i) {
       <td id="stat-name${i}">Defense</td>
       <td id="stat-value${i}">80</td>
       <td>
-        <div class="progress-bar">
-          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 40%;"></div>
+        <div class="progress-about-bar">
+          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 40%;"></div>
         </div>
       </td>
     </tr>
@@ -99,8 +99,8 @@ function generateHTMLAbout(i) {
       <td id="stat-name${i}">Special Attack</td>
       <td id="stat-value${i}">120</td>
       <td>
-        <div class="progress-bar">
-          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 60%;"></div>
+        <div class="progress-about-bar">
+          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 60%;"></div>
         </div>
       </td>
     </tr>
@@ -108,8 +108,8 @@ function generateHTMLAbout(i) {
       <td id="stat-name${i}">Special Defense</td>
       <td id="stat-value${i}">100</td>
       <td>
-        <div class="progress-bar">
-          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 50%;"></div>
+        <div class="progress-about-bar">
+          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 50%;"></div>
         </div>
       </td>
     </tr>
@@ -117,8 +117,8 @@ function generateHTMLAbout(i) {
       <td id="stat-name${i}">Speed</td>
       <td id="stat-value${i}">90</td>
       <td>
-        <div class="progress-bar">
-          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 45%;"></div>
+        <div class="progress-about-bar">
+          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 45%;"></div>
         </div>
       </td>
     </tr>
