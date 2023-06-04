@@ -383,50 +383,59 @@ body {
     letter-spacing: 0.25px;
 }
 
+
+/* card base_stats */
+
 .cards {
     margin-top: 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: flex-start;
     width: 100%;
     font-size: 24px;
 }
 
-.cards div {
-    margin-bottom: 4px;
-}
 
-.stats-line {
+.cards table {
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+    border-collapse: collapse;
+}
+
+.cards table,
+td {
+    border: none;
+    padding: 4px;
+}
+
+.cards table td:first-child {
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.cards table td:last-child {
+    width: 100%;
 }
 
 
-.progess-stats-line {
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    height: 7px;
-    width: 48%;
-    background-color: rgb(119, 119, 119, 0.2);
+.cards table td:nth-child(2) {
+    text-align: right;
 }
 
-.progress-stats {
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #f0f0f0;
     border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
     height: 100%;
-    background-color: red;
+    background-color: #42b983;
 }
 
-.stat {
-    display: flex;
-    justify-content: space-between;
-    width: 48%;
-}
 
 @media(max-width: 525px) {
     .pokeCardContent {
@@ -434,7 +443,16 @@ body {
         height: 1000px;
     }
 
-    .stat {
+    .cards div {
+        margin-bottom: 0px;
+    }
+
+    .pokedex-bottom {
+        min-height: 570px
+    }
+
+
+    /* .stat {
         width: 100%;
     }
 
@@ -445,16 +463,9 @@ body {
     .stats-line {
         margin-top: 8px;
         flex-direction: column;
-    }
+    } */
 
 
-    .cards div {
-        margin-bottom: 0px;
-    }
-
-    .pokedex-bottom {
-        min-height: 570px
-    }
 
 }
 

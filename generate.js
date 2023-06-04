@@ -65,14 +65,62 @@ function generateHTMLPokeCard(i) {
     `
 }
 
-function generateHTMLAbout() {
+function generateHTMLAbout(i) {
     return /*html*/`
-    <div id="abouts" class="abouts">
-    <span id="" class="about">Kraftpunkte</span>
-    <span id="" class="about">Angriff</span>
-    <span id="" class="about">Verteidigung'</span>
-    <span id="" class="about">Spezialangriff</span>
-    <span id="" class="about">Spezialverteidigung</span>
-    <span id="" class="about">Initiative</span>
-    </div>
+<table>
+    <tr id="hp${i}">
+      <td id="stat-name${i}">HP</td>
+      <td id="stat-value${i}">150</td>
+      <td>
+        <div class="progress-bar">
+          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 75%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr id="attack${i}">
+      <td id="stat-name${i}">Attack</td>
+      <td id="stat-value${i}">100</td>
+      <td>
+        <div class="progress-bar">
+          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 50%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr id="defense${i}">
+      <td id="stat-name${i}">Defense</td>
+      <td id="stat-value${i}">80</td>
+      <td>
+        <div class="progress-bar">
+          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 40%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr id="special-attack${i}">
+      <td id="stat-name${i}">Special Attack</td>
+      <td id="stat-value${i}">120</td>
+      <td>
+        <div class="progress-bar">
+          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 60%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr id="special-defense${i}">
+      <td id="stat-name${i}">Special Defense</td>
+      <td id="stat-value${i}">100</td>
+      <td>
+        <div class="progress-bar">
+          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 50%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr id="speed${i}">
+      <td id="stat-name${i}">Speed</td>
+      <td id="stat-value${i}">90</td>
+      <td>
+        <div class="progress-bar">
+          <div id="progress-bar-inner${i}" class="progress-bar-inner" style="width: 45%;"></div>
+        </div>
+      </td>
+    </tr>
+  </table>
     `}

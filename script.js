@@ -133,8 +133,9 @@ async function useArrayPokemonSpecies(i, arrayPokemonSpecies) {
     let germanData = await getPokeGermanData(arrayPokemonSpecies, 'names', 'name');
     await fillPokeWithName(germanData, i)
     await noticeDisplayedPokeName(germanData);
-    await renderPokeGenera(i, arrayPokemonSpecies);
-    await renderPokeFlavor(i, arrayPokemonSpecies)
+    await renderPokeAbout(i,arrayPokemonSpecies);
+    // await renderPokeGenera(i, arrayPokemonSpecies);
+    // await renderPokeFlavor(i, arrayPokemonSpecies);
 }
 
 
@@ -538,6 +539,11 @@ async function renderPokeNavigation(i, arrayPokemon) {
 
 
 // render About
+async function  renderPokeAbout(i,arrayPokemonSpecies) {
+    document.getElementById('card1' + i).innerHTML = generateHTMLAbout(i);
+}
+
+
 async function renderPokeGenera(i, arrayPokemonSpecies) {
     let pokeGenera = arrayPokemonSpecies['genera'][4]['genus'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
