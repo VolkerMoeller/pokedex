@@ -5,7 +5,8 @@ async function performServerRequests(i) {
         let arrayPokemon = await fetchDataFromServer(url1);
         let arrayPokemonAbilities = await fetchDataByDynamikUrl(arrayPokemon, 'abilities', 'ability');
         let arrayPokemonSpecies = await fetchDataFromServer(url2);
-        await useArrays(i, arrayPokemon, arrayPokemonAbilities, arrayPokemonSpecies);
+        let arrayPokemonColor = await fetchDataByDynamikUrl(arrayPokemonSpecies, 'color', '');
+        await useArrays(i, arrayPokemon, arrayPokemonAbilities, arrayPokemonSpecies, arrayPokemonColor);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
@@ -36,21 +37,22 @@ async function fetchDataByDynamikUrl(array, indexAll, indexOne) {
 }
 
 
-function takeDynamikUrl(array, indexAll, indexOne) {
-    let dynamicUrlIndex = array[indexAll].length - 1;
-    let dynamicUrl = array[indexAll][dynamicUrlIndex][indexOne]['url'];
-    return dynamicUrl;
+function takeDynamikUrl(array, index1st, index2nd) {
+    if (index1st == 'color') {
+        let dynamicUrl = array[index1st]['url'];
+        return dynamicUrl;
+    }
+    if (index1st == 'abilities') {
+        let dynamicUrlIndex = array[index1st].length - 1;
+        let dynamicUrl = array[index1st][dynamicUrlIndex][index2nd]['url'];
+        return dynamicUrl;
+    }
 }
 
 
-async function fetchArrayPokemonSpecies(i, url2) {
-    let arrayPokemonSpecies = await fetchDataFromServer(url2);
-    await useArrayPokemonSpecies(i, arrayPokemonSpecies);
-}
-
-
-async function useArrays(i, arrayPokemon, arrayPokemonAbilities, arrayPokemonSpecies) {
-    console.log(i + ' arrayPokemon ' + arrayPokemon);
+async function useArrays(i, arrayPokemon, arrayPokemonAbilities, arrayPokemonSpecies, arrayPokemonColor) {
+    console.log(i + ' arrayPokemon ', arrayPokemon);
     console.log(i + ' arrayPokemonAbilities ', arrayPokemonAbilities);
     console.log(i + ' arrayPokemonSpecies ', arrayPokemonSpecies);
+    console.log(i + ' arrayPokemonColor ', arrayPokemonColor);
 }
