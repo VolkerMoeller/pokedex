@@ -65,7 +65,7 @@ function generateHTMLPokeCard(i) {
     `
 }
 
-function generateHTMLAbout(i) {
+function generateHTMLStats(i) {
     return /*html*/`
 <table>
     <tr id="hp${i}">

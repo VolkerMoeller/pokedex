@@ -417,11 +417,9 @@ td {
     width: 100%;
 }
 
-
 .cards table td:nth-child(2) {
     text-align: right;
 }
-
 
 .progress-about-bar {
     width: 100%;
@@ -450,23 +448,6 @@ td {
     .pokedex-bottom {
         min-height: 570px
     }
-
-
-    /* .stat {
-        width: 100%;
-    }
-
-    .progess-stats-line {
-        width: 100%;
-    }
-
-    .stats-line {
-        margin-top: 8px;
-        flex-direction: column;
-    } */
-
-
-
 }
 
 @media (max-width: 300px) {
