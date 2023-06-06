@@ -2,11 +2,11 @@ async function performServerRequests(i) {
     try {
         let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
         let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
-        let arrayPokemon = await fetchDataFromServer(url1);
-        let arrayPokemonAbilities = await fetchDataByDynamikUrl(arrayPokemon, 'abilities', 'ability');
-        let arrayPokemonSpecies = await fetchDataFromServer(url2);
-        let arrayPokemonColor = await fetchDataByDynamikUrl(arrayPokemonSpecies, 'color', '');
-        await useArrays(i, arrayPokemon, arrayPokemonAbilities, arrayPokemonSpecies, arrayPokemonColor);
+        let arrayPoke = await fetchDataFromServer(url1);
+        let arrayPokeAbi = await fetchDataByDynamikUrl(arrayPoke, 'abilities', 'ability');
+        let arrayPokeSpec = await fetchDataFromServer(url2);
+        let arrayPokeCol = await fetchDataByDynamikUrl(arrayPokeSpec, 'color', '');
+        await useArrays(i, arrayPoke, arrayPokeAbi, arrayPokeSpec, arrayPokeCol);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
@@ -50,9 +50,31 @@ function takeDynamikUrl(array, index1st, index2nd) {
 }
 
 
-async function useArrays(i, arrayPokemon, arrayPokemonAbilities, arrayPokemonSpecies, arrayPokemonColor) {
-    console.log(i + ' arrayPokemon ', arrayPokemon);
-    console.log(i + ' arrayPokemonAbilities ', arrayPokemonAbilities);
-    console.log(i + ' arrayPokemonSpecies ', arrayPokemonSpecies);
-    console.log(i + ' arrayPokemonColor ', arrayPokemonColor);
+async function useArrays(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
+    console.log(i + ' Pokemon ', arrPoke);
+    console.log(i + ' PokemonAbilities ', arrPokeAbi);
+    console.log(i + ' PokemonSpecies ', arrPokeSpec);
+    console.log(i + ' PokemonColor ', arrPokeCol);
+    noticeData(arrPoke, arrPokeSpec, arrPokeCol);
+    render(i, arrPoke);
+    fill(i, arrPoke);
+}
+
+
+function getGermanData(array, index1st, index2nd) {
+    let indexGermanData = searchIndexOfGermanData(array, index1st);
+    let germanData = array[index1st][indexGermanData][index2nd];
+    return germanData;
+}
+
+
+function searchIndexOfGermanData(array, index) {
+    for (let j = 0; j < array[index].length; j++) {
+        const language = array[index][j]['language']['name'];
+        if (language == 'de') {
+            indexGermanData = j;
+            j = array[index].length;
+            return indexGermanData;
+        }
+    }
 }

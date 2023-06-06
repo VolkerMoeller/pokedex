@@ -1,14 +1,12 @@
-function generateHTMLPokeMini1st(i, imgSrc, pokeId) {
-    return /*html*/`
-    <button id="pokeButton${i}" class="pokeButton" onclick="showPokeCard(${i})">
+function generateHTMLPokeMini(i) {
+  return /*html*/`
+    <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
         <div id="pokeMini${i}" class="pokeMini">
             <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
-                <div id="pokeMiniId${i}" class="pokeMiniId">${pokeId}</div>
-                <div id="pokeMiniGermanName${i}" class="pokeMiniName"></div>
+                <div id="pokeMiniId${i}" class="pokeMiniId">pokeId</div>
+                <div id="pokeMiniName${i}" class="pokeMiniName">pokeName</div>
             </div>
-            <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
-                <img src=${imgSrc}>
-            </div>
+            <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">pokeImg</div>
         </div>
     </button>
     `
@@ -16,7 +14,7 @@ function generateHTMLPokeMini1st(i, imgSrc, pokeId) {
 
 
 function generateHTMLPokeCard(i) {
-    return /*html*/`
+  return /*html*/`
     <div id="pokedex${i}" class="pokedex display-none">
         <div id="pokedex-top${i}" class="pokedex-top">
             <div>
@@ -65,8 +63,9 @@ function generateHTMLPokeCard(i) {
     `
 }
 
+
 function generateHTMLStats(i) {
-    return /*html*/`
+  return /*html*/`
 <table>
     <tr id="hp${i}">
       <td id="stat-name${i}">HP</td>

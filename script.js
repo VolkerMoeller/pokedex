@@ -7,26 +7,30 @@ let currentPokeNr = 0
 
 let indexOfGermanData;
 let functionRunning = false;
-// for search - 1 = PokeNr 1
-let loadedPokeNames = [0];
-let loadedPokeIds = [0];
+
+// for search function;   1 = PokeNr. 1
+let loadedPokeIds = [];
+let loadedPokeNames = [];
+let loadedPokeColors = [];
+
 
 let loadedPokeSlots1 = [0];
 let loadedPokeSlots2 = [0];
 
 
 let pokesFavorites = [0];
+
 let pokesFlavorText = [0];
 
 let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
 let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 
 
-function init() {
+async function init() {
     loadedPokeNames = [];
     loadedPokeIds = [];
     document.getElementById('myPlace').innerHTML = '';
-    getData(1, initEnd);
+    await getData(1, initEnd);
 }
 
 
@@ -54,15 +58,59 @@ function updateCountNrs(end) {
 }
 
 
-
-
-async function useArrayPokemonForMinis(i, arrayPokemon) {
-    await renderPokeMinisImgAndId(i, arrayPokemon);
-    await stylePokeBgn(i, arrayPokemon, 'pokeMini');
-    await changeMiniToBlack(i, arrayPokemon);
-    // for search-function:
-    await noticeDisplayedPokeId(arrayPokemon);
+function render(i, arrayPokemon) {
+    renderPokeMini(i, arrayPokemon);
+    renderPokeCard(i);
 }
+
+
+function fill(i, arrayPokemon) {
+    fillPokeMini(i, arrayPokemon);
+    // fillPokeCard(i)
+}
+
+
+async function renderPokeMini(i, arrayPokemon) {
+    console.log('renderPokeMinis');
+    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i);
+    stylePokeBgn(i, arrayPokemon, 'pokeMini');
+    await changeMiniToBlack(i, arrayPokemon);
+}
+
+
+function renderPokeCard(i) {
+    console.log('renderPokeCard');
+    document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i);
+    // renderPokeCardSlider(i);
+}
+
+
+function fillPokeMini(i, arrayPokemon) {
+    fillId(i);
+    fillName(i);
+    fillImg(i, arrayPokemon);
+}
+
+
+function fillId(i) {
+    document.getElementById('pokeMiniId' + i).innerHTML = loadedPokeIds[i - 1];
+}
+
+
+function fillImg(i, arrayPokemon) {
+    let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
+    document.getElementById('pokeMiniImgDiv' + i).innerHTML = `<img src=${imgSrc}>`;
+}
+
+
+function fillName(i, arrayPokemon) {
+    document.getElementById('pokeMiniName' + i).innerHTML = loadedPokeNames[i - 1];
+}
+
+// function fillPokeCard(i){
+
+
+// }
 
 
 async function useArrayPokemonForCard(i, arrayPokemon) {
@@ -92,9 +140,6 @@ async function renderPokemonDetailsAbout(i, arrayPokemon) {
 async function renderPokemonDetailsBaseStats(i, arrayPokemon) {
     await renderPokeCardBaseStats(i, arrayPokemon);
 }
-
-
-
 
 
 async function useArrayPokemonSpecies(i, arrayPokemonSpecies) {
@@ -134,11 +179,26 @@ async function useArrayPokemonAbilitiesForCard(i, arrayPokemonAbilities) {
 
 }
 
-// 
-async function noticeDisplayedPokeId(arrayPokemon) {
-    let pokeId = arrayPokemon['id'];
+// notice Id, Name, Slots,
+// function noticeData(array) {
+//     noticePokeId(array);
+//     console.log(loadedPokeIds);
+//     noticePokeName(array);
+// noticeDisplayedPokeSlots(arrayPokemon);
+// }
+
+
+async function noticeData(arrayPoke, arrayPokeSpec, arrayPokeCol) {
+    let pokeId = arrayPoke['id'];
     pokeId = pokeId.toString();
     loadedPokeIds.push(pokeId);
+    console.log(loadedPokeIds);
+    let pokeName = getGermanData(arrayPokeSpec, 'names', 'name')
+    loadedPokeNames.push(pokeName);
+    console.log(loadedPokeNames);
+    let pokeColor = getGermanData(arrayPokeCol, 'names', 'name')
+    loadedPokeColors.push(pokeColor);
+    console.log(loadedPokeColors);
 }
 
 
@@ -158,27 +218,11 @@ async function noticeDisplayedPokeSlots(arrayPokemon) {
 }
 
 
-async function noticeDisplayedPokeSlot2(i, arrayPokemon) {
-    if (arrayPokemon['types'].length = 2) {
-        let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
-        loadedPokeSlots1.push(pokeSlot1);
-        let pokeSlot2 = arrayPokemon['types'][1]['type']['name'];
-        loadedPokeSlots2.push(pokeSlot2);
-    }
-}
-
-
 async function fillPokeWithName(index, i, germanData) {
     document.getElementById(index + i).innerHTML = germanData;
 }
 
-
 // render PokeMinis
-async function renderPokeMinisImgAndId(i, arrayPokemon) {
-    let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
-    let pokeId = arrayPokemon['id'];
-    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini1st(i, imgSrc, pokeId);
-}
 
 
 function showPokeCard(i) {
@@ -194,23 +238,10 @@ function hideAllPokeCards() {
 }
 
 
-async function getPokeGermanData(array, index1st, index2nd) {
-    searchIndexOfGermanData(array, index1st);
-    let germanData = array[index1st][indexOfGermanData][index2nd];
-    return germanData;
-}
-
-
-async function noticeDisplayedPokeName(germanName) {
-    let pokeName = germanName;
-    loadedPokeNames.push(pokeName);
-}
-
-
 async function changeMiniToBlack(i, arrayPokemon) {
     let slot1 = arrayPokemon['types'][0]['type']['name'];
     if (slot1 == 'electric' || slot1 == 'ice') {
-        document.getElementById('pokeMiniGermanName' + i).classList.add(`color-black`);
+        document.getElementById('pokeMiniName' + i).classList.add(`color-black`);
         document.getElementById('pokeMiniId' + i).classList.add(`color-black`);
     }
 }
@@ -288,16 +319,16 @@ function topFunction() {
 
 
 //  germanData - before I know about find()
-function searchIndexOfGermanData(arrayAsJSON, index) {
-    for (let j = 0; j < arrayAsJSON[index].length; j++) {
-        const language = arrayAsJSON[index][j]['language']['name'];
-        if (language == 'de') {
-            indexOfGermanData = j;
-            j = arrayAsJSON[index].length;
-            return indexOfGermanData;
-        }
-    }
-}
+// function searchIndexOfGermanData(arrayAsJSON, index) {
+//     for (let j = 0; j < arrayAsJSON[index].length; j++) {
+//         const language = arrayAsJSON[index][j]['language']['name'];
+//         if (language == 'de') {
+//             indexOfGermanData = j;
+//             j = arrayAsJSON[index].length;
+//             return indexOfGermanData;
+//         }
+//     }
+// }
 
 
 // searchBy
@@ -309,7 +340,7 @@ function searchByName() {
         let loadedPokeName = loadedPokeNames[i].toLowerCase();
         let result = loadedPokeName.startsWith(searchName);
         if (result == true) {
-            document.getElementById('pokeButton' + loadedPokeIds[i]).classList.remove('display-none')
+            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
         }
     }
 }
@@ -322,7 +353,7 @@ function searchByNr() {
         searchId = searchId.toString();
         let result = loadedPokeIds[i].startsWith(searchId);
         if (result == true) {
-            document.getElementById('pokeButton' + loadedPokeIds[i]).classList.remove('display-none')
+            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
         }
     }
 }
@@ -331,7 +362,7 @@ function searchByNr() {
 // hide PokeMinis
 function hidePokeMinis() {
     for (let i = 0; i < loadedPokeIds.length; i++) {
-        document.getElementById('pokeButton' + loadedPokeIds[i]).classList.add('display-none')
+        document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.add('display-none')
     }
 }
 

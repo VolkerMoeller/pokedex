@@ -128,7 +128,7 @@ body {
     gap: 8px;
 }
 
-.pokeButton {
+.pokeMiniButton {
     font-family: 'Bangers';
     cursor: pointer;
     margin: 0px;
