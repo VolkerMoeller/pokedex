@@ -55,8 +55,8 @@ function generateHTMLPokeCard(i) {
                 <button onclick="showCurrentCardById('card4${i}', ${i})" id="btn-card4${i}">5 Moves</button>
             </div>
         </div>
-        <div id="card1${i}" class="cards"></div>
-        <div id="card2${i}" class="cards display-none"></div>
+        <div id="card1${i}" class="cards">card1</div>
+        <div id="card2${i}" class="cards display-none">card2</div>
         <div id="card3${i}" class="cards display-none">card3</div>
         <div id="card4${i}" class="cards display-none">card4</div>
     </div> 

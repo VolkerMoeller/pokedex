@@ -1,0 +1,44 @@
+
+let imagesToLoad = 0;
+let imagesLoaded = 0;
+let percent = 0;
+loadImage(path) {
+        imagesToLoad++;
+        this.img = new Image();
+        this.img.onload = function() {
+            imagesLoaded++;
+            let percent = (imagesLoaded / imagesToLoad) * 100;
+            console.log(`${percent} loaded`);
+        }
+        this.img.src = path;
+    }
+
+
+class Image {
+    src = null; // String
+    size = null; // number
+    onload = null; // Function
+
+    constructor(){
+        this.onload();
+    }
+}
+
+this.img = new Image();
+this.onload = function() {
+    console.log('Hallo');
+}
+this.img.src = 'meinbild.png';
+17:30 Uhr
+const sayHello = function() {
+    console.log('Hello');
+};
+17:34 Uhr
+class Contact {
+    name;
+    phone;
+
+    constructor(contactName){
+        console.log(`New contact ${contactName} created!`);
+    }
+}

@@ -3,9 +3,9 @@ async function performServerRequests(i) {
         let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
         let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
         let arrayPoke = await fetchDataFromServer(url1);
-        let arrayPokeAbi = await fetchDataByDynamikUrl(arrayPoke, 'abilities', 'ability');
+        let arrayPokeAbi = await fetchDataByDynamikUrl(arrayPoke, 'abilities', '', 'ability');
         let arrayPokeSpec = await fetchDataFromServer(url2);
-        let arrayPokeCol = await fetchDataByDynamikUrl(arrayPokeSpec, 'color', '');
+        let arrayPokeCol = await fetchDataByDynamikUrl(arrayPokeSpec, 'color', '', '');
         await useArrays(i, arrayPoke, arrayPokeAbi, arrayPokeSpec, arrayPokeCol);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
@@ -25,10 +25,10 @@ async function fetchDataFromServer(url) {
 }
 
 
-async function fetchDataByDynamikUrl(array, indexAll, indexOne) {
+function fetchDataByDynamikUrl(array, indexAll, position, indexOne) {
     try {
-        let dynamikUrl = await takeDynamikUrl(array, indexAll, indexOne);
-        let data = await fetchDataFromServer(dynamikUrl);
+        let dynamikUrl = takeDynamikUrl(array, indexAll, position, indexOne);
+        let data = fetchDataFromServer(dynamikUrl);
         return data;
     } catch (error) {
         console.error('Fehler beim Abrufen der Daten mit dynamikUrl:', error);
@@ -37,7 +37,7 @@ async function fetchDataByDynamikUrl(array, indexAll, indexOne) {
 }
 
 
-function takeDynamikUrl(array, index1st, index2nd) {
+function takeDynamikUrl(array, index1st, position, index2nd) {
     if (index1st == 'color') {
         let dynamicUrl = array[index1st]['url'];
         return dynamicUrl;
@@ -45,6 +45,10 @@ function takeDynamikUrl(array, index1st, index2nd) {
     if (index1st == 'abilities') {
         let dynamicUrlIndex = array[index1st].length - 1;
         let dynamicUrl = array[index1st][dynamicUrlIndex][index2nd]['url'];
+        return dynamicUrl;
+    }
+    if (index1st == 'types') {
+        let dynamicUrl = array[index1st][position][index2nd]['url'];
         return dynamicUrl;
     }
 }
@@ -55,9 +59,9 @@ async function useArrays(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
     console.log(i + ' PokemonAbilities ', arrPokeAbi);
     console.log(i + ' PokemonSpecies ', arrPokeSpec);
     console.log(i + ' PokemonColor ', arrPokeCol);
-    noticeData(arrPoke, arrPokeSpec, arrPokeCol);
-    render(i, arrPoke);
-    fill(i, arrPoke);
+    await noticeData(i, arrPoke, arrPokeSpec, arrPokeCol);
+    await render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
+    await fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
 }
 
 

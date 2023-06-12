@@ -8,14 +8,13 @@ let currentPokeNr = 0
 let indexOfGermanData;
 let functionRunning = false;
 
-// for search function;   1 = PokeNr. 1
 let loadedPokeIds = [];
 let loadedPokeNames = [];
 let loadedPokeColors = [];
 
 
-let loadedPokeSlots1 = [0];
-let loadedPokeSlots2 = [0];
+let loadedPokeSlots1 = [];
+let loadedPokeSlots2 = [];
 
 
 let pokesFavorites = [0];
@@ -58,82 +57,83 @@ function updateCountNrs(end) {
 }
 
 
-function render(i, arrayPokemon) {
-    renderPokeMini(i, arrayPokemon);
-    renderPokeCard(i);
+// render
+async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
+    renderPokeMini(i, arrPoke);
+    renderPokeCard(i, arrPoke, arrPokeAbi);
 }
 
 
-function fill(i, arrayPokemon) {
-    fillPokeMini(i, arrayPokemon);
-    // fillPokeCard(i)
-}
-
-
-async function renderPokeMini(i, arrayPokemon) {
-    console.log('renderPokeMinis');
+async function renderPokeMini(i, arrPoke) {
     document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i);
-    stylePokeBgn(i, arrayPokemon, 'pokeMini');
-    await changeMiniToBlack(i, arrayPokemon);
+    stylePokeBgn(i, arrPoke, 'pokeMini');
+    changeMiniToBlack(i, arrPoke);
 }
 
 
-function renderPokeCard(i) {
-    console.log('renderPokeCard');
+function renderPokeCard(i, arrPoke, arrPokeAbi) {
     document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i);
+    stylePokeBgn(i, arrPoke, 'pokedex');
+    renderPokeTop(i, arrPoke);
+    // useArrayPokemonForCard(i, arrPoke, arrPokeAbi);
     // renderPokeCardSlider(i);
 }
 
 
-function fillPokeMini(i, arrayPokemon) {
+// fill
+async function fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
+    fillPoke(i, arrPoke);
+    // fillPokeCard(i);
+}
+
+
+function fillPoke(i, arrayPokemon) {
     fillId(i);
     fillName(i);
     fillImg(i, arrayPokemon);
 }
 
 
+function fillName(i, arrayPokemon) {
+    document.getElementById('pokeMiniName' + i).innerHTML = loadedPokeNames[i - 1];
+    document.getElementById('pokedex-name' + i).innerHTML = loadedPokeNames[i - 1];
+}
+
+
 function fillId(i) {
     document.getElementById('pokeMiniId' + i).innerHTML = loadedPokeIds[i - 1];
+    let formatId = format3LeftHandZeros(loadedPokeIds[i - 1]);
+    document.getElementById('pokedex-id' + i).innerHTML = `#${formatId}`;
 }
 
 
 function fillImg(i, arrayPokemon) {
-    let imgSrc = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
+    let imgSrc = arrayPokemon['sprites']['other']['dream_world']['front_default'];
     document.getElementById('pokeMiniImgDiv' + i).innerHTML = `<img src=${imgSrc}>`;
+    document.getElementById('pokedex-image' + i).innerHTML = `<img src=${imgSrc}>`;
 }
 
 
-function fillName(i, arrayPokemon) {
-    document.getElementById('pokeMiniName' + i).innerHTML = loadedPokeNames[i - 1];
-}
-
-// function fillPokeCard(i){
 
 
-// }
 
-
-async function useArrayPokemonForCard(i, arrayPokemon) {
-    await showEmptyPokeCard(i, arrayPokemon);
-    await stylePokeBgn(i, arrayPokemon, 'pokedex');
-    await noticeDisplayedPokeSlots(arrayPokemon);
-    await renderPokeCardsTopAndNavigation(i, arrayPokemon);
-    // card 1 to 4 (About, Base-Stats, Evolution, Moves)
-    await renderPokemonDetails(i, arrayPokemon);
+async function useArrayPokemonForCard(i, arrPoke, arrPokeAbi) {
+    renderPokeCardsTopAndNavigation(i, arrPoke);
+    renderPokemonDetails(i, arrPoke, arrPokeAbi);
 }
 
 
-async function renderPokemonDetails(i, arrayPokemon) {
-    await renderPokemonDetailsAbout(i, arrayPokemon);
+async function renderPokemonDetails(i, arrPoke, arrPokeAbi) {
+    await renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi);
     // await renderPokemonDetailsBaseStats(i, arrayPokemon);
     // await renderPokemonDetailsEvolution(i, arrayPokemon);
     // await renderPokemonDetailsMoves(i, arrayPokemon);
 }
 
 
-async function renderPokemonDetailsAbout(i, arrayPokemon) {
-    await renderPokeWeightAndHeight(i, arrayPokemon);
-    await renderPokeAbility(i, arrayPokemon);
+async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi) {
+    await renderPokeWeightAndHeight(i, arrPoke);
+    await renderPokeAbility(i, arrPokeAbi);
 }
 
 
@@ -179,16 +179,8 @@ async function useArrayPokemonAbilitiesForCard(i, arrayPokemonAbilities) {
 
 }
 
-// notice Id, Name, Slots,
-// function noticeData(array) {
-//     noticePokeId(array);
-//     console.log(loadedPokeIds);
-//     noticePokeName(array);
-// noticeDisplayedPokeSlots(arrayPokemon);
-// }
 
-
-async function noticeData(arrayPoke, arrayPokeSpec, arrayPokeCol) {
+async function noticeData(i, arrayPoke, arrayPokeSpec, arrayPokeCol) {
     let pokeId = arrayPoke['id'];
     pokeId = pokeId.toString();
     loadedPokeIds.push(pokeId);
@@ -198,29 +190,48 @@ async function noticeData(arrayPoke, arrayPokeSpec, arrayPokeCol) {
     console.log(loadedPokeNames);
     let pokeColor = getGermanData(arrayPokeCol, 'names', 'name')
     loadedPokeColors.push(pokeColor);
-    console.log(loadedPokeColors);
+    console.log('Colors: ', loadedPokeColors);
+    await noticeDisplayedPokeSlots(arrayPoke);
+    console.log('Slot1: ', loadedPokeSlots1);
+    console.log('Slot2: ', loadedPokeSlots2);
+
 }
 
 
 async function noticeDisplayedPokeSlots(arrayPokemon) {
     if (arrayPokemon['types'].length == 1) {
-        let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
-        let pokeSlot2 = '';
-        loadedPokeSlots1.push(pokeSlot1);
-        loadedPokeSlots2.push(pokeSlot2);
+        let slot2 = '';
+        let data = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
+        data.then(
+            function (result) {
+                let slot1 = getGermanData(result, 'names', 'name');
+                loadedPokeSlots1.push(slot1);
+                loadedPokeSlots2.push(slot2);
+            }
+        )
     } else
         if (arrayPokemon['types'].length == 2) {
-            let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
-            let pokeSlot2 = arrayPokemon['types'][1]['type']['name'];
-            loadedPokeSlots1.push(pokeSlot1);
-            loadedPokeSlots2.push(pokeSlot2);
+            let data1 = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
+            data1.then(
+                function (result) {
+                    let slot1 = getGermanData(result, 'names', 'name');
+                    loadedPokeSlots1.push(slot1);
+                }
+            )
+            let data2 = fetchDataByDynamikUrl(arrayPokemon, 'types', 1, 'type');
+            data2.then(
+                function (result) {
+                    let slot2 = getGermanData(result, 'names', 'name');
+                    loadedPokeSlots2.push(slot2);
+                }
+            )
         }
 }
 
 
-async function fillPokeWithName(index, i, germanData) {
-    document.getElementById(index + i).innerHTML = germanData;
-}
+// async function fillPokeWithName(index, i, germanData) {
+//     document.getElementById(index + i).innerHTML = germanData;
+// }
 
 // render PokeMinis
 
@@ -339,6 +350,19 @@ function searchByName() {
         searchName = searchName.toLowerCase();
         let loadedPokeName = loadedPokeNames[i].toLowerCase();
         let result = loadedPokeName.startsWith(searchName);
+        if (result == true) {
+            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
+        }
+    }
+}
+
+function searchByColor() {
+    hidePokeMinis();
+    for (let i = 0; i < loadedPokeColors.length; i++) {
+        let searchColor = document.getElementById('searchColor').value;
+        searchColor = searchColor.toLowerCase();
+        let loadedPokeColor = loadedPokeColors[i].toLowerCase();
+        let result = loadedPokeColor.startsWith(searchColor);
         if (result == true) {
             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
         }
@@ -471,23 +495,27 @@ function setAllSliderToDefault(i) {
 
 // renderPokeCardsTopAndNavigation
 async function renderPokeCardsTopAndNavigation(i, arrayPokemon) {
+
     await renderPokeTop(i, arrayPokemon);
     await renderPokeNavigation(i, arrayPokemon);
 }
 
 
-async function renderPokeTop(i, arrayPokemon) {
-    let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
+async function renderPokeTop(i, arrPoke) {
+    let pokeSlot1 = arrPoke['types'][0]['type']['name'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
-    let pokeImg = arrayPokemon['sprites']['other']['official-artwork']['front_shiny'];
-    renderPokeId(i, arrayPokemon);
+    renderPokeFavorite(i, bgnType);
+    renderPokeToBlack(i);
     renderPokeSlot1(i, bgnSlotType, pokeSlot1);
     renderPokeSlot2(i);
-    renderPokeFavorite(i, bgnType);
-    renderPokeImage(i, pokeImg);
-    renderPokeToBlack(i, pokeSlot1);
 }
+
+
+function renderPokeFavorite(i, bgnType) {
+    document.getElementById('btn-fill0' + i).classList.add(`${bgnType}`);
+    document.getElementById('btn-fill1' + i).classList.add(`${bgnType}`);
+};
 
 
 function renderPokeToBlack(i, pokeSlot1) {
@@ -498,7 +526,9 @@ function renderPokeToBlack(i, pokeSlot1) {
 
 
 function renderPokeSlot1(i, bgnSlotType, pokeSlot1) {
-    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type1${i}" class="slot ${bgnSlotType}">${pokeSlot1}</div>`;
+    let slot1 = loadedPokeSlots1['1'];
+    console.log(slot1);
+    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type1${i}" class="slot ${bgnSlotType}">${loadedPokeSlots1[i]}</div>`;
 };
 
 
@@ -513,22 +543,18 @@ function renderPokeSlot2(i) {
 }
 
 
-function renderPokeImage(i, pokeImg) {
-    document.getElementById('pokedex-image' + i).innerHTML += `<img src="${pokeImg}">`;
-}
+// function renderPokeImage(i, pokeImg) {
+//     document.getElementById('pokedex-image' + i).innerHTML += `<img src="${pokeImg}">`;
+// }
 
 
-function renderPokeFavorite(i, bgnType) {
-    document.getElementById('btn-fill0' + i).classList.add(`${bgnType}`);
-    document.getElementById('btn-fill1' + i).classList.add(`${bgnType}`);
-};
 
 
-function renderPokeId(i, arrayPokemon) {
-    let pokeId = arrayPokemon['id'];
-    let formatPokeId = format3LeftHandZeros(pokeId);
-    document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
-};
+// function renderPokeId(i, arrayPokemon) {
+//     let pokeId = arrayPokemon['id'];
+//     let formatPokeId = format3LeftHandZeros(pokeId);
+//     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
+// };
 
 
 function changeToBlack(i, pokeSlot1) {
@@ -568,19 +594,19 @@ async function renderPokeGenera(i, arrayPokemonSpecies) {
 }
 
 
-async function renderPokeAbility(i, arrayPokemonAbilities) {
-    let germanData1st = await getPokeGermanData(arrayPokemonAbilities, 'names', 'name');
+async function renderPokeAbility(i, arrPokeAbi) {
+    let germanData1st = await getGermanData(arrPokeAbi, 'names', 'name');
     document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${germanData1st}:</div>`;
 
-    let germanData2nd = await getPokeGermanData(arrayPokemonAbilities, 'flavor_text_entries', 'flavor_text');
+    let germanData2nd = await getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
     document.getElementById('card1' + i).innerHTML += `<div>${germanData2nd}</div>`;
 }
 
 
-async function renderPokeWeightAndHeight(i, arrayPokemon) {
-    let pokeWeight = arrayPokemon['weight'];
+async function renderPokeWeightAndHeight(i, arrPoke) {
+    let pokeWeight = arrPoke['weight'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
-    let pokeHeight = arrayPokemon['height'];
+    let pokeHeight = arrPoke['height'];
     document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
 };
 
