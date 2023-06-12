@@ -11,15 +11,12 @@ let functionRunning = false;
 let loadedPokeIds = [];
 let loadedPokeNames = [];
 let loadedPokeColors = [];
-
-
 let loadedPokeSlots1 = [];
 let loadedPokeSlots2 = [];
 
 
-let pokesFavorites = [0];
+let pokesFavorites = [];
 
-let pokesFlavorText = [0];
 
 let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
 let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
@@ -74,9 +71,11 @@ async function renderPokeMini(i, arrPoke) {
 function renderPokeCard(i, arrPoke, arrPokeAbi) {
     document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i);
     stylePokeBgn(i, arrPoke, 'pokedex');
+    changeCardToBlack(i, arrPoke);
     renderPokeTop(i, arrPoke);
-    // useArrayPokemonForCard(i, arrPoke, arrPokeAbi);
-    // renderPokeCardSlider(i);
+    renderSlots(i, arrPoke);
+    renderPokeNavigation(i, arrPoke);
+    renderPokemonDetails(i, arrPoke, arrPokeAbi);
 }
 
 
@@ -114,12 +113,14 @@ function fillImg(i, arrayPokemon) {
 }
 
 
+function fillSlot1(i, slot1) {
+    document.getElementById('base-type1' + i).innerHTML = slot1;
+
+}
 
 
-
-async function useArrayPokemonForCard(i, arrPoke, arrPokeAbi) {
-    renderPokeCardsTopAndNavigation(i, arrPoke);
-    renderPokemonDetails(i, arrPoke, arrPokeAbi);
+function fillSlot2(i, slot2) {
+    document.getElementById('base-type2' + i).innerHTML = slot2;
 }
 
 
@@ -184,17 +185,43 @@ async function noticeData(i, arrayPoke, arrayPokeSpec, arrayPokeCol) {
     let pokeId = arrayPoke['id'];
     pokeId = pokeId.toString();
     loadedPokeIds.push(pokeId);
-    console.log(loadedPokeIds);
     let pokeName = getGermanData(arrayPokeSpec, 'names', 'name')
     loadedPokeNames.push(pokeName);
-    console.log(loadedPokeNames);
     let pokeColor = getGermanData(arrayPokeCol, 'names', 'name')
     loadedPokeColors.push(pokeColor);
-    console.log('Colors: ', loadedPokeColors);
-    await noticeDisplayedPokeSlots(arrayPoke);
-    console.log('Slot1: ', loadedPokeSlots1);
-    console.log('Slot2: ', loadedPokeSlots2);
+    noticeDisplayedPokeSlots(arrayPoke);
 
+}
+
+
+async function renderSlots(i, arrayPokemon) {
+    if (arrayPokemon['types'].length == 1) {
+        let data = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
+        data.then(
+            function (result) {
+                let slot1 = getGermanData(result, 'names', 'name');
+                fillSlot1(i, slot1);
+            }
+        )
+        let slot2 = '';
+        fillSlot2(i, slot2);
+    } else
+        if (arrayPokemon['types'].length == 2) {
+            let data1 = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
+            data1.then(
+                function (result) {
+                    let slot1 = getGermanData(result, 'names', 'name');
+                    fillSlot1(i, slot1);
+                }
+            )
+            let data2 = fetchDataByDynamikUrl(arrayPokemon, 'types', 1, 'type');
+            data2.then(
+                function (result) {
+                    let slot2 = getGermanData(result, 'names', 'name');
+                    fillSlot2(i, slot2);
+                }
+            )
+        }
 }
 
 
@@ -229,13 +256,6 @@ async function noticeDisplayedPokeSlots(arrayPokemon) {
 }
 
 
-// async function fillPokeWithName(index, i, germanData) {
-//     document.getElementById(index + i).innerHTML = germanData;
-// }
-
-// render PokeMinis
-
-
 function showPokeCard(i) {
     switchContent();
     document.getElementById('pokedex' + i).classList.remove('display-none');
@@ -254,6 +274,17 @@ async function changeMiniToBlack(i, arrayPokemon) {
     if (slot1 == 'electric' || slot1 == 'ice') {
         document.getElementById('pokeMiniName' + i).classList.add(`color-black`);
         document.getElementById('pokeMiniId' + i).classList.add(`color-black`);
+        
+    }
+}
+
+async function changeCardToBlack(i, arrayPokemon) {
+    let slot1 = arrayPokemon['types'][0]['type']['name'];
+    if (slot1 == 'electric' || slot1 == 'ice') {
+        document.getElementById('pokedex-name' + i).classList.add(`color-black`);
+        document.getElementById('pokedex-id' + i).classList.add(`color-black`);
+        document.getElementById('base-type1' + i).classList.add(`color-black`);
+        document.getElementById('base-type2' + i).classList.add(`color-black`);
     }
 }
 
@@ -493,22 +524,18 @@ function setAllSliderToDefault(i) {
 }
 
 
-// renderPokeCardsTopAndNavigation
-async function renderPokeCardsTopAndNavigation(i, arrayPokemon) {
-
-    await renderPokeTop(i, arrayPokemon);
-    await renderPokeNavigation(i, arrayPokemon);
-}
-
-
 async function renderPokeTop(i, arrPoke) {
     let pokeSlot1 = arrPoke['types'][0]['type']['name'];
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     let bgnType = 'bgn-type-' + pokeSlot1;
+    if (arrPoke['types'].length == 2) {
+        let pokeSlot2 = arrPoke['types'][1]['type']['name'];
+        let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
+        renderPokeSlot2(i, arrPoke, bgnSlotType);
+    }
     renderPokeFavorite(i, bgnType);
     renderPokeToBlack(i);
-    renderPokeSlot1(i, bgnSlotType, pokeSlot1);
-    renderPokeSlot2(i);
+    renderPokeSlot1(i, bgnSlotType);
 }
 
 
@@ -525,28 +552,18 @@ function renderPokeToBlack(i, pokeSlot1) {
 }
 
 
-function renderPokeSlot1(i, bgnSlotType, pokeSlot1) {
-    let slot1 = loadedPokeSlots1['1'];
-    console.log(slot1);
-    document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type1${i}" class="slot ${bgnSlotType}">${loadedPokeSlots1[i]}</div>`;
+function renderPokeSlot1(i, bgnSlotType) {
+    document.getElementById('base-type1' + i).classList.add(`${bgnSlotType}`);
 };
 
 
-function renderPokeSlot2(i) {
-    if (loadedPokeSlots2[i] == '') {
-        return;
+function renderPokeSlot2(i, arrPoke, bgnSlotType) {
+    if (arrPoke['types'].length == 2) {
+        document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
     } else {
-        let pokeSlot2 = loadedPokeSlots2[i];
-        let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-        document.getElementById('pokedex-slots' + i).innerHTML += `<div id="base-type2${i}" class="slot ${bgnSlotType}">${pokeSlot2}</div>`;
+        return;
     }
 }
-
-
-// function renderPokeImage(i, pokeImg) {
-//     document.getElementById('pokedex-image' + i).innerHTML += `<img src="${pokeImg}">`;
-// }
-
 
 
 
@@ -627,7 +644,7 @@ function format3LeftHandZeros(value) {
 
 // Navigation PokeCard
 function hoverNavigationOver(cardNr, i) {
-    let slot1 = loadedPokeSlots1[i];
+    let slot1 = document.getElementById('base-type1' + i).innerHTML;
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
 }

@@ -13,7 +13,7 @@ function generateHTMLPokeMini(i) {
 }
 
 
-function generateHTMLPokeCard(i) {
+function generateHTMLPokeCard(i, arrPoke) {
   return /*html*/`
     <div id="pokedex${i}" class="pokedex display-none">
         <div id="pokedex-top${i}" class="pokedex-top">
@@ -30,6 +30,8 @@ function generateHTMLPokeCard(i) {
             </div>
             <div class="slot-line">
                 <div id="pokedex-slots${i}" class="pokedex-slots">
+                  <div id="base-type1${i}" class="slot"></div>
+                  <div id="base-type2${i}" class="slot"></div>
                 </div>
                 <div class="favorite">
                     <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>

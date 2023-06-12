@@ -55,13 +55,14 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 
 
 async function useArrays(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
+    await noticeData(i, arrPoke, arrPokeSpec, arrPokeCol);
+    await render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
+    await fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
     console.log(i + ' Pokemon ', arrPoke);
     console.log(i + ' PokemonAbilities ', arrPokeAbi);
     console.log(i + ' PokemonSpecies ', arrPokeSpec);
     console.log(i + ' PokemonColor ', arrPokeCol);
-    await noticeData(i, arrPoke, arrPokeSpec, arrPokeCol);
-    await render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
-    await fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
+    // console.log(i, loadedPokeIds, loadedPokeNames, loadedPokeColors, loadedPokeSlots1, loadedPokeSlots2);
 }
 
 
