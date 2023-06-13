@@ -1,6 +1,6 @@
-let initEnd = 20;
+let initEnd = 4;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs = 19;
+let stepPokeNrs = 2;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
@@ -18,7 +18,7 @@ let loadedPokeSlots2 = [];
 let pokesFavorites = [];
 
 
-let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
+// let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
 let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 
 
@@ -57,7 +57,7 @@ function updateCountNrs(end) {
 // render
 async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
     renderPokeMini(i, arrPoke);
-    renderPokeCard(i, arrPoke, arrPokeAbi);
+    renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec);
 }
 
 
@@ -68,7 +68,7 @@ async function renderPokeMini(i, arrPoke) {
 }
 
 
-function renderPokeCard(i, arrPoke, arrPokeAbi) {
+function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec) {
     let slot = arrPoke['types'][0]['type']['name'];
     document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i, slot);
     stylePokeBgn(i, arrPoke, 'pokedex');
@@ -76,7 +76,7 @@ function renderPokeCard(i, arrPoke, arrPokeAbi) {
     renderPokeTop(i, arrPoke);
     renderSlots(i, arrPoke);
     renderPokeNavigation(i, arrPoke);
-    renderPokemonDetails(i, arrPoke, arrPokeAbi);
+    renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec);
 }
 
 
@@ -125,22 +125,25 @@ function fillSlot2(i, slot2) {
 }
 
 
-async function renderPokemonDetails(i, arrPoke, arrPokeAbi) {
-    await renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi);
-    // await renderPokemonDetailsBaseStats(i, arrayPokemon);
+async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec) {
+    renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
+    renderPokemonDetailsBaseStats(i, arrPoke);
     // await renderPokemonDetailsEvolution(i, arrayPokemon);
     // await renderPokemonDetailsMoves(i, arrayPokemon);
 }
 
 
-async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi) {
-    await renderPokeWeightAndHeight(i, arrPoke);
-    await renderPokeAbility(i, arrPokeAbi);
+async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec) {
+    document.getElementById('card1' + i).innerHTML = generateHTMLAbout(i);
+    await fillGenera(i, arrPokeSpec);
+    await fillAbility(i, arrPokeAbi);
+    await fillWeightAndHeight(i, arrPoke);
 }
 
 
-async function renderPokemonDetailsBaseStats(i, arrayPokemon) {
-    await renderPokeCardBaseStats(i, arrayPokemon);
+async function renderPokemonDetailsBaseStats(i, arrPoke) {
+    document.getElementById('card2' + i).innerHTML = generateHTMLStats(i);
+    await fillBaseStats(i, arrPoke);
 }
 
 
@@ -460,8 +463,6 @@ function loadFavorites() {
 }
 
 
-
-
 // 
 function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
@@ -574,31 +575,25 @@ async function renderPokeNavigation(i, arrayPokemon) {
 
 
 // render About - card 1
-async function renderPokeAbout(i, arrayPokemonSpecies) {
-    document.getElementById('card1' + i).innerHTML = generateHTMLAbout(i);
+async function fillGenera(i, arrPokeSpec) {
+    let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
+    document.getElementById('genera-value' + i).innerHTML = `${pokeGenera}`;
 }
 
 
-async function renderPokeGenera(i, arrayPokemonSpecies) {
-    let pokeGenera = arrayPokemonSpecies['genera'][4]['genus'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Kategorie: </b>${pokeGenera}</div>`;
+async function fillAbility(i, arrPokeAbi) {
+    let pokeAbility = getGermanData(arrPokeAbi, 'names', 'name');
+    document.getElementById('ability-value' + i).innerHTML = `<i>${pokeAbility}:</i>`;
+    let pokeAbiText = getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
+    document.getElementById('ability-text' + i).innerHTML = `${pokeAbiText}`;
 }
 
 
-async function renderPokeAbility(i, arrPokeAbi) {
-    let germanData1st = await getGermanData(arrPokeAbi, 'names', 'name');
-    document.getElementById('card1' + i).innerHTML += `<div><b>Fähigkeit: </b>${germanData1st}:</div>`;
-
-    let germanData2nd = await getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
-    document.getElementById('card1' + i).innerHTML += `<div>${germanData2nd}</div>`;
-}
-
-
-async function renderPokeWeightAndHeight(i, arrPoke) {
+async function fillWeightAndHeight(i, arrPoke) {
     let pokeWeight = arrPoke['weight'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Gewicht: </b>${pokeWeight} Poke-Einheiten</div>`;
+    document.getElementById('weight-value' + i).innerHTML = `${pokeWeight} Poke-Einheiten`;
     let pokeHeight = arrPoke['height'];
-    document.getElementById('card1' + i).innerHTML += `<div><b>Höhe: </b>${pokeHeight} Poke-Einheiten</div>`;
+    document.getElementById('height-value' + i).innerHTML = `${pokeHeight} Poke-Einheiten`;
 };
 
 
@@ -630,12 +625,11 @@ function hoverNavigationOut(cardNr, i, slot1) {
 
 
 // render BaseStats
-async function renderPokeCardBaseStats(i, arrayPokemon) {
-    for (let j = 0; j < arrayPokemon['stats'].length; j++) {
-        let value = arrayPokemon['stats'][j]['base_stat'];
+async function fillBaseStats(i, arrayPokemon) {
+    for (let j = 1; j <= arrayPokemon['stats'].length; j++) {
+        let value = arrayPokemon['stats'][j - 1]['base_stat'];
         let valuePerCent = perCent(value);
-        let id = baseStatId[j] + i;
-        renderStatsAndProgressLine(i, baseStatNames[j], value, valuePerCent, id);
+        renderStatsAndProgressLine(i, value, valuePerCent, j);
     }
 }
 
@@ -646,17 +640,17 @@ function perCent(value) {
 }
 
 
-function renderStatsAndProgressLine(i, name, value, valuePerCent, id) {
-    renderStatsLine(i, name, value, id);
-    renderProgressLine(valuePerCent, id);
+function renderStatsAndProgressLine(i, value, valuePerCent, j) {
+    renderStatsLine(i, value, j);
+    renderProgressLine(i, valuePerCent, j);
 }
 
 
-function renderStatsLine(i, name, absoluteValue, id) {
-    document.getElementById('card2' + i).innerHTML += `<div class="stats-line"><div class="stat"><div>${name}: </div><div><b>${absoluteValue}</b></div></div><div class="progess-stats-line" id="${id}"></div></div>`;
+function renderStatsLine(i, value, j) {
+    document.getElementById('stat-value' + j + i).innerHTML = `${value}`;
 }
 
 
-function renderProgressLine(value, id) {
-    document.getElementById(id).innerHTML += `<div class="progress-stats" style="width: ${value}%"></div>`;
+function renderProgressLine(i, valuePerCent, j) {
+    document.getElementById('progress-about-bar-inner' + j + i).style = `width: ${valuePerCent}%`;
 }

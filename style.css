@@ -128,6 +128,7 @@ body {
 .pokeMini1stLine {
     display: flex;
     gap: 8px;
+    margin-bottom: 8px;
 }
 
 .pokeMiniButton {
@@ -426,6 +427,10 @@ td {
     text-align: right;
 }
 
+.cards table td:nth-child(3) {
+    font-weight: normal;
+}
+
 .progress-about-bar {
     width: 100%;
     height: 20px;
@@ -453,6 +458,10 @@ td {
     .pokedex-bottom {
         min-height: 570px
     }
+
+    .cards table td:nth-child(3) {
+        display: none;
+    }
 }
 
 @media (max-width: 350px) {
@@ -465,11 +474,8 @@ td {
         justify-content: center;
     }
 
-    /* .pokedex-above {
-        justify-content: center;
-    } */
-
     .pokedex-slots {
         margin-bottom: 8px;
     }
+
 }

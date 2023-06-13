@@ -66,62 +66,94 @@ function generateHTMLPokeCard(i, slot1) {
 }
 
 
-function generateHTMLStats(i) {
+function generateHTMLAbout(i) {
   return /*html*/`
 <table>
+  <tr id="genera${i}">
+    <td id="genera-name${i}">Klasse:</td>
+    <td></td>
+    <td id="genera-value${i}"></td>
+  </tr>
+  <tr id="weight${i}">
+    <td id="weight-name${i}">Gewicht:</td>
+    <td></td>
+    <td id="weight-value${i}"></td>
+  </tr>
+  <tr id="height${i}">
+    <td id="height-name${i}">Höhe:</td>
+    <td></td>
+    <td id="height-value${i}"></td>
+  </tr>
+  <tr id="ability1${i}">
+    <td id="ability-name${i}">Fähigkeit:</td>
+    <td></td>
+    <td id="ability-value${i}"></td>
+  </tr>
+  <tr id="ability2${i}">
+    <td></td>
+    <td></td>
+      <td id="ability-text${i}"></td>
+    </tr>
+  </table>
+    `}
+
+
+function generateHTMLStats(i) {
+  return /*html*/`
+  <table>
     <tr id="hp${i}">
-      <td id="stat-name${i}">HP</td>
-      <td id="stat-value${i}">150</td>
+      <td id="stat-name1${i}">Kraftpunkte:</td>
+      <td id="stat-value1${i}"></td>
       <td>
         <div class="progress-about-bar">
-          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 75%;"></div>
+          <div id="progress-about-bar-inner1${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
       </td>
     </tr>
     <tr id="attack${i}">
-      <td id="stat-name${i}">Attack</td>
-      <td id="stat-value${i}">100</td>
+      <td id="stat-name2${i}">Angriff:</td>
+      <td id="stat-value2${i}"></td>
       <td>
         <div class="progress-about-bar">
-          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 50%;"></div>
+          <div id="progress-about-bar-inner2${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
       </td>
     </tr>
     <tr id="defense${i}">
-      <td id="stat-name${i}">Defense</td>
-      <td id="stat-value${i}">80</td>
+      <td id="stat-name3${i}">Verteidigung:</td>
+      <td id="stat-value3${i}"></td>
       <td>
         <div class="progress-about-bar">
-          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 40%;"></div>
+          <div id="progress-about-bar-inner3${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
       </td>
     </tr>
     <tr id="special-attack${i}">
-      <td id="stat-name${i}">Special Attack</td>
-      <td id="stat-value${i}">120</td>
+      <td id="stat-name4${i}">Spezialangriff:</td>
+      <td id="stat-value4${i}"></td>
       <td>
         <div class="progress-about-bar">
-          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 60%;"></div>
+          <div id="progress-about-bar-inner4${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
       </td>
     </tr>
     <tr id="special-defense${i}">
-      <td id="stat-name${i}">Special Defense</td>
-      <td id="stat-value${i}">100</td>
+      <td id="stat-name5${i}">Spezialverteidigung:</td>
+      <td id="stat-value5${i}"></td>
       <td>
         <div class="progress-about-bar">
-          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 50%;"></div>
+          <div id="progress-about-bar-inner5${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
       </td>
     </tr>
     <tr id="speed${i}">
-      <td id="stat-name${i}">Speed</td>
-      <td id="stat-value${i}">90</td>
+      <td id="stat-name6${i}">Initiative:</td>
+      <td id="stat-value6${i}"></td>
       <td>
         <div class="progress-about-bar">
-          <div id="progress-about-bar-inner${i}" class="progress-about-bar-inner" style="width: 45%;"></div>
+          <div id="progress-about-bar-inner6${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
       </td>
     </tr>
   </table>
-    `}
+  `}
