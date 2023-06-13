@@ -1,6 +1,6 @@
-let initEnd = 4;
+let initEnd = 30;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs = 2;
+let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
@@ -13,13 +13,9 @@ let loadedPokeNames = [];
 let loadedPokeColors = [];
 let loadedPokeSlots1 = [];
 let loadedPokeSlots2 = [];
-
-
 let pokesFavorites = [];
 
 
-// let baseStatNames = ['Kraftpunkte', 'Angriff', 'Verteidigung', 'Sezialangriff', 'Spezialverteidigung', 'Initiative'];
-let baseStatId = ['pokeKpId', 'pokeAttackId', 'pokeDefenceId', 'pokeSpecAttackId', 'pokeSpecDefenceId', 'pokeSpeedId'];
 
 
 async function init() {
@@ -128,7 +124,7 @@ function fillSlot2(i, slot2) {
 async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec) {
     renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
     renderPokemonDetailsBaseStats(i, arrPoke);
-    // await renderPokemonDetailsEvolution(i, arrayPokemon);
+    renderPokemonDetailsEvolution(i, arrPokeSpec);
     // await renderPokemonDetailsMoves(i, arrayPokemon);
 }
 
@@ -193,8 +189,6 @@ async function noticeData(i, arrayPoke, arrayPokeSpec, arrayPokeCol) {
     loadedPokeNames.push(pokeName);
     let pokeColor = getGermanData(arrayPokeCol, 'names', 'name')
     loadedPokeColors.push(pokeColor);
-    noticeDisplayedPokeSlots(arrayPoke);
-
 }
 
 
@@ -205,10 +199,12 @@ async function renderSlots(i, arrayPokemon) {
             function (result) {
                 let slot1 = getGermanData(result, 'names', 'name');
                 fillSlot1(i, slot1);
+                loadedPokeSlots1.push(slot1);
             }
         )
         let slot2 = '';
         fillSlot2(i, slot2);
+        loadedPokeSlots2.push(slot2);
     } else
         if (arrayPokemon['types'].length == 2) {
             let data1 = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
@@ -216,36 +212,6 @@ async function renderSlots(i, arrayPokemon) {
                 function (result) {
                     let slot1 = getGermanData(result, 'names', 'name');
                     fillSlot1(i, slot1);
-                }
-            )
-            let data2 = fetchDataByDynamikUrl(arrayPokemon, 'types', 1, 'type');
-            data2.then(
-                function (result) {
-                    let slot2 = getGermanData(result, 'names', 'name');
-                    fillSlot2(i, slot2);
-                }
-            )
-        }
-}
-
-
-async function noticeDisplayedPokeSlots(arrayPokemon) {
-    if (arrayPokemon['types'].length == 1) {
-        let slot2 = '';
-        let data = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
-        data.then(
-            function (result) {
-                let slot1 = getGermanData(result, 'names', 'name');
-                loadedPokeSlots1.push(slot1);
-                loadedPokeSlots2.push(slot2);
-            }
-        )
-    } else
-        if (arrayPokemon['types'].length == 2) {
-            let data1 = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
-            data1.then(
-                function (result) {
-                    let slot1 = getGermanData(result, 'names', 'name');
                     loadedPokeSlots1.push(slot1);
                 }
             )
@@ -253,6 +219,7 @@ async function noticeDisplayedPokeSlots(arrayPokemon) {
             data2.then(
                 function (result) {
                     let slot2 = getGermanData(result, 'names', 'name');
+                    fillSlot2(i, slot2);
                     loadedPokeSlots2.push(slot2);
                 }
             )
@@ -463,7 +430,7 @@ function loadFavorites() {
 }
 
 
-// 
+// show Cards
 function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
     setCurrentCardToActiv(cardId);
@@ -624,7 +591,7 @@ function hoverNavigationOut(cardNr, i, slot1) {
 }
 
 
-// render BaseStats
+// fill BaseStats
 async function fillBaseStats(i, arrayPokemon) {
     for (let j = 1; j <= arrayPokemon['stats'].length; j++) {
         let value = arrayPokemon['stats'][j - 1]['base_stat'];
@@ -654,3 +621,30 @@ function renderStatsLine(i, value, j) {
 function renderProgressLine(i, valuePerCent, j) {
     document.getElementById('progress-about-bar-inner' + j + i).style = `width: ${valuePerCent}%`;
 }
+
+// render Evolution
+
+function renderPokemonDetailsEvolution(i, arrPokeSpec) {
+    let evolData = fetchDataByDynamikUrl(arrPokeSpec, 'evolution_chain', '', '');
+    evolData.then(
+        function (result) {
+            let startPokeNameURL = result['chain']['species']['url'];
+            let startPokeNameArray = fetchDataFromServer(startPokeNameURL);
+            console.log(startPokeNameArray);
+        }
+        // console.log(startPokeName);
+        // let startPokeName = fetchDataByDynamikUrl(result, 'evolution_chain', '', '');
+        // let startName = getGermanData(result, 'names', 'name');
+
+    )
+
+}
+
+// async function getNamePokeStart(resp6EvolutionInfoAsJSON, i) {
+//     let startPokeNameURL = resp6EvolutionInfoAsJSON['chain']['species']['url'];
+//     await loadGermanStartPokeName(startPokeNameURL);
+//     let startPokeId = currentGermanStartPokeName['id'];
+//     let startPokeNames = currentGermanStartPokeName['names'];
+//     await searchGermanStartPokeName(startPokeNames, i, startPokeId);
+//     await getNamePokeEvolut1st(resp6EvolutionInfoAsJSON, i);
+// }

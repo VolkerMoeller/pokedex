@@ -459,9 +459,6 @@ td {
         min-height: 570px
     }
 
-    .cards table td:nth-child(3) {
-        display: none;
-    }
 }
 
 @media (max-width: 350px) {

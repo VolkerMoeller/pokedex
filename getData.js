@@ -51,6 +51,10 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
         let dynamicUrl = array[index1st][position][index2nd]['url'];
         return dynamicUrl;
     }
+    if (index1st == 'evolution_chain'){
+        let dynamicUrl = array[index1st]['url'];
+        return dynamicUrl;
+    }
 }
 
 
