@@ -310,6 +310,7 @@ body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-bottom: 8px;
 }
 
 .pokedex-slots {
@@ -382,10 +383,9 @@ body {
     height: 48px;
     width: 96px;
     color: white;
-    font-family: 'Noto Sans';
     font-size: 16px;
-    font-weight: bolder;
-    letter-spacing: 0px;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 
@@ -455,7 +455,7 @@ td {
     }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 350px) {
     .slot {
         margin-left: 8px;
     }
@@ -465,7 +465,11 @@ td {
         justify-content: center;
     }
 
-    .pokedex-above {
+    /* .pokedex-above {
         justify-content: center;
+    } */
+
+    .pokedex-slots {
+        margin-bottom: 8px;
     }
 }

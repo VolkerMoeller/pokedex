@@ -13,7 +13,7 @@ function generateHTMLPokeMini(i) {
 }
 
 
-function generateHTMLPokeCard(i, arrPoke) {
+function generateHTMLPokeCard(i, slot1) {
   return /*html*/`
     <div id="pokedex${i}" class="pokedex display-none">
         <div id="pokedex-top${i}" class="pokedex-top">
@@ -44,17 +44,17 @@ function generateHTMLPokeCard(i, arrPoke) {
         </div>
         <div id="pokedex-bottom${i}" class="pokedex-bottom">
         <div class="navigationPoke">
-            <div onmouseover="hoverNavigationOver(1, ${i})" onmouseout="hoverNavigationOut(1, ${i})">
-                <button onclick="showCurrentCardById('card1${i}', ${i})" id="btn-card1${i}">About</button>
+            <div onmouseover="hoverNavigationOver(1, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(1, ${i}, '${slot1}')">
+                <button onclick="showCurrentCardById('card1${i}', ${i}, '${slot1}')" id="btn-card1${i}">Über</button>
             </div>
-            <div onmouseover="hoverNavigationOver(2, ${i})" onmouseout="hoverNavigationOut(2, ${i})">
-                <button onclick="showCurrentCardById('card2${i}', ${i})" id="btn-card2${i}">Base Stats</button>
+            <div onmouseover="hoverNavigationOver(2, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(2, ${i}, '${slot1}')">
+                <button onclick="showCurrentCardById('card2${i}', ${i}, '${slot1}')" id="btn-card2${i}">Basis Werte</button>
             </div>
-            <div onmouseover="hoverNavigationOver(3, ${i})" onmouseout="hoverNavigationOut(3, ${i})">
-                <button onclick="showCurrentCardById('card3${i}', ${i})" id="btn-card3${i}">Evolution</button>
+            <div onmouseover="hoverNavigationOver(3, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(3, ${i}, '${slot1}')">
+                <button onclick="showCurrentCardById('card3${i}', ${i}, '${slot1}')" id="btn-card3${i}">Evolution</button>
             </div>
-            <div onmouseover="hoverNavigationOver(4, ${i})" onmouseout="hoverNavigationOut(4, ${i})">
-                <button onclick="showCurrentCardById('card4${i}', ${i})" id="btn-card4${i}">5 Moves</button>
+            <div onmouseover="hoverNavigationOver(4, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(4, ${i}, '${slot1}')">
+                <button onclick="showCurrentCardById('card4${i}', ${i}, '${slot1}')" id="btn-card4${i}">5 Stile</button>
             </div>
         </div>
         <div id="card1${i}" class="cards">card1</div>

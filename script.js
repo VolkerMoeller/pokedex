@@ -69,7 +69,8 @@ async function renderPokeMini(i, arrPoke) {
 
 
 function renderPokeCard(i, arrPoke, arrPokeAbi) {
-    document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i);
+    let slot = arrPoke['types'][0]['type']['name'];
+    document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i, slot);
     stylePokeBgn(i, arrPoke, 'pokedex');
     changeCardToBlack(i, arrPoke);
     renderPokeTop(i, arrPoke);
@@ -274,7 +275,7 @@ async function changeMiniToBlack(i, arrayPokemon) {
     if (slot1 == 'electric' || slot1 == 'ice') {
         document.getElementById('pokeMiniName' + i).classList.add(`color-black`);
         document.getElementById('pokeMiniId' + i).classList.add(`color-black`);
-        
+
     }
 }
 
@@ -285,6 +286,10 @@ async function changeCardToBlack(i, arrayPokemon) {
         document.getElementById('pokedex-id' + i).classList.add(`color-black`);
         document.getElementById('base-type1' + i).classList.add(`color-black`);
         document.getElementById('base-type2' + i).classList.add(`color-black`);
+        document.getElementById('btn-card1' + i).classList.add(`color-black`);
+        document.getElementById('btn-card2' + i).classList.add(`color-black`);
+        document.getElementById('btn-card3' + i).classList.add(`color-black`);
+        document.getElementById('btn-card4' + i).classList.add(`color-black`);
     }
 }
 
@@ -360,19 +365,6 @@ function topFunction() {
 }
 
 
-//  germanData - before I know about find()
-// function searchIndexOfGermanData(arrayAsJSON, index) {
-//     for (let j = 0; j < arrayAsJSON[index].length; j++) {
-//         const language = arrayAsJSON[index][j]['language']['name'];
-//         if (language == 'de') {
-//             indexOfGermanData = j;
-//             j = arrayAsJSON[index].length;
-//             return indexOfGermanData;
-//         }
-//     }
-// }
-
-
 // searchBy
 function searchByName() {
     hidePokeMinis();
@@ -420,14 +412,6 @@ function hidePokeMinis() {
         document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.add('display-none')
     }
 }
-
-
-// showEmptyPokeCard
-async function showEmptyPokeCard(i) {
-    document.getElementById('pokeCardPlace').classList.remove('display-none');
-    document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i);
-}
-
 
 
 // favorites
@@ -478,11 +462,11 @@ function loadFavorites() {
 
 
 
-// XXX
-function showCurrentCardById(cardId, i) {
+// 
+function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
     setCurrentCardToActiv(cardId);
-    setCurrentSlideOnActiv(cardId, i);
+    setCurrentSlideOnActiv(cardId, i, slot1);
 }
 
 
@@ -499,9 +483,8 @@ function setCurrentCardToActiv(cardId) {
 }
 
 
-function setCurrentSlideOnActiv(cardId, i) {
-    setAllSliderToDefault(i);
-    let slot1 = document.getElementById('base-type1' + i).innerHTML;
+function setCurrentSlideOnActiv(cardId, i, slot1) {
+    setAllSliderToDefault(i, slot1);
     let bgnActiveType = 'bgn-slot-type-' + slot1;
     let bgnDefaultType = 'bgn-' + slot1;
     let currentSlide = 'btn-' + cardId;
@@ -510,8 +493,7 @@ function setCurrentSlideOnActiv(cardId, i) {
 }
 
 
-function setAllSliderToDefault(i) {
-    let slot1 = document.getElementById('base-type1' + i).innerHTML;
+function setAllSliderToDefault(i, slot1) {
     let bgnActiveType = 'bgn-slot-type-' + slot1;
     let bgnDefaultType = 'bgn-' + slot1;
     let bgnHoverType = 'bgn-hover-type-' + slot1;
@@ -564,14 +546,6 @@ function renderPokeSlot2(i, arrPoke, bgnSlotType) {
         return;
     }
 }
-
-
-
-// function renderPokeId(i, arrayPokemon) {
-//     let pokeId = arrayPokemon['id'];
-//     let formatPokeId = format3LeftHandZeros(pokeId);
-//     document.getElementById('pokedex-id' + i).innerHTML += `<div># ${formatPokeId}</div>`;
-// };
 
 
 function changeToBlack(i, pokeSlot1) {
@@ -643,15 +617,13 @@ function format3LeftHandZeros(value) {
 
 
 // Navigation PokeCard
-function hoverNavigationOver(cardNr, i) {
-    let slot1 = document.getElementById('base-type1' + i).innerHTML;
+function hoverNavigationOver(cardNr, i, slot1) {
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
 }
 
 
-function hoverNavigationOut(cardNr, i) {
-    let slot1 = loadedPokeSlots1[i];
+function hoverNavigationOut(cardNr, i, slot1) {
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     document.getElementById('btn-card' + cardNr + i).classList.remove(`${bgnHoverType}`);
 }
