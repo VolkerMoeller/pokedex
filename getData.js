@@ -6,7 +6,8 @@ async function performServerRequests(i) {
         let arrayPokeAbi = await fetchDataByDynamikUrl(arrayPoke, 'abilities', '', 'ability');
         let arrayPokeSpec = await fetchDataFromServer(url2);
         let arrayPokeCol = await fetchDataByDynamikUrl(arrayPokeSpec, 'color', '', '');
-        await useArrays(i, arrayPoke, arrayPokeAbi, arrayPokeSpec, arrayPokeCol);
+        let arrayPokeEvol = await fetchDataByDynamikUrl(arrayPokeSpec, 'evolution_chain', '', '');
+        await useArrays(i, arrayPoke, arrayPokeAbi, arrayPokeSpec, arrayPokeCol, arrayPokeEvol);
     } catch (error) {
         console.error('Fehler beim Ausführen der Serverzugriffe:', error);
     }
@@ -58,15 +59,15 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 }
 
 
-async function useArrays(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
-    await noticeData(i, arrPoke, arrPokeSpec, arrPokeCol);
-    await render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
-    await fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
+async function useArrays(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol, arrPokeEvol) {
     console.log(i + ' Pokemon ', arrPoke);
     console.log(i + ' PokemonAbilities ', arrPokeAbi);
     console.log(i + ' PokemonSpecies ', arrPokeSpec);
     console.log(i + ' PokemonColor ', arrPokeCol);
-    // console.log(i, loadedPokeIds, loadedPokeNames, loadedPokeColors, loadedPokeSlots1, loadedPokeSlots2);
+    console.log(i + ' PokemonEvolution ', arrPokeEvol);
+    await noticeData(i, arrPoke, arrPokeSpec, arrPokeCol);
+    await render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol, arrPokeEvol);
+    await fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol);
 }
 
 

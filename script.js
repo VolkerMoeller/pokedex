@@ -1,4 +1,4 @@
-let initEnd = 30;
+let initEnd = 5;
 let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
@@ -51,9 +51,9 @@ function updateCountNrs(end) {
 
 
 // render
-async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
+async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol, arrPokeEvol) {
     renderPokeMini(i, arrPoke);
-    renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec);
+    renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol);
 }
 
 
@@ -64,7 +64,7 @@ async function renderPokeMini(i, arrPoke) {
 }
 
 
-function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec) {
+function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
     let slot = arrPoke['types'][0]['type']['name'];
     document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i, slot);
     stylePokeBgn(i, arrPoke, 'pokedex');
@@ -72,7 +72,7 @@ function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec) {
     renderPokeTop(i, arrPoke);
     renderSlots(i, arrPoke);
     renderPokeNavigation(i, arrPoke);
-    renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec);
+    renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol);
 }
 
 
@@ -121,10 +121,10 @@ function fillSlot2(i, slot2) {
 }
 
 
-async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec) {
+async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
     renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
     renderPokemonDetailsBaseStats(i, arrPoke);
-    renderPokemonDetailsEvolution(i, arrPokeSpec);
+    renderPokemonDetailsEvolution(i, arrPokeEvol);
     // await renderPokemonDetailsMoves(i, arrayPokemon);
 }
 
@@ -624,27 +624,34 @@ function renderProgressLine(i, valuePerCent, j) {
 
 // render Evolution
 
-function renderPokemonDetailsEvolution(i, arrPokeSpec) {
-    let evolData = fetchDataByDynamikUrl(arrPokeSpec, 'evolution_chain', '', '');
-    evolData.then(
-        function (result) {
-            let startPokeNameURL = result['chain']['species']['url'];
-            let startPokeNameArray = fetchDataFromServer(startPokeNameURL);
-            console.log(startPokeNameArray);
-        }
-        // console.log(startPokeName);
-        // let startPokeName = fetchDataByDynamikUrl(result, 'evolution_chain', '', '');
-        // let startName = getGermanData(result, 'names', 'name');
+function renderPokemonDetailsEvolution(i, arrPokeEvol) {
+    document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
+    let stage1stUrl = arrPokeEvol['chain']['species']['url'];
+    let stage1stArr = fetchDataFromServer(stage1stUrl);
+    stage1stArr.then(result => {
+        let stage1stName = getGermanData(result, 'names', 'name');
+        document.getElementById('firstStage-value' + i).innerHTML = stage1stName;
+    });
+    if (arrPokeEvol['chain']['evolves_to'].length > 0) {
+        let stage2ndUrl = arrPokeEvol['chain']['evolves_to'][0]['species']['url'];
+        let stage2ndArr = fetchDataFromServer(stage2ndUrl);
+        stage2ndArr.then(result => {
+            let stage2ndName = getGermanData(result, 'names', 'name');
+            document.getElementById('secondStage-value' + i).innerHTML = stage2ndName;
+        });
+    } else {
+        document.getElementById('thirdStage-value' + i).innerHTML = 'Keine Weiterentwicklung';
+    }
+    if (arrPokeEvol['chain']['evolves_to'][0]['evolves_to'].length > 0) {
+        let stage3rdUrl = arrPokeEvol['chain']['evolves_to'][0]['evolves_to'][0]['species']['url'];
+        let stage3rdArr = fetchDataFromServer(stage3rdUrl);
+        stage3rdArr.then(result => {
+            let stage3rdName = getGermanData(result, 'names', 'name');
+            document.getElementById('thirdStage-value' + i).innerHTML = stage3rdName;
+        });
 
-    )
+    } else {
+        document.getElementById('thirdStage-value' + i).innerHTML = 'Keine Weiterentwicklung';
 
+    }
 }
-
-// async function getNamePokeStart(resp6EvolutionInfoAsJSON, i) {
-//     let startPokeNameURL = resp6EvolutionInfoAsJSON['chain']['species']['url'];
-//     await loadGermanStartPokeName(startPokeNameURL);
-//     let startPokeId = currentGermanStartPokeName['id'];
-//     let startPokeNames = currentGermanStartPokeName['names'];
-//     await searchGermanStartPokeName(startPokeNames, i, startPokeId);
-//     await getNamePokeEvolut1st(resp6EvolutionInfoAsJSON, i);
-// }

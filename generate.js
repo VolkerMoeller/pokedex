@@ -162,30 +162,20 @@ function generateHTMLStats(i) {
 function generateHTMLEvol(i) {
   return /*html*/`
 <table>
-  <tr id="genera${i}">
-    <td id="genera-name${i}">Klasse:</td>
+  <tr id="firstStage${i}">
+    <td id="firstStage-name${i}">Zuerst:</td>
     <td></td>
-    <td id="genera-value${i}"></td>
+    <td id="firstStage-value${i}">testWert1</td>
   </tr>
-  <tr id="weight${i}">
-    <td id="weight-name${i}">Gewicht:</td>
+  <tr id="secondStage${i}">
+    <td id="secondStage-name${i}">Dann:</td>
     <td></td>
-    <td id="weight-value${i}"></td>
+    <td id="secondStage-value${i}">testWert2</td>
   </tr>
-  <tr id="height${i}">
-    <td id="height-name${i}">Höhe:</td>
+  <tr id="thirdStage${i}">
+    <td id="thirdStage-name${i}">Zuletzt:</td>
     <td></td>
-    <td id="height-value${i}"></td>
+    <td id="thirdStage-value${i}">testWert3</td>
   </tr>
-  <tr id="ability1${i}">
-    <td id="ability-name${i}">Fähigkeit:</td>
-    <td></td>
-    <td id="ability-value${i}"></td>
-  </tr>
-  <tr id="ability2${i}">
-    <td></td>
-    <td></td>
-      <td id="ability-text${i}"></td>
-    </tr>
   </table>
     `}
