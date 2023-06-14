@@ -626,32 +626,43 @@ function renderProgressLine(i, valuePerCent, j) {
 
 function renderPokemonDetailsEvolution(i, arrPokeEvol) {
     document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
+    fillEvolFirst(i, arrPokeEvol);
+    fillEvolSecond(i, arrPokeEvol);
+    fillEvolThird(i, arrPokeEvol);
+}
+
+
+function fillEvolFirst(i, arrPokeEvol) {
     let stage1stUrl = arrPokeEvol['chain']['species']['url'];
-    let stage1stArr = fetchDataFromServer(stage1stUrl);
-    stage1stArr.then(result => {
-        let stage1stName = getGermanData(result, 'names', 'name');
-        document.getElementById('firstStage-value' + i).innerHTML = stage1stName;
-    });
+    fillValue(i, stage1stUrl, 'firstStage-value');
+}
+
+
+function fillEvolSecond(i, arrPokeEvol) {
     if (arrPokeEvol['chain']['evolves_to'].length > 0) {
         let stage2ndUrl = arrPokeEvol['chain']['evolves_to'][0]['species']['url'];
-        let stage2ndArr = fetchDataFromServer(stage2ndUrl);
-        stage2ndArr.then(result => {
-            let stage2ndName = getGermanData(result, 'names', 'name');
-            document.getElementById('secondStage-value' + i).innerHTML = stage2ndName;
-        });
+        fillValue(i, stage2ndUrl, 'secondStage-value');
     } else {
         document.getElementById('thirdStage-value' + i).innerHTML = 'Keine Weiterentwicklung';
     }
+}
+
+
+function fillEvolThird(i, arrPokeEvol) {
     if (arrPokeEvol['chain']['evolves_to'][0]['evolves_to'].length > 0) {
         let stage3rdUrl = arrPokeEvol['chain']['evolves_to'][0]['evolves_to'][0]['species']['url'];
-        let stage3rdArr = fetchDataFromServer(stage3rdUrl);
-        stage3rdArr.then(result => {
-            let stage3rdName = getGermanData(result, 'names', 'name');
-            document.getElementById('thirdStage-value' + i).innerHTML = stage3rdName;
-        });
-
+        fillValue(i, stage3rdUrl, 'thirdStage-value');
     } else {
         document.getElementById('thirdStage-value' + i).innerHTML = 'Keine Weiterentwicklung';
-
+        
     }
+}
+
+
+function fillValue(i, url, index) {
+    let arr = fetchDataFromServer(url);
+    arr.then(result => {
+        let name = getGermanData(result, 'names', 'name');
+        document.getElementById(index + i).innerHTML = name;
+    });
 }
