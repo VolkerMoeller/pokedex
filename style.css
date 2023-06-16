@@ -227,7 +227,7 @@ body {
     border-radius: 30px;
     width: 100%;
     min-height: 100%;
-    overflow-x: clip;
+    /* overflow-x: clip; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -239,6 +239,7 @@ body {
     height: 100%;
     position: absolute;
     top: 0px;
+    border-radius: 30px;
 }
 
 .pokedex-top {
@@ -445,6 +446,34 @@ td {
 }
 
 
+.statRow {
+    width: 100%;
+    gap: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.statName {
+    width: 220px;
+    display: flex;
+    align-items: center;
+}
+
+.statValue {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.statValueAndProgress {
+    width: 80%;
+    gap: 8px;
+    display: flex;
+    align-items: center;
+}
+
+
 @media(max-width: 525px) {
     .pokeCardContent {
         width: 95%;
@@ -458,7 +487,21 @@ td {
     .pokedex-bottom {
         min-height: 570px
     }
+    
+}
 
+
+@media (max-width: 420px) {
+    .statRow {
+        flex-direction: column;
+        align-items:start;
+        gap: 0px;
+    }
+    
+    .statValueAndProgress {
+        width: 100%;
+        display: flex;
+    }
 }
 
 @media (max-width: 350px) {
@@ -469,10 +512,7 @@ td {
     .slot-line {
         margin-top: 8px;
         justify-content: center;
-    }
-
-    .pokedex-slots {
-        margin-bottom: 8px;
+        gap: 8px;
     }
 
 }

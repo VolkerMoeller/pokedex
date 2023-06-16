@@ -31,7 +31,7 @@ function generateHTMLPokeCard(i, slot1) {
             <div class="slot-line">
                 <div id="pokedex-slots${i}" class="pokedex-slots">
                   <div id="base-type1${i}" class="slot"></div>
-                  <div id="base-type2${i}" class="slot"></div>
+                  <div id="base-type2${i}" class="slot display-none"></div>
                 </div>
                 <div class="favorite">
                     <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>
@@ -100,63 +100,104 @@ function generateHTMLAbout(i) {
 
 function generateHTMLStats(i) {
   return /*html*/`
-  <table>
-    <tr id="hp${i}">
-      <td id="stat-name1${i}">Kraftpunkte:</td>
-      <td id="stat-value1${i}"></td>
-      <td>
+    <div id="hp${i}" class="statRow">
+      <div id="stat-name1${i}" class="statName">Kraftpunkte:</div>
+      <div class="statValueAndProgress">
+        <div id="stat-value1${i}" class="statValue"></div>
         <div class="progress-about-bar">
           <div id="progress-about-bar-inner1${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
-      </td>
-    </tr>
-    <tr id="attack${i}">
-      <td id="stat-name2${i}">Angriff:</td>
-      <td id="stat-value2${i}"></td>
-      <td>
+      </div>
+    </div>
+    <div id="attack${i}" class="statRow">
+      <div id="stat-name2${i}" class="statName">Angriff:</div>
+      <div class="statValueAndProgress">
+        <div id="stat-value2${i}" class="statValue"></div>
         <div class="progress-about-bar">
           <div id="progress-about-bar-inner2${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
-      </td>
-    </tr>
-    <tr id="defense${i}">
-      <td id="stat-name3${i}">Verteidigung:</td>
-      <td id="stat-value3${i}"></td>
-      <td>
+      </div>
+    </div>
+    <div id="defence${i}" class="statRow">
+      <div id="stat-name3${i}" class="statName">Verteidigung:</div>
+      <div class="statValueAndProgress">
+        <div id="stat-value3${i}" class="statValue"></div>
         <div class="progress-about-bar">
           <div id="progress-about-bar-inner3${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
-      </td>
-    </tr>
-    <tr id="special-attack${i}">
-      <td id="stat-name4${i}">Spezialangriff:</td>
-      <td id="stat-value4${i}"></td>
-      <td>
+      </div>
+    </div>
+    <div id="special-attack${i}" class="statRow">
+      <div id="stat-name4${i}" class="statName">Spezialangriff:</div>
+      <div class="statValueAndProgress">
+        <div id="stat-value4${i}" class="statValue"></div>
         <div class="progress-about-bar">
           <div id="progress-about-bar-inner4${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
         </div>
-      </td>
-    </tr>
-    <tr id="special-defense${i}">
-      <td id="stat-name5${i}">Spezialverteidigung:</td>
-      <td id="stat-value5${i}"></td>
-      <td>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner5${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </td>
-    </tr>
-    <tr id="speed${i}">
-      <td id="stat-name6${i}">Initiative:</td>
-      <td id="stat-value6${i}"></td>
-      <td>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner6${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </td>
-    </tr>
-  </table>
+      </div>
+    </div>
   `}
+
+
+// function generateHTMLStats(i) {
+//   return /*html*/`
+//   <table>
+//     <tr id="hp${i}">
+//       <td id="stat-name1${i}">Kraftpunkte:</td>
+//       <td id="stat-value1${i}"></td>
+//       <td>
+//         <div class="progress-about-bar">
+//           <div id="progress-about-bar-inner1${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//         </div>
+//       </td>
+//     </tr>
+//     <tr id="attack${i}">
+//       <td id="stat-name2${i}">Angriff:</td>
+//       <td id="stat-value2${i}"></td>
+//       <td>
+//         <div class="progress-about-bar">
+//           <div id="progress-about-bar-inner2${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//         </div>
+//       </td>
+//     </tr>
+//     <tr id="defense${i}">
+//       <td id="stat-name3${i}">Verteidigung:</td>
+//       <td id="stat-value3${i}"></td>
+//       <td>
+//         <div class="progress-about-bar">
+//           <div id="progress-about-bar-inner3${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//         </div>
+//       </td>
+//     </tr>
+//     <tr id="special-attack${i}">
+//       <td id="stat-name4${i}">Spezialangriff:</td>
+//       <td id="stat-value4${i}"></td>
+//       <td>
+//         <div class="progress-about-bar">
+//           <div id="progress-about-bar-inner4${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//         </div>
+//       </td>
+//     </tr>
+//     <tr id="special-defense${i}">
+//       <td id="stat-name5${i}">Spezialverteid.:</td>
+//       <td id="stat-value5${i}"></td>
+//       <td>
+//         <div class="progress-about-bar">
+//           <div id="progress-about-bar-inner5${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//         </div>
+//       </td>
+//     </tr>
+//     <tr id="speed${i}">
+//      <td id="stat-name6${i}">Initiative:</td>
+//      <td id="stat-value6${i}"></td>
+//       <td>
+//         <div class="progress-about-bar">
+//           <div id="progress-about-bar-inner6${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//         </div>
+//       </td>
+//     </tr>
+//   </table>
+//   `}
 
 
 function generateHTMLEvol(i) {
@@ -165,17 +206,24 @@ function generateHTMLEvol(i) {
   <tr id="firstStage${i}">
     <td id="firstStage-name${i}">Zuerst:</td>
     <td></td>
-    <td id="firstStage-value${i}">testWert1</td>
+    <td id="firstStage-value${i}"></td>
   </tr>
   <tr id="secondStage${i}">
     <td id="secondStage-name${i}">Dann:</td>
     <td></td>
-    <td id="secondStage-value${i}">testWert2</td>
+    <td id="secondStage-value${i}"></td>
   </tr>
   <tr id="thirdStage${i}">
     <td id="thirdStage-name${i}">Zuletzt:</td>
     <td></td>
-    <td id="thirdStage-value${i}">testWert3</td>
+    <td id="thirdStage-value${i}"></td>
   </tr>
+  </table>
+    `}
+
+
+function generateHTMLEvol2nd(i, j) {
+  return /*html*/`
+  <table id="stages${i}">
   </table>
     `}

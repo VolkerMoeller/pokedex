@@ -1,6 +1,6 @@
 let initEnd = 5;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs = 19;
+let stepPokeNrs = 50;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
@@ -117,6 +117,9 @@ function fillSlot1(i, slot1) {
 
 
 function fillSlot2(i, slot2) {
+    if (slot2 !== '') {
+        document.getElementById('base-type2' + i).classList.remove('display-none');
+    }
     document.getElementById('base-type2' + i).innerHTML = slot2;
 }
 
@@ -124,7 +127,7 @@ function fillSlot2(i, slot2) {
 async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
     renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
     renderPokemonDetailsBaseStats(i, arrPoke);
-    renderPokemonDetailsEvolution(i, arrPokeEvol);
+    checkTwoWaysToHandleEvol(i, arrPokeEvol);
     // await renderPokemonDetailsMoves(i, arrayPokemon);
 }
 
@@ -622,47 +625,111 @@ function renderProgressLine(i, valuePerCent, j) {
     document.getElementById('progress-about-bar-inner' + j + i).style = `width: ${valuePerCent}%`;
 }
 
+
 // render Evolution
+function checkTwoWaysToHandleEvol(i, arrPokeEvol) {
+    let decider = arrPokeEvol['chain']['evolves_to'].length;
+    if (decider == 1) {
+        renderPokemonDetailsEvolution(i, arrPokeEvol);
+    } else {
+        console.log('schei...e');
+        renderPokemonDetailsEvolution2nd(i, arrPokeEvol);
+    }
+}
+
 
 function renderPokemonDetailsEvolution(i, arrPokeEvol) {
     document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
     fillEvolFirst(i, arrPokeEvol);
-    fillEvolSecond(i, arrPokeEvol);
-    fillEvolThird(i, arrPokeEvol);
-}
-
-
-function fillEvolFirst(i, arrPokeEvol) {
-    let stage1stUrl = arrPokeEvol['chain']['species']['url'];
-    fillValue(i, stage1stUrl, 'firstStage-value');
-}
-
-
-function fillEvolSecond(i, arrPokeEvol) {
     if (arrPokeEvol['chain']['evolves_to'].length > 0) {
-        let stage2ndUrl = arrPokeEvol['chain']['evolves_to'][0]['species']['url'];
-        fillValue(i, stage2ndUrl, 'secondStage-value');
+        fillEvolSecond(i, arrPokeEvol);
+        if (arrPokeEvol['chain']['evolves_to'][0]['evolves_to'].length > 0) {
+            fillEvolThird(i, arrPokeEvol);
+        } else {
+            document.getElementById('thirdStage-value' + i).innerHTML = `Keine Weiterentwicklung`;
+            return;
+        }
     } else {
-        document.getElementById('thirdStage-value' + i).innerHTML = 'Keine Weiterentwicklung';
+        document.getElementById('secondStage-value' + i).innerHTML = `Keine Weiterentwicklung`;
+        return;
     }
 }
 
 
-function fillEvolThird(i, arrPokeEvol) {
-    if (arrPokeEvol['chain']['evolves_to'][0]['evolves_to'].length > 0) {
-        let stage3rdUrl = arrPokeEvol['chain']['evolves_to'][0]['evolves_to'][0]['species']['url'];
-        fillValue(i, stage3rdUrl, 'thirdStage-value');
-    } else {
-        document.getElementById('thirdStage-value' + i).innerHTML = 'Keine Weiterentwicklung';
-        
+async function fillEvolFirst(i, arrPokeEvol) {
+    let stage1stUrl = arrPokeEvol['chain']['species']['url'];
+    let stage1stId = getformattedId(stage1stUrl);
+    let value = await getValue(stage1stUrl);
+    fillValue(i, 'firstStage-value', stage1stId, value);
+}
+
+
+async function fillEvolSecond(i, arrPokeEvol) {
+    let stage2ndUrl = arrPokeEvol['chain']['evolves_to'][0]['species']['url'];
+    let stage2ndId = getformattedId(stage2ndUrl);
+    let value = await getValue(stage2ndUrl);
+    fillValue(i, 'secondStage-value', stage2ndId, value);
+}
+
+
+async function fillEvolThird(i, arrPokeEvol) {
+    let stage3rdUrl = arrPokeEvol['chain']['evolves_to'][0]['evolves_to'][0]['species']['url'];
+    let stage3rdId = getformattedId(stage3rdUrl);
+    let value = await getValue(stage3rdUrl);
+    fillValue(i, 'thirdStage-value', stage3rdId, value);
+}
+
+
+async function getValue(url) {
+    let arr = await fetchDataFromServer(url);
+    // arr.then(result => {
+    // let name = getGermanData(result, 'names', 'name');
+    let name = getGermanData(arr, 'names', 'name');
+    return name;
+    // });
+}
+
+
+function fillValue(i, index, id, name) {
+    document.getElementById(index + i).innerHTML = name;
+    document.getElementById(index + i).innerHTML += ` #${id}`;
+}
+
+
+function renderPokemonDetailsEvolution2nd(i, arrPokeEvol) {
+    document.getElementById('card3' + i).innerHTML = generateHTMLEvol2nd(i);
+    fillEvol(i, arrPokeEvol);
+}
+
+
+async function fillEvol(i, arrPokeEvol) {
+    let url1st = arrPokeEvol['chain']['species']['url'];
+    let id1st = getformattedId(url1st);
+    let value1st = await getValue(url1st);
+    fillValue2nd(i, -1, value1st, id1st);
+
+    if (arrPokeEvol['chain']['evolves_to'].length == 0) {
+        document.getElementById('stages' + i).innerHTML += `<tr><td>Keine Weiterentwicklung</td</tr>`;
+
+    }
+
+    for (let j = 0; j < arrPokeEvol['chain']['evolves_to'].length; j++) {
+        let url = arrPokeEvol['chain']['evolves_to'][j]['species']['url'];
+        let id = getformattedId(url);
+        let value = await getValue(url);
+        fillValue2nd(i, j, value, id);
     }
 }
 
 
-function fillValue(i, url, index) {
-    let arr = fetchDataFromServer(url);
-    arr.then(result => {
-        let name = getGermanData(result, 'names', 'name');
-        document.getElementById(index + i).innerHTML = name;
-    });
+function fillValue2nd(i, j, value, id) {
+    document.getElementById('stages' + i).innerHTML += `<tr><td>${j + 2}</td><td>${value}</td><td>#${id}</td></tr>`;
+}
+
+
+function getformattedId(url) {
+    let stageId = url.split('https://pokeapi.co/api/v2/pokemon-species/');
+    stageId = stageId[1].split('/');
+    stageId = format3LeftHandZeros(stageId[0]);
+    return stageId;
 }
