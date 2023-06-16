@@ -273,8 +273,6 @@ body {
     min-height: 430px;
 }
 
-
-
 .btn-back {
     height: 48px;
     width: 48px;
@@ -352,7 +350,6 @@ body {
     padding: 0px;
 }
 
-
 .pokedex-image-place {
     display: flex;
     justify-content: center;
@@ -390,9 +387,7 @@ body {
     letter-spacing: 1px;
 }
 
-
 /* card base_stats */
-
 .cards {
     margin-top: 32px;
     display: flex;
@@ -445,7 +440,6 @@ td {
     background-color: red;
 }
 
-
 .statRow {
     width: 100%;
     gap: 8px;
@@ -457,6 +451,7 @@ td {
     width: 220px;
     display: flex;
     align-items: center;
+    font-weight: normal;
 }
 
 .statValue {
@@ -473,7 +468,6 @@ td {
     align-items: center;
 }
 
-
 @media(max-width: 525px) {
     .pokeCardContent {
         width: 95%;
@@ -486,10 +480,8 @@ td {
 
     .pokedex-bottom {
         min-height: 570px
-    }
-    
+    }   
 }
-
 
 @media (max-width: 420px) {
     .statRow {
@@ -514,5 +506,4 @@ td {
         justify-content: center;
         gap: 8px;
     }
-
 }

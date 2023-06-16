@@ -15,6 +15,8 @@ let loadedPokeSlots1 = [];
 let loadedPokeSlots2 = [];
 let pokesFavorites = [];
 
+let lastCard = 0;
+
 
 
 
@@ -231,7 +233,8 @@ async function renderSlots(i, arrayPokemon) {
 
 
 function showPokeCard(i) {
-    switchContent();
+    switchContent(i);
+    console.log('lastCard: ', i)
     document.getElementById('pokedex' + i).classList.remove('display-none');
 }
 
@@ -304,18 +307,22 @@ function setBgnByType(pokeType, i, index) {
 
 
 // switch PokeCard-Overlay 
-function switchContent() {
+function switchContent(i) {
+    lastCard = i;
     let overlay = document.getElementById('overlay');
     let pokeCardContent = document.getElementById('pokeCardContent');
     if (overlay.classList.contains('display-none') == true) {
         displayOn(overlay);
         displayOn(pokeCardContent);
+        topFunction();
+        return lastCard;
     } else {
         displayOff(overlay);
         displayOff(pokeCardContent);
         hideAllPokeCards();
+        topFunction();
+        return lastCard;
     }
-    topFunction();
 }
 
 
