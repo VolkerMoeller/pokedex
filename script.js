@@ -17,8 +17,15 @@ let pokesFavorites = [];
 
 let lastCard = 0;
 
+let statNames = ['Kraftpunkte:', 'Angriff:', 'Verteidigung:', 'Spezialangriff:', 'Spezialverteid.:', 'Initiative'];
+let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
 
+let colorBlackIds = ['pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2', 'btn-card3', 'btn-card4'];
 
+let moveRowIds = ['moveRow1', 'moveRow2', 'moveRow3', 'moveRow4', 'moveRow5'];
+let moveValueIds = ['moveValue1', 'moveValue2', 'moveValue3', 'moveValue4', 'moveValue5'];
+let moveNameIds = ['moveName1', 'moveName2', 'moveName3', 'moveName4', 'moveName5'];
+let moveNames = ['1. Move', '2. Move', '3. Move', '4. Move', '5. Move'];
 
 async function init() {
     loadedPokeNames = [];
@@ -130,7 +137,7 @@ async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPoke
     renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
     renderPokemonDetailsBaseStats(i, arrPoke);
     checkTwoWaysToHandleEvol(i, arrPokeEvol);
-    // await renderPokemonDetailsMoves(i, arrayPokemon);
+    renderPokemonDetailsMoves(i, arrPoke);
 }
 
 
@@ -143,7 +150,10 @@ async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec) {
 
 
 async function renderPokemonDetailsBaseStats(i, arrPoke) {
-    document.getElementById('card2' + i).innerHTML = generateHTMLStats(i);
+    document.getElementById('card2' + i).innerHTML = '';
+    for (let j = 0; j < statIds.length; j++) {
+        document.getElementById('card2' + i).innerHTML += await generateHTMLStats(i, statIds[j], `stat-name${j + 1}`, `stat-value${j + 1}`, `progress-about-bar-inner${j + 1}`, statNames[j]);
+    }
     await fillBaseStats(i, arrPoke);
 }
 
@@ -258,14 +268,9 @@ async function changeMiniToBlack(i, arrayPokemon) {
 async function changeCardToBlack(i, arrayPokemon) {
     let slot1 = arrayPokemon['types'][0]['type']['name'];
     if (slot1 == 'electric' || slot1 == 'ice') {
-        document.getElementById('pokedex-name' + i).classList.add(`color-black`);
-        document.getElementById('pokedex-id' + i).classList.add(`color-black`);
-        document.getElementById('base-type1' + i).classList.add(`color-black`);
-        document.getElementById('base-type2' + i).classList.add(`color-black`);
-        document.getElementById('btn-card1' + i).classList.add(`color-black`);
-        document.getElementById('btn-card2' + i).classList.add(`color-black`);
-        document.getElementById('btn-card3' + i).classList.add(`color-black`);
-        document.getElementById('btn-card4' + i).classList.add(`color-black`);
+        for (let j = 0; j < colorBlackIds.length; j++) {
+            document.getElementById(colorBlackIds[j] + i).classList.add(`color-black`);
+        }
     }
 }
 
@@ -347,6 +352,21 @@ function topFunction() {
 
 // searchBy
 function searchByName() {
+    hidePokeMinis();
+    for (let i = 0; i < loadedPokeNames.length; i++) {
+        let searchName = document.getElementById('searchName').value;
+        searchName = searchName.toLowerCase();
+        let loadedPokeName = loadedPokeNames[i].toLowerCase();
+        let result = loadedPokeName.startsWith(searchName);
+        if (result == true) {
+            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
+        }
+    }
+}
+
+
+// XXXX
+function searchBy() {
     hidePokeMinis();
     for (let i = 0; i < loadedPokeNames.length; i++) {
         let searchName = document.getElementById('searchName').value;
@@ -739,4 +759,17 @@ function getformattedId(url) {
     stageId = stageId[1].split('/');
     stageId = format3LeftHandZeros(stageId[0]);
     return stageId;
+}
+
+
+// render Moves
+async function renderPokemonDetailsMoves(i, arrPoke) {
+    document.getElementById('card4' + i).innerHTML = '';
+    for (let j = 0; j < 5; j++) {
+        let arrMove = await fetchDataByDynamikUrl(arrPoke, 'moves', j, 'move');
+        let move = getGermanData(arrMove, 'names', 'name');
+        console.log(move);
+        document.getElementById('card4' + i).innerHTML += await generateHTMLMoves(i, moveRowIds[j],moveNameIds[j], moveValueIds[j], moveNames[j]);
+        document.getElementById(moveValueIds[j] + i).innerHTML = move; 
+    }
 }

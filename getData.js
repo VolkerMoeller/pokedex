@@ -26,10 +26,10 @@ async function fetchDataFromServer(url) {
 }
 
 
-function fetchDataByDynamikUrl(array, indexAll, position, indexOne) {
+async function fetchDataByDynamikUrl(array, indexAll, position, indexOne) {
     try {
         let dynamikUrl = takeDynamikUrl(array, indexAll, position, indexOne);
-        let data = fetchDataFromServer(dynamikUrl);
+        let data = await fetchDataFromServer(dynamikUrl);
         return data;
     } catch (error) {
         console.error('Fehler beim Abrufen der Daten mit dynamikUrl:', error);
@@ -39,21 +39,17 @@ function fetchDataByDynamikUrl(array, indexAll, position, indexOne) {
 
 
 function takeDynamikUrl(array, index1st, position, index2nd) {
-    if (index1st == 'color') {
+    if (index1st == 'color' || index1st == 'evolution_chain') {
         let dynamicUrl = array[index1st]['url'];
+        return dynamicUrl;
+    }
+    if (index1st == 'types' || index1st == 'moves') {
+        let dynamicUrl = array[index1st][position][index2nd]['url'];
         return dynamicUrl;
     }
     if (index1st == 'abilities') {
         let dynamicUrlIndex = array[index1st].length - 1;
         let dynamicUrl = array[index1st][dynamicUrlIndex][index2nd]['url'];
-        return dynamicUrl;
-    }
-    if (index1st == 'types') {
-        let dynamicUrl = array[index1st][position][index2nd]['url'];
-        return dynamicUrl;
-    }
-    if (index1st == 'evolution_chain'){
-        let dynamicUrl = array[index1st]['url'];
         return dynamicUrl;
     }
 }

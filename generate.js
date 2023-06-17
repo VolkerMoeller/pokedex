@@ -98,62 +98,17 @@ function generateHTMLAbout(i) {
     `}
 
 
-function generateHTMLStats(i) {
+async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
   return /*html*/`
-    <div id="hp${i}" class="statRow">
-      <div id="stat-name1${i}" class="statName">Kraftpunkte:</div>
-      <div class="statValueAndProgress">
-        <div id="stat-value1${i}" class="statValue"></div>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner1${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+      <div id="${id1st}${i}" class="statRow">
+        <div id="${id2nd}${i}" class="statName">${title}</div>
+        <div class="statValueAndProgress">
+          <div id="${id3rd}${i}" class="statValue"></div>
+          <div class="progress-about-bar">
+            <div id="${id4th}${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="attack${i}" class="statRow">
-      <div id="stat-name2${i}" class="statName">Angriff:</div>
-      <div class="statValueAndProgress">
-        <div id="stat-value2${i}" class="statValue"></div>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner2${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </div>
-    </div>
-    <div id="defence${i}" class="statRow">
-      <div id="stat-name3${i}" class="statName">Verteidigung:</div>
-      <div class="statValueAndProgress">
-        <div id="stat-value3${i}" class="statValue"></div>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner3${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </div>
-    </div>
-    <div id="special-attack${i}" class="statRow">
-      <div id="stat-name4${i}" class="statName">Spezialangriff:</div>
-      <div class="statValueAndProgress">
-        <div id="stat-value4${i}" class="statValue"></div>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner4${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </div>
-    </div>
-    <div id="special-defense${i}" class="statRow">
-      <div id="stat-name5${i}" class="statName">Spezialverteid.:</div>
-      <div class="statValueAndProgress">
-        <div id="stat-value5${i}" class="statValue"></div>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner5${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </div>
-    </div>
-    <div id="speed${i}" class="statRow">
-      <div id="stat-name6${i}" class="statName">Initiative:</div>
-      <div class="statValueAndProgress">
-        <div id="stat-value6${i}" class="statValue"></div>
-        <div class="progress-about-bar">
-          <div id="progress-about-bar-inner6${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-        </div>
-      </div>
-    </div>
   `}
 
 
@@ -183,4 +138,13 @@ function generateHTMLEvol2nd(i, j) {
   return /*html*/`
   <table id="stages${i}">
   </table>
-    `}
+  `}
+
+
+async function generateHTMLMoves(i, id1st, id2nd, id3rd, title) {
+  return /*html*/`
+      <div id="${id1st}${i}" class="moveRow">
+        <div id="${id2nd}${i}" class="moveName">${title}</div>
+        <div id="${id3rd}${i}" class="moveValue"></div>
+      </div>
+  `}
