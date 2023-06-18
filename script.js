@@ -566,9 +566,9 @@ async function fillGenera(i, arrPokeSpec) {
 
 async function fillAbility(i, arrPokeAbi) {
     let pokeAbility = getGermanData(arrPokeAbi, 'names', 'name');
-    document.getElementById(aboutValueIds[3] + i).innerHTML = `<i>${pokeAbility}:</i>`;
+    document.getElementById(aboutValueIds[3] + i).innerHTML = `${pokeAbility}:`;
     let pokeAbiText = getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
-    document.getElementById(aboutValueIds[4] + i).innerHTML = `${pokeAbiText}`;
+    document.getElementById(aboutValueIds[4] + i).innerHTML = `<i>${pokeAbiText}</i>`;
 }
 
 
@@ -694,11 +694,8 @@ async function fillEvolThird(i, arrPokeEvol) {
 
 async function getValue(url) {
     let arr = await fetchDataFromServer(url);
-    // arr.then(result => {
-    // let name = getGermanData(result, 'names', 'name');
     let name = getGermanData(arr, 'names', 'name');
     return name;
-    // });
 }
 
 

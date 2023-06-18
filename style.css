@@ -497,9 +497,10 @@ td {
     font-weight: normal;
     padding-right: 8px;
 }
-/* .aboutValue {
-    padding-left: 8px;
-} */
+.aboutValue {
+    width: 75%;
+    display: flex;
+}
 
 
 
