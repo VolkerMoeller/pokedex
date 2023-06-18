@@ -468,6 +468,28 @@ td {
     align-items: center;
 }
 
+.moveRow {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.moveName {
+    font-weight: normal;
+}
+
+/* .moveValue {
+    padding-left: 8px;
+} */
+
+.moveText {
+    font-weight: normal;
+}
+
+.moveNameAndValue {
+    display: flex;
+}
+
 @media(max-width: 525px) {
     .pokeCardContent {
         width: 95%;
@@ -480,16 +502,16 @@ td {
 
     .pokedex-bottom {
         min-height: 570px
-    }   
+    }
 }
 
 @media (max-width: 420px) {
     .statRow {
         flex-direction: column;
-        align-items:start;
+        align-items: start;
         gap: 0px;
     }
-    
+
     .statValueAndProgress {
         width: 100%;
         display: flex;

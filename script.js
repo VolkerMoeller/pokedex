@@ -22,10 +22,16 @@ let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', '
 
 let colorBlackIds = ['pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2', 'btn-card3', 'btn-card4'];
 
-let moveRowIds = ['moveRow1', 'moveRow2', 'moveRow3', 'moveRow4', 'moveRow5'];
-let moveValueIds = ['moveValue1', 'moveValue2', 'moveValue3', 'moveValue4', 'moveValue5'];
-let moveNameIds = ['moveName1', 'moveName2', 'moveName3', 'moveName4', 'moveName5'];
-let moveNames = ['1. Move', '2. Move', '3. Move', '4. Move', '5. Move'];
+let moveRowIds = ['moveRowId1', 'moveRowId2', 'moveRowId3', 'moveRowId4', 'moveRowId5'];
+let moveValueIds = ['moveValueId1', 'moveValueId2', 'moveValueId3', 'moveValueId4', 'moveValueId5'];
+let moveNameIds = ['moveNameId1', 'moveNameId2', 'moveNameId3', 'moveNameId4', 'moveNameId5'];
+let moveTextIds = ['moveTextId1', 'moveTextId2', 'moveTextId3', 'moveTextId4', 'moveTextId5'];
+
+let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
+let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
+let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
+let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit', ''];
+
 
 async function init() {
     loadedPokeNames = [];
@@ -86,20 +92,14 @@ function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
 
 
 // fill
-async function fill(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol) {
-    fillPoke(i, arrPoke);
-    // fillPokeCard(i);
-}
-
-
-function fillPoke(i, arrayPokemon) {
+async function fill(i, arrPoke) {
     fillId(i);
     fillName(i);
-    fillImg(i, arrayPokemon);
+    fillImg(i, arrPoke);
 }
 
 
-function fillName(i, arrayPokemon) {
+function fillName(i) {
     document.getElementById('pokeMiniName' + i).innerHTML = loadedPokeNames[i - 1];
     document.getElementById('pokedex-name' + i).innerHTML = loadedPokeNames[i - 1];
 }
@@ -121,7 +121,6 @@ function fillImg(i, arrayPokemon) {
 
 function fillSlot1(i, slot1) {
     document.getElementById('base-type1' + i).innerHTML = slot1;
-
 }
 
 
@@ -142,7 +141,10 @@ async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPoke
 
 
 async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec) {
-    document.getElementById('card1' + i).innerHTML = generateHTMLAbout(i);
+    document.getElementById('card1' + i).innerHTML = '';
+    for (let j = 0; j < aboutRowIds.length; j++) {
+        document.getElementById('card1' + i).innerHTML += await generateHTMLAbout(i, aboutRowIds[j], aboutNameIds[j], aboutValueIds[j], aboutTitles[j]);
+    }
     await fillGenera(i, arrPokeSpec);
     await fillAbility(i, arrPokeAbi);
     await fillWeightAndHeight(i, arrPoke);
@@ -179,20 +181,7 @@ async function renderGermanNameMini(i, arrayPokemonSpecies) {
 async function useArrayPokemonSpeciesForCard(i, arrayPokemonSpecies) {
     let germanData = await getPokeGermanData(arrayPokemonSpecies, 'names', 'name');
     await fillPokeWithName('pokedex-name', i, germanData)
-    // for search:
     await noticeDisplayedPokeName(germanData);
-    // await renderPokeAbout(i, arrayPokem  onSpecies);
-}
-
-
-async function useArrayPokemonAbilities(i, arrayPokemonAbilities) {
-    console.log(i + ' pokemon-abitiesData:', arrayPokemonAbilities);
-    // await useArrayPokemonAbilitiesForMinis(i, arrayPokemonAblities);
-    await useArrayPokemonAbilitiesForCard(i, arrayPokemonAbilities);
-}
-
-async function useArrayPokemonAbilitiesForCard(i, arrayPokemonAbilities) {
-
 }
 
 
@@ -209,42 +198,41 @@ async function noticeData(i, arrayPoke, arrayPokeSpec, arrayPokeCol) {
 
 async function renderSlots(i, arrayPokemon) {
     if (arrayPokemon['types'].length == 1) {
-        let data = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
-        data.then(
-            function (result) {
-                let slot1 = getGermanData(result, 'names', 'name');
-                fillSlot1(i, slot1);
-                loadedPokeSlots1.push(slot1);
-            }
-        )
-        let slot2 = '';
-        fillSlot2(i, slot2);
-        loadedPokeSlots2.push(slot2);
+        getSlot1(i, arrayPokemon);
+        emptySlot2(i, arrayPokemon);
     } else
         if (arrayPokemon['types'].length == 2) {
-            let data1 = fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
-            data1.then(
-                function (result) {
-                    let slot1 = getGermanData(result, 'names', 'name');
-                    fillSlot1(i, slot1);
-                    loadedPokeSlots1.push(slot1);
-                }
-            )
-            let data2 = fetchDataByDynamikUrl(arrayPokemon, 'types', 1, 'type');
-            data2.then(
-                function (result) {
-                    let slot2 = getGermanData(result, 'names', 'name');
-                    fillSlot2(i, slot2);
-                    loadedPokeSlots2.push(slot2);
-                }
-            )
+            getSlot1(i, arrayPokemon);
+            getSlot2(i, arrayPokemon);
         }
+}
+
+
+async function getSlot1(i, arrayPokemon) {
+    let data = await fetchDataByDynamikUrl(arrayPokemon, 'types', 0, 'type');
+    let slot1 = getGermanData(data, 'names', 'name');
+    fillSlot1(i, slot1);
+    loadedPokeSlots1.push(slot1);
+}
+
+
+async function getSlot2(i, arrayPokemon) {
+    let data2 = await fetchDataByDynamikUrl(arrayPokemon, 'types', 1, 'type');
+    let slot2 = getGermanData(data2, 'names', 'name');
+    fillSlot2(i, slot2);
+    loadedPokeSlots2.push(slot2);
+}
+
+
+function emptySlot2(i) {
+    let slot2 = '';
+    fillSlot2(i, slot2);
+    loadedPokeSlots2.push(slot2);
 }
 
 
 function showPokeCard(i) {
     switchContent(i);
-    console.log('lastCard: ', i)
     document.getElementById('pokedex' + i).classList.remove('display-none');
 }
 
@@ -540,8 +528,6 @@ function renderPokeSlot1(i, bgnSlotType) {
 function renderPokeSlot2(i, arrPoke, bgnSlotType) {
     if (arrPoke['types'].length == 2) {
         document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
-    } else {
-        return;
     }
 }
 
@@ -574,23 +560,23 @@ async function renderPokeNavigation(i, arrayPokemon) {
 // render About - card 1
 async function fillGenera(i, arrPokeSpec) {
     let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
-    document.getElementById('genera-value' + i).innerHTML = `${pokeGenera}`;
+    document.getElementById(aboutValueIds[0] + i).innerHTML = `${pokeGenera}`;
 }
 
 
 async function fillAbility(i, arrPokeAbi) {
     let pokeAbility = getGermanData(arrPokeAbi, 'names', 'name');
-    document.getElementById('ability-value' + i).innerHTML = `<i>${pokeAbility}:</i>`;
+    document.getElementById(aboutValueIds[3] + i).innerHTML = `<i>${pokeAbility}:</i>`;
     let pokeAbiText = getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
-    document.getElementById('ability-text' + i).innerHTML = `${pokeAbiText}`;
+    document.getElementById(aboutValueIds[4] + i).innerHTML = `${pokeAbiText}`;
 }
 
 
 async function fillWeightAndHeight(i, arrPoke) {
     let pokeWeight = arrPoke['weight'];
-    document.getElementById('weight-value' + i).innerHTML = `${pokeWeight} Poke-Einheiten`;
+    document.getElementById(aboutValueIds[1] + i).innerHTML = `${pokeWeight} Poke-Einheiten`;
     let pokeHeight = arrPoke['height'];
-    document.getElementById('height-value' + i).innerHTML = `${pokeHeight} Poke-Einheiten`;
+    document.getElementById(aboutValueIds[2] + i).innerHTML = `${pokeHeight} Poke-Einheiten`;
 };
 
 
@@ -659,7 +645,6 @@ function checkTwoWaysToHandleEvol(i, arrPokeEvol) {
     if (decider == 1) {
         renderPokemonDetailsEvolution(i, arrPokeEvol);
     } else {
-        console.log('schei...e');
         renderPokemonDetailsEvolution2nd(i, arrPokeEvol);
     }
 }
@@ -765,11 +750,28 @@ function getformattedId(url) {
 // render Moves
 async function renderPokemonDetailsMoves(i, arrPoke) {
     document.getElementById('card4' + i).innerHTML = '';
-    for (let j = 0; j < 5; j++) {
+    if (arrPoke['moves'].length > 5) {
+        let end = 5;
+        getMove(end, arrPoke, i);
+    } else {
+        let end = arrPoke['moves'].length
+        getMove(end, arrPoke, i);
+    }
+}
+
+
+async function getMove(end, arrPoke, i) {
+    for (let j = 0; j < end; j++) {
         let arrMove = await fetchDataByDynamikUrl(arrPoke, 'moves', j, 'move');
         let move = getGermanData(arrMove, 'names', 'name');
-        console.log(move);
-        document.getElementById('card4' + i).innerHTML += await generateHTMLMoves(i, moveRowIds[j],moveNameIds[j], moveValueIds[j], moveNames[j]);
-        document.getElementById(moveValueIds[j] + i).innerHTML = move; 
+        let moveText = getGermanData(arrMove, 'flavor_text_entries', 'flavor_text');
+        document.getElementById('card4' + i).innerHTML += await generateHTMLMoves(i, moveRowIds[j], moveNameIds[j], moveValueIds[j], moveTextIds[j]);
+        fillMove(i, j, move, moveText);
     }
+}
+
+
+function fillMove(i, j, move, moveText) {
+    document.getElementById(moveValueIds[j] + i).innerHTML = `${j + 1}. ${move}:`;
+    document.getElementById(moveTextIds[j] + i).innerHTML += moveText;
 }

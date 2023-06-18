@@ -54,48 +54,57 @@ function generateHTMLPokeCard(i, slot1) {
                 <button onclick="showCurrentCardById('card3${i}', ${i}, '${slot1}')" id="btn-card3${i}">Evolution</button>
             </div>
             <div onmouseover="hoverNavigationOver(4, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(4, ${i}, '${slot1}')">
-                <button onclick="showCurrentCardById('card4${i}', ${i}, '${slot1}')" id="btn-card4${i}">5 Stile</button>
+                <button onclick="showCurrentCardById('card4${i}', ${i}, '${slot1}')" id="btn-card4${i}">5 Moves</button>
             </div>
         </div>
-        <div id="card1${i}" class="cards">card1</div>
-        <div id="card2${i}" class="cards display-none">card2</div>
-        <div id="card3${i}" class="cards display-none">card3</div>
-        <div id="card4${i}" class="cards display-none">card4</div>
+        <div id="card1${i}" class="cards"></div>
+        <div id="card2${i}" class="cards display-none"></div>
+        <div id="card3${i}" class="cards display-none"></div>
+        <div id="card4${i}" class="cards display-none"></div>
     </div> 
     `
 }
 
 
-function generateHTMLAbout(i) {
+async function generateHTMLAbout(i, aboutRowId, aboutNameId, aboutValueId, aboutTitle) {
   return /*html*/`
-<table>
-  <tr id="genera${i}">
-    <td id="genera-name${i}">Klasse:</td>
-    <td></td>
-    <td id="genera-value${i}"></td>
-  </tr>
-  <tr id="weight${i}">
-    <td id="weight-name${i}">Gewicht:</td>
-    <td></td>
-    <td id="weight-value${i}"></td>
-  </tr>
-  <tr id="height${i}">
-    <td id="height-name${i}">Höhe:</td>
-    <td></td>
-    <td id="height-value${i}"></td>
-  </tr>
-  <tr id="ability1${i}">
-    <td id="ability-name${i}">Fähigkeit:</td>
-    <td></td>
-    <td id="ability-value${i}"></td>
-  </tr>
-  <tr id="ability2${i}">
-    <td></td>
-    <td></td>
-      <td id="ability-text${i}"></td>
-    </tr>
-  </table>
+  <div id="${aboutRowId}${i}" class="aboutRow">
+    <div id="${aboutNameId}${i}"class="aboutName">${aboutTitle}</div>
+    <div id="${aboutValueId}${i}"class="aboutValue"></div>
+  </div>
     `}
+
+
+// function generateHTMLAbout(i) {
+//   return /*html*/`
+// <table>
+//   <tr id="genera${i}">
+//     <td id="genera-name${i}">Klasse:</td>
+//     <td></td>
+//     <td id="genera-value${i}"></td>
+//   </tr>
+//   <tr id="weight${i}">
+//     <td id="weight-name${i}">Gewicht:</td>
+//     <td></td>
+//     <td id="weight-value${i}"></td>
+//   </tr>
+//   <tr id="height${i}">
+//     <td id="height-name${i}">Höhe:</td>
+//     <td></td>
+//     <td id="height-value${i}"></td>
+//   </tr>
+//   <tr id="ability1${i}">
+//     <td id="ability-name${i}">Fähigkeit:</td>
+//     <td></td>
+//     <td id="ability-value${i}"></td>
+//   </tr>
+//   <tr id="ability2${i}">
+//     <td></td>
+//     <td></td>
+//       <td id="ability-text${i}"></td>
+//     </tr>
+//   </table>
+//     `}
 
 
 async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
@@ -141,10 +150,13 @@ function generateHTMLEvol2nd(i, j) {
   `}
 
 
-async function generateHTMLMoves(i, id1st, id2nd, id3rd, title) {
+async function generateHTMLMoves(i, moveRowId, moveNameId, moveValueId, moveTextId) {
   return /*html*/`
-      <div id="${id1st}${i}" class="moveRow">
-        <div id="${id2nd}${i}" class="moveName">${title}</div>
-        <div id="${id3rd}${i}" class="moveValue"></div>
+      <div id="${moveRowId}${i}" class="moveRow">
+        <div class="moveNameAndValue">
+          <div id="${moveNameId}${i}" class="moveName"></div>
+          <div id="${moveValueId}${i}" class="moveValue"></div>
+        </div>
+        <div id="${moveTextId}${i}" class="moveText"></div>
       </div>
   `}
