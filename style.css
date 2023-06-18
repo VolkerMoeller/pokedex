@@ -478,9 +478,6 @@ td {
     font-weight: normal;
 }
 
-/* .moveValue {
-    padding-left: 8px;
-} */
 
 .moveText {
     font-weight: normal;
@@ -489,6 +486,23 @@ td {
 .moveNameAndValue {
     display: flex;
 }
+
+.aboutRow {
+    width: 100%;
+    display: flex;
+}
+
+.aboutName {
+    width: 25%;
+    font-weight: normal;
+    padding-right: 8px;
+}
+/* .aboutValue {
+    padding-left: 8px;
+} */
+
+
+
 
 @media(max-width: 525px) {
     .pokeCardContent {

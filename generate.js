@@ -75,38 +75,6 @@ async function generateHTMLAbout(i, aboutRowId, aboutNameId, aboutValueId, about
     `}
 
 
-// function generateHTMLAbout(i) {
-//   return /*html*/`
-// <table>
-//   <tr id="genera${i}">
-//     <td id="genera-name${i}">Klasse:</td>
-//     <td></td>
-//     <td id="genera-value${i}"></td>
-//   </tr>
-//   <tr id="weight${i}">
-//     <td id="weight-name${i}">Gewicht:</td>
-//     <td></td>
-//     <td id="weight-value${i}"></td>
-//   </tr>
-//   <tr id="height${i}">
-//     <td id="height-name${i}">Höhe:</td>
-//     <td></td>
-//     <td id="height-value${i}"></td>
-//   </tr>
-//   <tr id="ability1${i}">
-//     <td id="ability-name${i}">Fähigkeit:</td>
-//     <td></td>
-//     <td id="ability-value${i}"></td>
-//   </tr>
-//   <tr id="ability2${i}">
-//     <td></td>
-//     <td></td>
-//       <td id="ability-text${i}"></td>
-//     </tr>
-//   </table>
-//     `}
-
-
 async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
   return /*html*/`
       <div id="${id1st}${i}" class="statRow">

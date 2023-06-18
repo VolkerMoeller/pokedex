@@ -30,7 +30,7 @@ let moveTextIds = ['moveTextId1', 'moveTextId2', 'moveTextId3', 'moveTextId4', '
 let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
 let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
 let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
-let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit', ''];
+let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 
 
 async function init() {
