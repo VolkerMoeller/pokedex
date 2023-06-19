@@ -349,6 +349,7 @@ function topFunction() {
 }
 
 
+// search
 function searchFav() {
     hidePokeMinis();
     for (let j = 0; j < pokesFavorites.length; j++) {
@@ -400,55 +401,6 @@ function getCompareElementBy(i, searchIndex, array) {
     }
 }
 
-
-// XXX
-// function searchByNr() {
-//     hidePokeMinis();
-//     for (let i = 0; i < loadedPokeIds.length; i++) {
-//         let searchId = document.getElementById('searchId').value;
-
-//         searchId = searchId.toString();
-//         let loadedPokeId = loadedPokeIds[i];
-
-
-//         let result = loadedPokeId.startsWith(searchId);
-//         if (result == true) {
-//             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
-//         }
-//     }
-// }
-
-
-// function searchByColor() {
-//     hidePokeMinis();
-//     for (let i = 0; i < loadedPokeColors.length; i++) {
-//         let searchColor = document.getElementById('searchColor').value;
-
-//         searchColor = searchColor.toLowerCase();
-//         let loadedPokeColor = loadedPokeColors[i].toLowerCase();
-
-//         let result = loadedPokeColor.startsWith(searchColor);
-//         if (result == true) {
-//             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
-//         }
-//     }
-// }
-
-
-// function searchByName() {
-//     hidePokeMinis();
-//     for (let i = 0; i < loadedPokeNames.length; i++) {
-//         let searchName = document.getElementById('searchName').value;
-
-//         searchName = searchName.toLowerCase();
-//         let loadedPokeName = loadedPokeNames[i].toLowerCase();
-
-//         let result = loadedPokeName.startsWith(searchName);
-//         if (result == true) {
-//             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
-//         }
-//     }
-// }
 
 // hide PokeMinis
 function hidePokeMinis() {
@@ -615,7 +567,7 @@ async function renderPokeNavigation(i, arrayPokemon) {
 }
 
 
-// render About - card 1
+// render About
 async function fillGenera(i, arrPokeSpec) {
     let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
     document.getElementById(aboutValueIds[0] + i).innerHTML = `${pokeGenera}`;
@@ -708,23 +660,6 @@ function checkTwoWaysToHandleEvol(i, arrPokeEvol) {
 }
 
 
-// function renderPokemonDetailsEvolutionNeu(i, arrPokeEvol) {
-//     document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
-//     fillEvolFirst(i, arrPokeEvol);
-//     if (arrPokeEvol['chain']['evolves_to'].length > 0) {
-//         fillEvolSecond(i, arrPokeEvol);
-//         if (arrPokeEvol['chain']['evolves_to'][0]['evolves_to'].length > 0) {
-//             fillEvolThird(i, arrPokeEvol);
-//         } else {
-//             document.getElementById('thirdStage-value' + i).innerHTML = `Keine Weiterentwicklung`;
-//             return;
-//         }
-//     } else {
-//         document.getElementById('secondStage-value' + i).innerHTML = `Keine Weiterentwicklung`;
-//         return;
-//     }
-// }
-
 function renderPokemonDetailsEvolution(i, arrPokeEvol) {
     document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
     fillEvolFirst(i, arrPokeEvol);
@@ -779,8 +714,8 @@ async function getValue(url) {
 
 function fillValue(i, index, id, name) {
     document.getElementById(index + i).innerHTML = name;
-    // document.getElementById(index + i).innerHTML += ` #${id}`;
 }
+
 
 function fillNr(i, index, id) {
     document.getElementById(index + i).innerHTML += `#${id}`;
