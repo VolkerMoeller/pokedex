@@ -34,6 +34,7 @@ let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 
 
 async function init() {
+    loadFavorites();
     loadedPokeNames = [];
     loadedPokeIds = [];
     document.getElementById('myPlace').innerHTML = '';
@@ -64,6 +65,19 @@ function updateCountNrs(end) {
     endPokeNr = nextPokeNr + stepPokeNrs;
 }
 
+
+function saveFavorites() {
+    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
+    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
+}
+
+
+function loadFavorites() {
+    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
+    if (pokesFavoritesAsText) {
+        pokesFavorites = JSON.parse(pokesFavoritesAsText);
+    }
+}
 
 // render
 async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeCol, arrPokeEvol) {
@@ -301,20 +315,17 @@ function setBgnByType(pokeType, i, index) {
 
 // switch PokeCard-Overlay 
 function switchContent(i) {
-    lastCard = i;
     let overlay = document.getElementById('overlay');
     let pokeCardContent = document.getElementById('pokeCardContent');
     if (overlay.classList.contains('display-none') == true) {
         displayOn(overlay);
         displayOn(pokeCardContent);
         topFunction();
-        return lastCard;
     } else {
         displayOff(overlay);
         displayOff(pokeCardContent);
         hideAllPokeCards();
         topFunction();
-        return lastCard;
     }
 }
 
@@ -332,38 +343,32 @@ function displayOff(element) {
 }
 
 
-// function displayOn(element) {
-//     element.classList.remove('display-none');
-//     element.classList.add('display-flex');
-// }
-
-
-// function displayOff(element) {
-//     element.classList.add('display-none');
-//     element.classList.remove('display-flex');
-// }
-
-
 //  onTop
 function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
 
-// searchBy
-// XXXX searchIndex for ex. 'searchName'
+function searchFav() {
+    hidePokeMinis();
+    for (let j = 0; j < pokesFavorites.length; j++) {
+        let favNrAsString = pokesFavorites[j].toString();
+        let pokeLoaded = loadedPokeIds.includes(favNrAsString);
+        if (pokeLoaded == true) {
+            document.getElementById('pokeMiniButton' + pokesFavorites[j]).classList.remove('display-none');
+        } else {
+            console.log('noch nicht geladen');
+        }
+    }
+}
 
-// searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton');
-// searchBy(loadedPokeColors, 'searchColor', 'pokeMiniButton');
 // searchBy(loadedPokeIds, 'searchId', 'pokeMiniButton');
-
 function searchBy(array, searchIndex, pushIndex) {
     hidePokeMinis();
     for (let i = 0; i < array.length; i++) {
         let searchElement = document.getElementById(searchIndex).value;
         searchElement = handleSearchElementBy(searchIndex, searchElement);
         let compareElement = getCompareElementBy(i, searchIndex, array);
-
         let result = compareElement.startsWith(searchElement);
         if (result == true) {
             document.getElementById(pushIndex + loadedPokeIds[i]).classList.remove('display-none')
@@ -445,12 +450,6 @@ function getCompareElementBy(i, searchIndex, array) {
 //     }
 // }
 
-
-
-
-
-
-
 // hide PokeMinis
 function hidePokeMinis() {
     for (let i = 0; i < loadedPokeIds.length; i++) {
@@ -466,11 +465,13 @@ function setFavorite(i) {
         document.getElementById(`fill0${i}`).classList.remove('display-none');
         document.getElementById(`fill1${i}`).classList.add('display-none');
         removeFavorite(i);
+        saveFavorites();
 
     } else {
         document.getElementById(`fill0${i}`).classList.add('display-none');
         document.getElementById(`fill1${i}`).classList.remove('display-none');
         addFavorite(i);
+        saveFavorites();
     }
 }
 
