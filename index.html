@@ -31,13 +31,13 @@
             </div>
             <div id="searchLine" class="searchLine">
                 <span>Suche</span>
-                <input id="searchName" placeholder="Name" onkeydown="searchByName()">
+                <input id="searchName" placeholder="Name" onkeydown="searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton')">
 
                 <span>oder</span>
-                <input id="searchId" placeholder="Nr" onkeydown="searchByNr()">
+                <input id="searchId" placeholder="Nr" onkeydown="searchBy(loadedPokeIds, 'searchId', 'pokeMiniButton')">
 
                 <span>oder</span>
-                <input id="searchColor" placeholder="Farbkategorie" onkeydown="searchByColor()">
+                <input id="searchColor" placeholder="Farbkategorie" onkeydown="searchBy(loadedPokeColors, 'searchColor', 'pokeMiniButton')">
 
                 <div id="loadBtns" class="loadBtns">
                     <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 20</button>

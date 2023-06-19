@@ -89,7 +89,7 @@ async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
   `}
 
 
-function generateHTMLEvol(i) {
+function generateHTMLEvolOld(i) {
   return /*html*/`
 <table>
   <tr id="firstStage${i}">
@@ -108,6 +108,26 @@ function generateHTMLEvol(i) {
     <td id="thirdStage-value${i}"></td>
   </tr>
 </table>
+`}
+
+
+function generateHTMLEvol(i) {
+  return /*html*/`
+  <div id="firstStage${i}" class="evolStage">
+    <div id="firstStage-name${i}" class="evolName">1.</div>
+    <div id="firstStage-value${i}" class="evolValue"></div>
+    <div id="firstStage-nr${i}" class="evolNr"></div>
+  </div>
+  <div id="secondStage${i}" class="evolStage">
+    <div id="secondStage-name${i}" class="evolName">2.</div>
+    <div id="secondStage-value${i}" class="evolValue"></div>
+    <div id="secondStage-nr${i}" class="evolNr"></div>
+  </div>
+  <div id="thirdStage${i}" class="evolStage">
+    <div id="thirdStage-name${i}" class="evolName">3.</div>
+    <div id="thirdStage-value${i}" class="evolValue"></div>
+    <div id="thirdStage-nr${i}" class="evolNr"></div>
+  </div>
 `}
 
 

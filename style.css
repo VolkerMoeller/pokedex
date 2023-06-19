@@ -502,8 +502,26 @@ td {
     display: flex;
 }
 
+.evolStage {
+    width: 100%;
+    display: flex;
+}
 
+.evolName {
+    font-weight: normal;
+    width: 10%;
+    display: flex;
+    justify-content: end;
+    padding-right: 8px;
+}
 
+.evolValue {
+    width: 93%;
+}
+
+.evolNr {
+    font-weight: normal;
+}
 
 @media(max-width: 525px) {
     .pokeCardContent {

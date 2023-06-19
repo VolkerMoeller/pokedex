@@ -238,7 +238,7 @@ function showPokeCard(i) {
 
 
 function hideAllPokeCards() {
-    for (let i = 1; i < loadedPokeIds.length; i++) {
+    for (let i = 1; i <= loadedPokeIds.length; i++) {
         document.getElementById('pokedex' + i).classList.add('display-none');
     }
 }
@@ -332,6 +332,18 @@ function displayOff(element) {
 }
 
 
+// function displayOn(element) {
+//     element.classList.remove('display-none');
+//     element.classList.add('display-flex');
+// }
+
+
+// function displayOff(element) {
+//     element.classList.add('display-none');
+//     element.classList.remove('display-flex');
+// }
+
+
 //  onTop
 function topFunction() {
     document.documentElement.scrollTop = 0;
@@ -339,59 +351,104 @@ function topFunction() {
 
 
 // searchBy
-function searchByName() {
+// XXXX searchIndex for ex. 'searchName'
+
+// searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton');
+// searchBy(loadedPokeColors, 'searchColor', 'pokeMiniButton');
+// searchBy(loadedPokeIds, 'searchId', 'pokeMiniButton');
+
+function searchBy(array, searchIndex, pushIndex) {
     hidePokeMinis();
-    for (let i = 0; i < loadedPokeNames.length; i++) {
-        let searchName = document.getElementById('searchName').value;
-        searchName = searchName.toLowerCase();
-        let loadedPokeName = loadedPokeNames[i].toLowerCase();
-        let result = loadedPokeName.startsWith(searchName);
+    for (let i = 0; i < array.length; i++) {
+        let searchElement = document.getElementById(searchIndex).value;
+        searchElement = handleSearchElementBy(searchIndex, searchElement);
+        let compareElement = getCompareElementBy(i, searchIndex, array);
+
+        let result = compareElement.startsWith(searchElement);
         if (result == true) {
-            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
+            document.getElementById(pushIndex + loadedPokeIds[i]).classList.remove('display-none')
         }
     }
 }
 
 
-// XXXX
-function searchBy() {
-    hidePokeMinis();
-    for (let i = 0; i < loadedPokeNames.length; i++) {
-        let searchName = document.getElementById('searchName').value;
-        searchName = searchName.toLowerCase();
-        let loadedPokeName = loadedPokeNames[i].toLowerCase();
-        let result = loadedPokeName.startsWith(searchName);
-        if (result == true) {
-            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
-        }
+function handleSearchElementBy(searchIndex, searchElement) {
+    if (searchIndex == 'searchName' || 'searchColor') {
+        searchElement = searchElement.toLowerCase();
+        return searchElement;
     }
-}
-
-function searchByColor() {
-    hidePokeMinis();
-    for (let i = 0; i < loadedPokeColors.length; i++) {
-        let searchColor = document.getElementById('searchColor').value;
-        searchColor = searchColor.toLowerCase();
-        let loadedPokeColor = loadedPokeColors[i].toLowerCase();
-        let result = loadedPokeColor.startsWith(searchColor);
-        if (result == true) {
-            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
-        }
+    if (searchIndex == 'searchId') {
+        let searchElement = searchElement.toString();
+        return searchElement;
     }
 }
 
 
-function searchByNr() {
-    hidePokeMinis();
-    for (let i = 0; i < loadedPokeIds.length; i++) {
-        let searchId = document.getElementById('searchId').value;
-        searchId = searchId.toString();
-        let result = loadedPokeIds[i].startsWith(searchId);
-        if (result == true) {
-            document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
-        }
+function getCompareElementBy(i, searchIndex, array) {
+    if (searchIndex == 'searchName' || 'searchName') {
+        let compareElement = array[i].toLowerCase();
+        return compareElement;
+    }
+    if (searchIndex == 'searchId') {
+        let compareElement = array[i];
+        return compareElement;
     }
 }
+
+
+// XXX
+// function searchByNr() {
+//     hidePokeMinis();
+//     for (let i = 0; i < loadedPokeIds.length; i++) {
+//         let searchId = document.getElementById('searchId').value;
+
+//         searchId = searchId.toString();
+//         let loadedPokeId = loadedPokeIds[i];
+
+
+//         let result = loadedPokeId.startsWith(searchId);
+//         if (result == true) {
+//             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
+//         }
+//     }
+// }
+
+
+// function searchByColor() {
+//     hidePokeMinis();
+//     for (let i = 0; i < loadedPokeColors.length; i++) {
+//         let searchColor = document.getElementById('searchColor').value;
+
+//         searchColor = searchColor.toLowerCase();
+//         let loadedPokeColor = loadedPokeColors[i].toLowerCase();
+
+//         let result = loadedPokeColor.startsWith(searchColor);
+//         if (result == true) {
+//             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
+//         }
+//     }
+// }
+
+
+// function searchByName() {
+//     hidePokeMinis();
+//     for (let i = 0; i < loadedPokeNames.length; i++) {
+//         let searchName = document.getElementById('searchName').value;
+
+//         searchName = searchName.toLowerCase();
+//         let loadedPokeName = loadedPokeNames[i].toLowerCase();
+
+//         let result = loadedPokeName.startsWith(searchName);
+//         if (result == true) {
+//             document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.remove('display-none')
+//         }
+//     }
+// }
+
+
+
+
+
 
 
 // hide PokeMinis
@@ -650,6 +707,23 @@ function checkTwoWaysToHandleEvol(i, arrPokeEvol) {
 }
 
 
+// function renderPokemonDetailsEvolutionNeu(i, arrPokeEvol) {
+//     document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
+//     fillEvolFirst(i, arrPokeEvol);
+//     if (arrPokeEvol['chain']['evolves_to'].length > 0) {
+//         fillEvolSecond(i, arrPokeEvol);
+//         if (arrPokeEvol['chain']['evolves_to'][0]['evolves_to'].length > 0) {
+//             fillEvolThird(i, arrPokeEvol);
+//         } else {
+//             document.getElementById('thirdStage-value' + i).innerHTML = `Keine Weiterentwicklung`;
+//             return;
+//         }
+//     } else {
+//         document.getElementById('secondStage-value' + i).innerHTML = `Keine Weiterentwicklung`;
+//         return;
+//     }
+// }
+
 function renderPokemonDetailsEvolution(i, arrPokeEvol) {
     document.getElementById('card3' + i).innerHTML = generateHTMLEvol(i);
     fillEvolFirst(i, arrPokeEvol);
@@ -673,6 +747,7 @@ async function fillEvolFirst(i, arrPokeEvol) {
     let stage1stId = getformattedId(stage1stUrl);
     let value = await getValue(stage1stUrl);
     fillValue(i, 'firstStage-value', stage1stId, value);
+    fillNr(i, 'firstStage-nr', stage1stId);
 }
 
 
@@ -681,6 +756,7 @@ async function fillEvolSecond(i, arrPokeEvol) {
     let stage2ndId = getformattedId(stage2ndUrl);
     let value = await getValue(stage2ndUrl);
     fillValue(i, 'secondStage-value', stage2ndId, value);
+    fillNr(i, 'secondStage-nr', stage2ndId);
 }
 
 
@@ -689,6 +765,7 @@ async function fillEvolThird(i, arrPokeEvol) {
     let stage3rdId = getformattedId(stage3rdUrl);
     let value = await getValue(stage3rdUrl);
     fillValue(i, 'thirdStage-value', stage3rdId, value);
+    fillNr(i, 'thirdStage-nr', stage3rdId);
 }
 
 
@@ -701,7 +778,11 @@ async function getValue(url) {
 
 function fillValue(i, index, id, name) {
     document.getElementById(index + i).innerHTML = name;
-    document.getElementById(index + i).innerHTML += ` #${id}`;
+    // document.getElementById(index + i).innerHTML += ` #${id}`;
+}
+
+function fillNr(i, index, id) {
+    document.getElementById(index + i).innerHTML += `#${id}`;
 }
 
 
