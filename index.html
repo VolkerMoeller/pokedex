@@ -31,20 +31,54 @@
             </div>
             <div id="searchLine" class="searchLine">
                 <span>Suche</span>
-                <input id="searchName" placeholder="Name" onkeydown="searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton')">
+                <input id="searchName" placeholder="Name"
+                    onkeydown="searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton')" onblur="clearSearchInput()">
 
                 <span>oder</span>
-                <input id="searchId" placeholder="Nr" onkeydown="searchBy(loadedPokeIds, 'searchId', 'pokeMiniButton')">
+                <input id="searchId" placeholder="Nr" onkeydown="searchBy(loadedPokeIds, 'searchId', 'pokeMiniButton')"
+                    onblur="clearSearchInput()">
 
                 <span>oder</span>
-                <input id="searchColor" placeholder="Farbkategorie" onkeydown="searchBy(loadedPokeColors, 'searchColor', 'pokeMiniButton')">
+                <input id="searchGroup" placeholder="Kategorie"
+                    onkeydown="searchBy(loadedPokeSlots1, 'searchGroup', 'pokeMiniButton')" onblur="clearSearchInput()">
+
+                <span>oder</span>
+                <input id="searchColor" placeholder="Pokemonfarbe"
+                    onkeydown="searchBy(loadedPokeColors, 'searchColor', 'pokeMiniButton')" onblur="clearSearchInput()">
+
 
                 <div id="loadBtns" class="loadBtns">
                     <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 20</button>
                 </div>
+            </div>
 
-                <div id="favoriteBtn" class="loadBtns">
-                    <button id="searchFav" class="display-flex" onclick="searchFav()">Favoriten</button>
+            <div id="openMenu" class="openMenu">
+                <button id="menuBtn" class="menuBtn" onclick="openMenu()">Menu</button>
+            </div>
+        </div>
+        <div id="menu" class="menu">
+            <div id="menuSearchLine" class="menuSearchLine">
+                <div id="closeMenu" class="openMenu">
+                    <button id="menuBtn" class="menuBtn" onclick="closeMenu()">Schließen</button>
+                </div>
+                <span>Suche</span>
+                <input id="menuSearchName" placeholder="Name"
+                    onkeydown="searchBy(loadedPokeNames, 'menuSearchName', 'pokeMiniButton')">
+
+                <span>oder</span>
+                <input id="menuSearchId" placeholder="Nr"
+                    onkeydown="searchBy(loadedPokeIds, 'menuSearchId', 'pokeMiniButton')">
+
+                <span>oder</span>
+                <input id="menuSearchGroup" placeholder="Kategorie"
+                    onkeydown="searchBy(loadedPokeSlots1, 'menuSearchGroup', 'pokeMiniButton')" onblur="clearSearchInput()">
+                    
+                <span>oder</span>
+                <input id="menuSearchColor" placeholder="Pokemonfarbe"
+                    onkeydown="searchBy(loadedPokeColors, 'menuSearchColor', 'pokeMiniButton')">
+
+                <div id="menuLoadBtns" class="loadBtns">
+                    <button id="menuloadBtnStart" class="display-flex" onclick="initNext()">weitere 20</button>
                 </div>
             </div>
         </div>

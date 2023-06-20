@@ -1,6 +1,6 @@
-let initEnd = 5;
+let initEnd = 4;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs = 50;
+let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
@@ -32,6 +32,7 @@ let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'te
 let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
 let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 
+let counter = 0;
 
 async function init() {
     loadFavorites();
@@ -43,6 +44,7 @@ async function init() {
 
 
 function initNext() {
+    clearSearchInput();
     getData(nextPokeNr, endPokeNr);
 }
 
@@ -57,6 +59,11 @@ async function getData(begin, end) {
         updateCountNrs(end);
         functionRunning = false;
     }
+}
+
+
+function getDataProgress(i) {
+    console.log('Bild ' + i + ' geladen.');
 }
 
 
@@ -127,8 +134,9 @@ function fillId(i) {
 
 
 function fillImg(i, arrayPokemon) {
+    console.log(i);
     let imgSrc = arrayPokemon['sprites']['other']['dream_world']['front_default'];
-    document.getElementById('pokeMiniImgDiv' + i).innerHTML = `<img src=${imgSrc}>`;
+    document.getElementById('pokeMiniImgDiv' + i).innerHTML = `<img src=${imgSrc} onload="getDataProgress(${i})">`;
     document.getElementById('pokedex-image' + i).innerHTML = `<img src=${imgSrc}>`;
 }
 
@@ -788,4 +796,27 @@ async function getMove(end, arrPoke, i) {
 function fillMove(i, j, move, moveText) {
     document.getElementById(moveValueIds[j] + i).innerHTML = `${j + 1}. ${move}:`;
     document.getElementById(moveTextIds[j] + i).innerHTML += moveText;
+}
+
+// menu
+function closeMenu() {
+    document.getElementById('menu').classList.add('display-none');
+    clearSearchInput();
+}
+
+
+function openMenu() {
+    document.getElementById('menu').classList.remove('display-none');
+    document.getElementById('menu').classList.add('showMenu');
+}
+
+// clear search input
+function clearSearchInput() {
+    document.getElementById('menuSearchName').value = '';
+    document.getElementById('menuSearchId').value = '';
+    document.getElementById('menuSearchColor').value = '';
+    document.getElementById('searchName').value = '';
+    document.getElementById('searchId').value = '';
+    document.getElementById('searchColor').value = '';
+    document.getElementById('searchGroup').value = '';
 }
