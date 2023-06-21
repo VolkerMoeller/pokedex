@@ -30,6 +30,7 @@ let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 
 let counter = 0;
 
+
 async function init() {
     loadFavorites();
     loadedPokeNames = [];
@@ -68,15 +69,27 @@ async function performServerRequests(i) {
     let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
     let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
     let arr = await fetchDataFromServer(url1);
+    let arrSpec = await fetchDataFromServer(url2);
+    console.log(i + ' Pokemon ', arr);
+    console.log(i + ' PokemonSpecies ', arrSpec);
+    await getDataByDynamikUrl(i, arr, arrSpec);
+}
+
+
+
+async function getDataByDynamikUrl(i, arr, arrSpec) {
     let arrAbi = await fetchDataByDynamikUrl(arr, 'abilities', '', 'ability');
     let arrType1st = await fetchDataByDynamikUrl(arr, 'types', 0, 'type');
     let arrType2nd = '';
     if (arr['types'].length == 2) {
         arrType2nd = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
     }
-    let arrSpec = await fetchDataFromServer(url2);
-    await useArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
+    console.log(i + ' PokemonAbilities ', arrAbi);
+    console.log(i + ' PokemonType1 ', arrType1st);
+    console.log(i + ' PokemonType2 ', arrType2nd);
+    useArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
 }
+
 
 
 async function fetchDataFromServer(url) {
@@ -111,14 +124,7 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 
 
 async function useArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd) {
-    console.log(i + ' Pokemon ', arr);
-    console.log(i + ' PokemonAbilities ', arrAbi);
-    console.log(i + ' PokemonSpecies ', arrSpec);
-    console.log(i + ' PokemonType1 ', arrType1st);
-    console.log(i + ' PokemonType2 ', arrType2nd);
-    await noticeData(i, arr, arrSpec);
-    await render(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
-    await fill(i, arr);
+    await Promise.all([noticeData(i, arr, arrSpec), render(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd), fill(i, arr)]);
 }
 
 
@@ -204,7 +210,7 @@ function fillId(i) {
 function fillImg(i, arrayPokemon) {
     let imgSrc = arrayPokemon['sprites']['other']['dream_world']['front_default'];
     document.getElementById('pokeMiniImg' + i).src = imgSrc;
-    document.getElementById('pokedex-image' + i).src = imgSrc;
+    document.getElementById('pokedex-img' + i).src = imgSrc;
 }
 
 
@@ -232,9 +238,7 @@ async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec) {
     for (let j = 0; j < aboutRowIds.length; j++) {
         document.getElementById('card1' + i).innerHTML += await generateHTMLAbout(i, aboutRowIds[j], aboutNameIds[j], aboutValueIds[j], aboutTitles[j]);
     }
-    await fillGenera(i, arrPokeSpec);
-    await fillAbility(i, arrPokeAbi);
-    await fillWeightAndHeight(i, arrPoke);
+    await Promise.all([fillGenera(i, arrPokeSpec), fillAbility(i, arrPokeAbi), fillWeightAndHeight(i, arrPoke)])
 }
 
 
@@ -362,17 +366,26 @@ function switchContent(i) {
     let overlay = document.getElementById('overlay');
     let pokeCardContent = document.getElementById('pokeCardContent');
     if (overlay.classList.contains('display-none') == true) {
-        displayOn(overlay);
-        displayOn(pokeCardContent);
-        topFunction();
+        switchToPokeCard(overlay, pokeCardContent);
     } else {
-        displayOff(overlay);
-        displayOff(pokeCardContent);
-        hideAllPokeCards();
-        topFunction();
+        switchToPokeMinis(overlay, pokeCardContent);
     }
 }
 
+
+function switchToPokeCard(overlay, pokeCardContent) {
+    displayOn(overlay);
+    displayOn(pokeCardContent);
+    topFunction();
+}
+
+
+function switchToPokeMinis(overlay, pokeCardContent) {
+    displayOff(overlay);
+    displayOff(pokeCardContent);
+    hideAllPokeCards();
+    topFunction();
+}
 
 // display OnOff
 function displayOn(element) {
@@ -488,7 +501,7 @@ function loadFavorites() {
 }
 
 
-// show Cards
+// show cards from navigation
 function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
     setCurrentCardToActiv(cardId);
@@ -597,7 +610,7 @@ async function renderPokeNavigation(i, arrayPokemon) {
 }
 
 
-// render About
+// render about
 async function fillGenera(i, arrPokeSpec) {
     let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
     document.getElementById(aboutValueIds[0] + i).innerHTML = `${pokeGenera}`;
@@ -628,7 +641,7 @@ function format3LeftHandZeros(value) {
 }
 
 
-// Navigation PokeCard
+// navigation pokeCard
 function hoverNavigationOver(cardNr, i, slot1) {
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
@@ -698,15 +711,11 @@ function generateHTMLPokeMini(i) {
                   <div id="pokeMiniName${i}" class="pokeMiniName">pokeName</div>
                   </div>
                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
-                    <img id="pokeMiniImg${i}" class="pokeMiniImg" src="" onload="getDataProgress(${i})">
+                    <img id="pokeMiniImg${i}" class="pokeMiniImg" src="">
                   </div>
           </div>
       </button>
       `
-}
-
-function getDataProgress(i) {
-    console.log('Bild ' + i + ' geladen.');
 }
 
 
