@@ -206,7 +206,7 @@ body {
     min-height: 100%;
     backdrop-filter: blur(8px);
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
+    z-index: 30;
 }
 
 /* pokeCard */
@@ -218,7 +218,7 @@ body {
     width: 480px;
     height: 858px;
     background-color: white;
-    z-index: 3;
+    z-index: 40;
 }
 
 
@@ -556,7 +556,7 @@ td {
 
 .menu {
     background-color: white;
-    position: absolute;
+    position: fixed;
     top: 100px;
     z-index: 3;
     padding-top: 4px;
@@ -598,29 +598,6 @@ td {
     margin-bottom: 8px;
 }
 
-@media(max-width: 1010px) {
-    .searchLine {
-        display: none;
-    }
-
-    .openMenu {
-        display: flex;
-    }
-
-    .showMenu {
-        transform: none !important;
-        z-index: 10 !important;
-    }
-    
-    .menu {
-        transform: translateY(-100%);
-        transition: translateY 225ms ease-in-out;
-        display: flex;
-        flex-direction: column;
-        z-index: 5;
-    }
-
-}
 
 @media(max-width: 525px) {
     .pokeCardContent {
