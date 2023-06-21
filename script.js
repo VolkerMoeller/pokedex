@@ -1,4 +1,4 @@
-let initEnd = 4;
+let initEnd = 21;
 let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
@@ -29,8 +29,9 @@ let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue'
 let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 
 let counter = 0;
+let scrollCounter = 0;
 
-
+// first catch all datas from server
 async function init() {
     loadFavorites();
     loadedPokeNames = [];
@@ -70,8 +71,6 @@ async function performServerRequests(i) {
     let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
     let arr = await fetchDataFromServer(url1);
     let arrSpec = await fetchDataFromServer(url2);
-    console.log(i + ' Pokemon ', arr);
-    console.log(i + ' PokemonSpecies ', arrSpec);
     await getDataByDynamikUrl(i, arr, arrSpec);
 }
 
@@ -84,9 +83,6 @@ async function getDataByDynamikUrl(i, arr, arrSpec) {
     if (arr['types'].length == 2) {
         arrType2nd = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
     }
-    console.log(i + ' PokemonAbilities ', arrAbi);
-    console.log(i + ' PokemonType1 ', arrType1st);
-    console.log(i + ' PokemonType2 ', arrType2nd);
     useArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
 }
 
@@ -122,43 +118,11 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
     }
 }
 
-
+// second: use the datas
 async function useArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd) {
     await Promise.all([noticeData(i, arr, arrSpec), render(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd), fill(i, arr)]);
 }
 
-
-function getGermanData(array, index1st, index2nd) {
-    let indexGermanData = searchIndexOfGermanData(array, index1st);
-    let germanData = array[index1st][indexGermanData][index2nd];
-    return germanData;
-}
-
-
-function searchIndexOfGermanData(array, index) {
-    for (let j = 0; j < array[index].length; j++) {
-        const language = array[index][j]['language']['name'];
-        if (language == 'de') {
-            let indexGermanData = j;
-            j = array[index].length;
-            return indexGermanData;
-        }
-    }
-}
-
-
-function saveFavorites() {
-    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
-    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
-}
-
-
-function loadFavorites() {
-    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
-    if (pokesFavoritesAsText) {
-        pokesFavorites = JSON.parse(pokesFavoritesAsText);
-    }
-}
 
 // render
 async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeType1st, arrPokeType2nd) {
@@ -386,6 +350,7 @@ function switchToPokeMinis(overlay, pokeCardContent) {
     hideAllPokeCards();
     topFunction();
 }
+
 
 // display OnOff
 function displayOn(element) {
@@ -633,12 +598,6 @@ async function fillWeightAndHeight(i, arrPoke) {
 };
 
 
-// format Id
-function format3LeftHandZeros(value) {
-    value = value.toString();
-    let formatValue = value.padStart(4, '0');
-    return formatValue;
-}
 
 
 // navigation pokeCard
@@ -686,20 +645,66 @@ function renderProgressLine(i, valuePerCent, j) {
 }
 
 
-// formattedId
-function getformattedId(url) {
-    let stageId = url.split('https://pokeapi.co/api/v2/pokemon-species/');
-    stageId = stageId[1].split('/');
-    stageId = format3LeftHandZeros(stageId[0]);
-    return stageId;
+// helpers:
+function getGermanData(array, index1st, index2nd) {
+    let indexGermanData = searchIndexOfGermanData(array, index1st);
+    let germanData = array[index1st][indexGermanData][index2nd];
+    return germanData;
 }
 
 
-// clear search input
+function searchIndexOfGermanData(array, index) {
+    for (let j = 0; j < array[index].length; j++) {
+        const language = array[index][j]['language']['name'];
+        if (language == 'de') {
+            let indexGermanData = j;
+            j = array[index].length;
+            return indexGermanData;
+        }
+    }
+}
+
+
+function saveFavorites() {
+    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
+    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
+}
+
+
+function loadFavorites() {
+    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
+    if (pokesFavoritesAsText) {
+        pokesFavorites = JSON.parse(pokesFavoritesAsText);
+    }
+}
+
+
+function format3LeftHandZeros(value) {
+    value = value.toString();
+    let formatValue = value.padStart(4, '0');
+    return formatValue;
+}
+
+
 function clearSearchInput() {
     document.getElementById('searchName').value = '';
 }
 
+
+// onscroll
+window.onscroll = function () { scrollFunction() };
+
+
+async function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollCounter++;
+        let interval = 10;
+        let tester = scrollCounter % interval;
+        if (tester == 0) {
+            initNext();
+        }
+    }
+}
 
 // generate HTML
 function generateHTMLPokeMini(i) {
