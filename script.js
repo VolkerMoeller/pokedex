@@ -141,13 +141,6 @@ function searchIndexOfGermanData(array, index) {
 }
 
 
-function getDataProgress(i) {
-    console.log('Bild ' + i + ' geladen.');
-}
-
-
-
-
 function saveFavorites() {
     let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
     localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
@@ -209,10 +202,9 @@ function fillId(i) {
 
 
 function fillImg(i, arrayPokemon) {
-    console.log(i);
     let imgSrc = arrayPokemon['sprites']['other']['dream_world']['front_default'];
-    document.getElementById('pokeMiniImgDiv' + i).innerHTML = `<img src=${imgSrc} onload="getDataProgress(${i})">`;
-    document.getElementById('pokedex-image' + i).innerHTML = `<img src=${imgSrc}>`;
+    document.getElementById('pokeMiniImg' + i).src = imgSrc;
+    document.getElementById('pokedex-image' + i).src = imgSrc;
 }
 
 
@@ -690,22 +682,11 @@ function getformattedId(url) {
 }
 
 
-// menu open close
-function closeMenu() {
-    document.getElementById('menu').classList.add('display-none');
-    clearSearchInput();
-}
-
-
-function openMenu() {
-    document.getElementById('menu').classList.remove('display-none');
-    document.getElementById('menu').classList.add('showMenu');
-}
-
 // clear search input
 function clearSearchInput() {
     document.getElementById('searchName').value = '';
 }
+
 
 // generate HTML
 function generateHTMLPokeMini(i) {
@@ -715,29 +696,35 @@ function generateHTMLPokeMini(i) {
               <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
                   <div id="pokeMiniId${i}" class="pokeMiniId">pokeId</div>
                   <div id="pokeMiniName${i}" class="pokeMiniName">pokeName</div>
-              </div>
-              <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">pokeImg</div>
+                  </div>
+                  <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
+                    <img id="pokeMiniImg${i}" class="pokeMiniImg" src="" onload="getDataProgress(${i})">
+                  </div>
           </div>
       </button>
       `
+}
+
+function getDataProgress(i) {
+    console.log('Bild ' + i + ' geladen.');
 }
 
 
 function generateHTMLPokeCard(i, slot1) {
     return /*html*/`
       <div id="pokedex${i}" class="pokedex display-none">
-          <div id="pokedex-top${i}" class="pokedex-top">
-              <div>
-                  <button onclick="switchContent(${i})" class="btn-back">
+        <div id="pokedex-top${i}" class="pokedex-top">
+        <div>
+            <button onclick="switchContent(${i})" class="btn-back">
                       <img src="./img/backspace.png">
-                  </button>
-              </div>
+                      </button>
+                      </div>
               <div class="pokedex-above">
                   <div id="pokedex-name${i}" class="pokedex-name">
                   </div>
                   <div id="pokedex-id${i}" class="pokedex-id">
                   </div>
-              </div>
+                  </div>
               <div class="slot-line">
                   <div id="pokedex-slots${i}" class="pokedex-slots">
                     <div id="base-type1${i}" class="slot"></div>
@@ -749,7 +736,9 @@ function generateHTMLPokeCard(i, slot1) {
                   </div>
               </div>
               <div id="pokedex-image-place${i}" class="pokedex-image-place">
-                  <div id="pokedex-image${i}" class="pokedex-image"></div>
+                  <div id="pokedex-image${i}" class="pokedex-image">
+                  <img id="pokedex-img${i}" class="pokedex-img" src="">
+                </div>
               </div>
           </div>
           <div id="pokedex-bottom${i}" class="pokedex-bottom">
