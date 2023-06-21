@@ -409,7 +409,7 @@ function searchBy(array, searchIndex, pushIndex) {
 
 
 function handleSearchElementBy(searchIndex, searchElement) {
-    if (searchIndex == 'searchName' || 'searchColor') {
+    if (searchIndex == 'searchName') {
         searchElement = searchElement.toLowerCase();
         return searchElement;
     }
@@ -421,7 +421,7 @@ function handleSearchElementBy(searchIndex, searchElement) {
 
 
 function getCompareElementBy(i, searchIndex, array) {
-    if (searchIndex == 'searchName' || 'searchName') {
+    if (searchIndex == 'searchName') {
         let compareElement = array[i].toLowerCase();
         return compareElement;
     }
