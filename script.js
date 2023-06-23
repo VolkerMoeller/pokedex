@@ -44,8 +44,31 @@ async function getData(begin, end) {
             updateAmountPokesAndProgress(i);
         }
         pushData();
+        generateHTML(begin, end);
+        stylePoke(begin, end);
         updateCountNrs(end);
         functionRunning = false;
+    }
+}
+
+
+
+
+function generateHTML(begin, end) {
+    for (let j = begin; j < end; j++) {
+        document.getElementById('myPlace').innerHTML +=
+            generateHTMLPokeMini(
+                j,
+                format3LeftHandZeros(allPokes[j]['pokemon'][0]['pokeId']),
+                allPokes[j]['pokemon'][0]['pokeName'],
+            );
+    }
+}
+
+
+function stylePoke(begin, end) {
+    for (let j = begin; j < end; j++) {
+        stylePokeBgn(j, 'pokeMini');
     }
 }
 
@@ -79,7 +102,13 @@ async function getDataByDynamikUrl(i, arr, arrSpec) {
     if (arr['types'].length == 2) {
         arrType2nd = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
     }
-    pushArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
+    let arrStat1st = await fetchDataByDynamikUrl(arr, 'stats', 0, 'stat');
+    let arrStat2nd = await fetchDataByDynamikUrl(arr, 'stats', 1, 'stat');
+    let arrStat3rd = await fetchDataByDynamikUrl(arr, 'stats', 2, 'stat');
+    let arrStat4th = await fetchDataByDynamikUrl(arr, 'stats', 3, 'stat');
+    let arrStat5th = await fetchDataByDynamikUrl(arr, 'stats', 4, 'stat');
+    let arrStat6th = await fetchDataByDynamikUrl(arr, 'stats', 5, 'stat');
+    pushArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd, arrStat1st, arrStat2nd, arrStat3rd, arrStat4th, arrStat5th, arrStat6th);
 }
 
 
@@ -99,7 +128,7 @@ async function fetchDataByDynamikUrl(array, indexAll, position, indexOne) {
 
 
 function takeDynamikUrl(array, index1st, position, index2nd) {
-    if (index1st == 'types') {
+    if (index1st == 'types' || index1st == 'stats') {
         let dynamicUrl = array[index1st][position][index2nd]['url'];
         return dynamicUrl;
     }
@@ -112,7 +141,7 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 
 // second: push the data
 
-async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd) {
+async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd, arrStat1st, arrStat2nd, arrStat3rd, arrStat4th, arrStat5th, arrStat6th) {
     allPokes.push(
         {
             "arrPoke": [arrPoke],
@@ -120,10 +149,17 @@ async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd) {
             "arrSpec": [arrSpec],
             "arrType1st": [arrType1st],
             "arrType2nd": [arrType2nd],
+            "arrStats1st": [arrStat1st],
+            "arrStats2nd": [arrStat2nd],
+            "arrStats3rd": [arrStat3rd],
+            "arrStats4th": [arrStat4th],
+            "arrStats5th": [arrStat5th],
+            "arrStats6th": [arrStat6th],
             "pokemon": []
         }
     );
-    await Promise.all([noticeData(arrPoke, arrSpec), render(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd), fill(i, arrPoke)]);
+    await Promise.all([noticeData(arrPoke, arrSpec)]);
+    // await Promise.all([noticeData(arrPoke, arrSpec), render(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd), fill(i, arrPoke)]);
 }
 
 function pushData() {
@@ -132,23 +168,34 @@ function pushData() {
             {
                 "pokeId": allPokes[j]['arrPoke'][0]['id'],
                 "pokeName": getGermanData(allPokes[j]['arrSpec'][0], 'names', 'name'),
-                "pokeSlot1": getGermanData(allPokes[j]['arrType1st'][0], 'names', 'name'),
-                "pokeSlot2": checkSlot2(j),
-                // "pokeImg": ,
-                // "pokeWeight": ,
-                // "pokeHeight": ,
-                // "pokeSpecie": ,
-                // "pokeFlavors": ,
-                // "pokeAbilities": ,
-                // "pokeAbilityURL": ,
-                // "pokeAbilityFlavors": ,
-                // "pokeNameGerman": 
+                "pokeType1": getGermanData(allPokes[j]['arrType1st'][0], 'names', 'name'),
+                "pokeType2": checkIfSlot2(j),
+                "pokeType1En": allPokes[j]['arrType1st'][0]['name'],
+                "pokeImg": allPokes[j]['arrPoke'][0]['sprites']['other']['dream_world']['front_default'],
+                "pokeWeight": allPokes[j]['arrPoke'][0]['weight'],
+                "pokeHeight": allPokes[j]['arrPoke'][0]['height'],
+                "pokeSpec": getGermanData(allPokes[j]['arrSpec'][0], 'genera', 'genus'),
+                "pokeSpecTxt": getGermanData(allPokes[j]['arrSpec'][0], 'flavor_text_entries', 'flavor_text'),
+                "pokeAbi": getGermanData(allPokes[j]['arrAbi'][0], 'names', 'name'),
+                "pokeAbiTxt": getGermanData(allPokes[j]['arrAbi'][0], 'flavor_text_entries', 'flavor_text'),
+                "pokeStat1stName": getGermanData(allPokes[j]['arrStats1st'][0], 'names', 'name'),
+                "pokeStat1stValue": allPokes[j]['arrPoke'][0]['stats'][0]['base_stat'],
+                "pokeStat2ndName": getGermanData(allPokes[j]['arrStats2nd'][0], 'names', 'name'),
+                "pokeStat2ndValue": allPokes[j]['arrPoke'][0]['stats'][1]['base_stat'],
+                "pokeStat3rdName": getGermanData(allPokes[j]['arrStats3rd'][0], 'names', 'name'),
+                "pokeStat3rdValue": allPokes[j]['arrPoke'][0]['stats'][2]['base_stat'],
+                "pokeStat4thName": getGermanData(allPokes[j]['arrStats4th'][0], 'names', 'name'),
+                "pokeStat4thValue": allPokes[j]['arrPoke'][0]['stats'][3]['base_stat'],
+                "pokeStat5thName": getGermanData(allPokes[j]['arrStats5th'][0], 'names', 'name'),
+                "pokeStat5thValue": allPokes[j]['arrPoke'][0]['stats'][4]['base_stat'],
+                "pokeStat6thName": getGermanData(allPokes[j]['arrStats6th'][0], 'names', 'name'),
+                "pokeStat6thValue": allPokes[j]['arrPoke'][0]['stats'][5]['base_stat'],
             }
         )
     }
 }
 
-function checkSlot2(j) {
+function checkIfSlot2(j) {
     if (allPokes[j]['arrPoke'][0]['types'].lenght == 2) {
         return getGermanData(allPokes[j]['arrType2nd'][0], 'names', 'name');
     } else {
@@ -347,13 +394,16 @@ function updateProgress(currentPokeNr) {
 
 
 // background-color
-async function stylePokeBgn(currentPokeNr, arrayPokemon, index) {
-    let pokeType = arrayPokemon['types'][0]['type']['name'];
-    setBgnByType(pokeType, currentPokeNr, index);
+async function stylePokeBgn(i, index) {
+    // async function stylePokeBgn(i, arrayPokemon, index) {
+    let pokeType = allPokes[i]['pokemon'][0]['pokeType1En'];
+    // let pokeType = arrayPokemon['types'][0]['type']['name'];
+    setBgnByType(i, index, pokeType);
+    // setBgnByType(pokeType, i, index);
 }
 
 
-function setBgnByType(pokeType, i, index) {
+function setBgnByType(i, index, pokeType) {
     document.getElementById(index + i).classList.add('bgn-type-' + pokeType);
 }
 
@@ -740,13 +790,13 @@ async function scrollFunction() {
 }
 
 // generate HTML
-function generateHTMLPokeMini(i) {
+function generateHTMLPokeMini(i, id, name) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
           <div id="pokeMini${i}" class="pokeMini">
               <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
-                  <div id="pokeMiniId${i}" class="pokeMiniId">pokeId</div>
-                  <div id="pokeMiniName${i}" class="pokeMiniName">pokeName</div>
+                  <div id="pokeMiniId${i}" class="pokeMiniId">#${id}</div>
+                  <div id="pokeMiniName${i}" class="pokeMiniName">${name}</div>
                   </div>
                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
                     <img id="pokeMiniImg${i}" class="pokeMiniImg" src="">
@@ -755,6 +805,23 @@ function generateHTMLPokeMini(i) {
       </button>
       `
 }
+
+
+// function generateHTMLPokeMini(i) {
+//     return /*html*/`
+//       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
+//           <div id="pokeMini${i}" class="pokeMini">
+//               <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
+//                   <div id="pokeMiniId${i}" class="pokeMiniId"></div>
+//                   <div id="pokeMiniName${i}" class="pokeMiniName"></div>
+//                   </div>
+//                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
+//                     <img id="pokeMiniImg${i}" class="pokeMiniImg" src="">
+//                   </div>
+//           </div>
+//       </button>
+//       `
+// }
 
 
 function generateHTMLPokeCard(i, slot1) {
