@@ -16,7 +16,7 @@ let lastCard = 0;
 let amountCards = 2
 let statNames = ['Kraftpunkte:', 'Angriff:', 'Verteidigung:', 'Spezialangriff:', 'Spezialverteid.:', 'Initiative'];
 let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
-let colorBlackIds = ['pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
+let colorBlackIds = ['pokeMiniName','pokeMiniId', 'pokeMiniType1','pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
 let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
 let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
 let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
@@ -44,8 +44,8 @@ async function getData(begin, end) {
             updateAmountPokesAndProgress(i);
         }
         pushData();
-        generateHTML(begin, end);
-        stylePoke(begin, end);
+        generateHTML(begin - 1, end);
+        stylePokes(begin - 1, end);
         updateCountNrs(end);
         functionRunning = false;
     }
@@ -55,20 +55,37 @@ async function getData(begin, end) {
 
 
 function generateHTML(begin, end) {
-    for (let j = begin; j < end; j++) {
+    for (let i = begin; i < end; i++) {
         document.getElementById('myPlace').innerHTML +=
             generateHTMLPokeMini(
-                j,
-                format3LeftHandZeros(allPokes[j]['pokemon'][0]['pokeId']),
-                allPokes[j]['pokemon'][0]['pokeName'],
+                i,
+                format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
+                allPokes[i]['pokemon'][0]['pokeName'],
+                allPokes[i]['pokemon'][0]['pokeType1'],
+                allPokes[i]['pokemon'][0]['pokeImg'],
+            );
+        document.getElementById('pokeCardPlace').innerHTML +=
+            generateHTMLPokeMax(
+                i,
+                allPokes[i]['pokemon'][0]['pokeName'],
+                format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
+                allPokes[i]['pokemon'][0]['pokeType1'],
+                allPokes[i]['pokemon'][0]['pokeType2'],
+                allPokes[i]['pokemon'][0]['pokeType1En'],
             );
     }
 }
 
 
-function stylePoke(begin, end) {
-    for (let j = begin; j < end; j++) {
-        stylePokeBgn(j, 'pokeMini');
+function stylePokes(begin, end) {
+    for (let i = begin; i < end; i++) {
+        stylePokeBgn(i, 'pokeMini');
+        stylePokeBgn(i, 'pokedex');
+        showSlot2(i);
+        stylePokeTop(i);
+        changePokesToBlack(i);
+
+
     }
 }
 
@@ -171,6 +188,7 @@ function pushData() {
                 "pokeType1": getGermanData(allPokes[j]['arrType1st'][0], 'names', 'name'),
                 "pokeType2": checkIfSlot2(j),
                 "pokeType1En": allPokes[j]['arrType1st'][0]['name'],
+                "pokeType2En": checkIfSlot2En(j),
                 "pokeImg": allPokes[j]['arrPoke'][0]['sprites']['other']['dream_world']['front_default'],
                 "pokeWeight": allPokes[j]['arrPoke'][0]['weight'],
                 "pokeHeight": allPokes[j]['arrPoke'][0]['height'],
@@ -195,9 +213,17 @@ function pushData() {
     }
 }
 
-function checkIfSlot2(j) {
-    if (allPokes[j]['arrPoke'][0]['types'].lenght == 2) {
-        return getGermanData(allPokes[j]['arrType2nd'][0], 'names', 'name');
+function checkIfSlot2(i) {
+    if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
+        return getGermanData(allPokes[i]['arrType2nd'][0], 'names', 'name');
+    } else {
+        return '';
+    }
+}
+
+function checkIfSlot2En(i) {
+    if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
+        return allPokes[i]['arrType2nd'][0]['name'];
     } else {
         return '';
     }
@@ -270,11 +296,18 @@ function fillSlot1(i, slot1) {
 }
 
 
-function fillSlot2(i, slot2) {
-    if (slot2 !== '') {
+// function fillSlot2(i, slot2) {
+//     if (slot2 !== '') {
+//         document.getElementById('base-type2' + i).classList.remove('display-none');
+//     }
+//     document.getElementById('base-type2' + i).innerHTML = slot2;
+// }
+
+function showSlot2(i) {
+    if (allPokes[i]['pokemon'][0]['pokeType2'] !== '') {
         document.getElementById('base-type2' + i).classList.remove('display-none');
     }
-    document.getElementById('base-type2' + i).innerHTML = slot2;
+    document.getElementById('base-type2' + i).innerHTML = allPokes[i]['pokemon'][0]['pokeType2'];
 }
 
 
@@ -344,24 +377,15 @@ function showPokeCard(i) {
 
 
 function hideAllPokeCards() {
-    for (let i = 1; i <= loadedPokeIds.length; i++) {
+    for (let i = 1; i < allPokes.length; i++) {
         document.getElementById('pokedex' + i).classList.add('display-none');
     }
 }
 
 
-async function changeMiniToBlack(i, arrayPokemon) {
-    let slot1 = arrayPokemon['types'][0]['type']['name'];
-    if (slot1 == 'electric' || slot1 == 'ice') {
-        document.getElementById('pokeMiniName' + i).classList.add(`color-black`);
-        document.getElementById('pokeMiniId' + i).classList.add(`color-black`);
-
-    }
-}
-
-async function changeCardToBlack(i, arrayPokemon) {
-    let slot1 = arrayPokemon['types'][0]['type']['name'];
-    if (slot1 == 'electric' || slot1 == 'ice') {
+async function changePokesToBlack(i) {
+    let type1 = allPokes[i]['pokemon'][0]['pokeType1En'];
+    if (type1 == 'electric' || type1 == 'ice') {
         for (let j = 0; j < colorBlackIds.length; j++) {
             document.getElementById(colorBlackIds[j] + i).classList.add(`color-black`);
         }
@@ -395,11 +419,8 @@ function updateProgress(currentPokeNr) {
 
 // background-color
 async function stylePokeBgn(i, index) {
-    // async function stylePokeBgn(i, arrayPokemon, index) {
     let pokeType = allPokes[i]['pokemon'][0]['pokeType1En'];
-    // let pokeType = arrayPokemon['types'][0]['type']['name'];
     setBgnByType(i, index, pokeType);
-    // setBgnByType(pokeType, i, index);
 }
 
 
@@ -495,7 +516,7 @@ function getCompareElementBy(i, searchIndex, array) {
 
 // hide PokeMinis
 function hidePokeMinis() {
-    for (let i = 0; i < loadedPokeIds.length; i++) {
+    for (let i = 0; i < allPokes.length; i++) {
         document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.add('display-none')
     }
 }
@@ -593,19 +614,32 @@ function setAllSliderToDefault(i, slot1) {
 }
 
 
-async function renderPokeTop(i, arrPoke) {
-    let pokeSlot1 = arrPoke['types'][0]['type']['name'];
-    let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
-    let bgnType = 'bgn-type-' + pokeSlot1;
-    if (arrPoke['types'].length == 2) {
-        let pokeSlot2 = arrPoke['types'][1]['type']['name'];
+async function stylePokeTop(i) {
+    let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
+    let bgnType = 'bgn-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
+    stylePokeSlot1(i, bgnSlotType);
+    if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
+        let pokeSlot2 = allPokes[i]['pokemon'][0]['pokeType2En'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-        renderPokeSlot2(i, arrPoke, bgnSlotType);
+        stylePokeSlot2(i,bgnSlotType);
     }
-    renderPokeFavorite(i, bgnType);
-    renderPokeToBlack(i);
-    renderPokeSlot1(i, bgnSlotType);
+    // renderPokeFavorite(i, bgnType);
 }
+
+
+// async function renderPokeTop(i, arrPoke) {
+//     let pokeSlot1 = arrPoke['types'][0]['type']['name'];
+//     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
+//     let bgnType = 'bgn-type-' + pokeSlot1;
+//     renderPokeSlot1(i, bgnSlotType);
+//     if (arrPoke['types'].length == 2) {
+//         let pokeSlot2 = arrPoke['types'][1]['type']['name'];
+//         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
+//         renderPokeSlot2(i, arrPoke, bgnSlotType);
+//     }
+//     renderPokeFavorite(i, bgnType);
+//     renderPokeToBlack(i);
+// }
 
 
 function renderPokeFavorite(i, bgnType) {
@@ -621,16 +655,21 @@ function renderPokeToBlack(i, pokeSlot1) {
 }
 
 
-function renderPokeSlot1(i, bgnSlotType) {
+function stylePokeSlot1(i, bgnSlotType) {
     document.getElementById('base-type1' + i).classList.add(`${bgnSlotType}`);
-};
-
-
-function renderPokeSlot2(i, arrPoke, bgnSlotType) {
-    if (arrPoke['types'].length == 2) {
-        document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
-    }
 }
+
+
+function stylePokeSlot2(i, bgnSlotType) {
+    document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
+}
+
+
+// function renderPokeSlot2(i, arrPoke, bgnSlotType) {
+//     if (arrPoke['types'].length == 2) {
+//         document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
+//     }
+// }
 
 
 function changeToBlack(i, pokeSlot1) {
@@ -790,16 +829,17 @@ async function scrollFunction() {
 }
 
 // generate HTML
-function generateHTMLPokeMini(i, id, name) {
+function generateHTMLPokeMini(i, id, name, type, img) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
           <div id="pokeMini${i}" class="pokeMini">
               <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
                   <div id="pokeMiniId${i}" class="pokeMiniId">#${id}</div>
                   <div id="pokeMiniName${i}" class="pokeMiniName">${name}</div>
+                  <div id="pokeMiniType1${i}" class="pokeMiniType1">${type}</div>
                   </div>
                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
-                    <img id="pokeMiniImg${i}" class="pokeMiniImg" src="">
+                    <img id="pokeMiniImg${i}" class="pokeMiniImg" src="${img}">
                   </div>
           </div>
       </button>
@@ -824,7 +864,7 @@ function generateHTMLPokeMini(i, id, name) {
 // }
 
 
-function generateHTMLPokeCard(i, slot1) {
+function generateHTMLPokeMax(i, name, id, type1, type2, slot1) {
     return /*html*/`
       <div id="pokedex${i}" class="pokedex display-none">
         <div id="pokedex-top${i}" class="pokedex-top">
@@ -834,15 +874,15 @@ function generateHTMLPokeCard(i, slot1) {
                       </button>
                       </div>
               <div class="pokedex-above">
-                  <div id="pokedex-name${i}" class="pokedex-name">
+                  <div id="pokedex-name${i}" class="pokedex-name">${name}
                   </div>
-                  <div id="pokedex-id${i}" class="pokedex-id">
+                  <div id="pokedex-id${i}" class="pokedex-id">#${id}
                   </div>
                   </div>
               <div class="slot-line">
                   <div id="pokedex-slots${i}" class="pokedex-slots">
-                    <div id="base-type1${i}" class="slot"></div>
-                    <div id="base-type2${i}" class="slot display-none"></div>
+                    <div id="base-type1${i}" class="slot">${type1}</div>
+                    <div id="base-type2${i}" class="slot display-none">${type2}</div>
                   </div>
                   <div class="favorite">
                       <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>
@@ -869,6 +909,51 @@ function generateHTMLPokeCard(i, slot1) {
       </div> 
       `
 }
+// function generateHTMLPokeCard(i, slot1) {
+//     return /*html*/`
+//       <div id="pokedex${i}" class="pokedex display-none">
+//         <div id="pokedex-top${i}" class="pokedex-top">
+//         <div>
+//             <button onclick="switchContent(${i})" class="btn-back">
+//                       <img src="./img/backspace.png">
+//                       </button>
+//                       </div>
+//               <div class="pokedex-above">
+//                   <div id="pokedex-name${i}" class="pokedex-name">
+//                   </div>
+//                   <div id="pokedex-id${i}" class="pokedex-id">
+//                   </div>
+//                   </div>
+//               <div class="slot-line">
+//                   <div id="pokedex-slots${i}" class="pokedex-slots">
+//                     <div id="base-type1${i}" class="slot"></div>
+//                     <div id="base-type2${i}" class="slot display-none"></div>
+//                   </div>
+//                   <div class="favorite">
+//                       <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>
+//                       <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill1${i}" src="./img/favorite_FILL1.png"></button></div>
+//                   </div>
+//               </div>
+//               <div id="pokedex-image-place${i}" class="pokedex-image-place">
+//                   <div id="pokedex-image${i}" class="pokedex-image">
+//                   <img id="pokedex-img${i}" class="pokedex-img" src="">
+//                 </div>
+//               </div>
+//           </div>
+//           <div id="pokedex-bottom${i}" class="pokedex-bottom">
+//           <div class="navigationPoke">
+//               <div onmouseover="hoverNavigationOver(1, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(1, ${i}, '${slot1}')">
+//                   <button onclick="showCurrentCardById('card1${i}', ${i}, '${slot1}')" id="btn-card1${i}">Über</button>
+//               </div>
+//               <div onmouseover="hoverNavigationOver(2, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(2, ${i}, '${slot1}')">
+//                   <button onclick="showCurrentCardById('card2${i}', ${i}, '${slot1}')" id="btn-card2${i}">Basis Werte</button>
+//               </div>
+//           </div>
+//           <div id="card1${i}" class="cards"></div>
+//           <div id="card2${i}" class="cards display-none"></div>
+//       </div> 
+//       `
+// }
 
 
 async function generateHTMLAbout(i, aboutRowId, aboutNameId, aboutValueId, aboutTitle) {
