@@ -16,7 +16,7 @@ let lastCard = 0;
 let amountCards = 2
 let statNames = ['Kraftpunkte:', 'Angriff:', 'Verteidigung:', 'Spezialangriff:', 'Spezialverteid.:', 'Initiative'];
 let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
-let colorBlackIds = ['pokeMiniName','pokeMiniId', 'pokeMiniType1','pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
+let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
 let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
 let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
 let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
@@ -71,8 +71,18 @@ function generateHTML(begin, end) {
                 format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
                 allPokes[i]['pokemon'][0]['pokeType1'],
                 allPokes[i]['pokemon'][0]['pokeType2'],
+                allPokes[i]['pokemon'][0]['pokeImg'],
                 allPokes[i]['pokemon'][0]['pokeType1En'],
             );
+        document.getElementById('card1' + i).innerHTML +=
+            generateHTMLAbout(
+                i,
+                allPokes[i]['pokemon'][0]['pokeSpec'],
+                allPokes[i]['pokemon'][0]['pokeWeight'],
+                allPokes[i]['pokemon'][0]['pokeHeight'],
+                allPokes[i]['pokemon'][0]['pokeAbi'],
+                allPokes[i]['pokemon'][0]['pokeAbiTxt'],
+                );
     }
 }
 
@@ -83,9 +93,8 @@ function stylePokes(begin, end) {
         stylePokeBgn(i, 'pokedex');
         showSlot2(i);
         stylePokeTop(i);
+        stylePokeBottom(i);
         changePokesToBlack(i);
-
-
     }
 }
 
@@ -237,71 +246,25 @@ async function noticeData(arrPoke, arrSpec) {
 }
 
 
-
-async function render(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeType1st, arrPokeType2nd) {
-    renderPokeMini(i, arrPoke);
-    renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeType1st, arrPokeType2nd);
-}
-
-
-async function renderPokeMini(i, arrPoke) {
-    document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i);
-    stylePokeBgn(i, arrPoke, 'pokeMini');
-    changeMiniToBlack(i, arrPoke);
-}
+// function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeType1st, arrPokeType2nd) {
+//     let slot = arrPoke['types'][0]['type']['name'];
+//     document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i, slot);
+//     stylePokeBgn(i, arrPoke, 'pokedex');
+//     changeCardToBlack(i, arrPoke);
+//     renderPokeTop(i, arrPoke);
+//     renderSlots(i, arrPoke, arrPokeType1st, arrPokeType2nd);
 
 
-function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeType1st, arrPokeType2nd) {
-    let slot = arrPoke['types'][0]['type']['name'];
-    document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i, slot);
-    stylePokeBgn(i, arrPoke, 'pokedex');
-    changeCardToBlack(i, arrPoke);
-    renderPokeTop(i, arrPoke);
-    renderSlots(i, arrPoke, arrPokeType1st, arrPokeType2nd);
-    renderPokeNavigation(i, arrPoke);
-    renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec);
-}
+// renderPokeNavigation(i, arrPoke);
 
 
-// fill
-async function fill(i, arrPoke) {
-    fillId(i);
-    fillName(i);
-    fillImg(i, arrPoke);
-}
-
-
-function fillName(i) {
-    document.getElementById('pokeMiniName' + i).innerHTML = loadedPokeNames[i - 1];
-    document.getElementById('pokedex-name' + i).innerHTML = loadedPokeNames[i - 1];
-}
-
-
-function fillId(i) {
-    let formatId = format3LeftHandZeros(loadedPokeIds[i - 1]);
-    document.getElementById('pokeMiniId' + i).innerHTML = `#${formatId}`;
-    document.getElementById('pokedex-id' + i).innerHTML = `#${formatId}`;
-}
-
-
-function fillImg(i, arrayPokemon) {
-    let imgSrc = arrayPokemon['sprites']['other']['dream_world']['front_default'];
-    document.getElementById('pokeMiniImg' + i).src = imgSrc;
-    document.getElementById('pokedex-img' + i).src = imgSrc;
-}
+// }
 
 
 function fillSlot1(i, slot1) {
     document.getElementById('base-type1' + i).innerHTML = slot1;
 }
 
-
-// function fillSlot2(i, slot2) {
-//     if (slot2 !== '') {
-//         document.getElementById('base-type2' + i).classList.remove('display-none');
-//     }
-//     document.getElementById('base-type2' + i).innerHTML = slot2;
-// }
 
 function showSlot2(i) {
     if (allPokes[i]['pokemon'][0]['pokeType2'] !== '') {
@@ -311,19 +274,31 @@ function showSlot2(i) {
 }
 
 
-async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
-    renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
-    renderPokemonDetailsBaseStats(i, arrPoke);
+function renderPokemonDetails(i) {
+    renderPokemonDetailsAbout(i);
+    renderPokemonDetailsBaseStats(i);
 }
 
 
-async function renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec) {
+// async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
+//     renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
+//     renderPokemonDetailsBaseStats(i, arrPoke);
+// }
+
+
+async function renderPokemonDetailsAbout(i) {
     document.getElementById('card1' + i).innerHTML = '';
     for (let j = 0; j < aboutRowIds.length; j++) {
         document.getElementById('card1' + i).innerHTML += await generateHTMLAbout(i, aboutRowIds[j], aboutNameIds[j], aboutValueIds[j], aboutTitles[j]);
     }
     await Promise.all([fillGenera(i, arrPokeSpec), fillAbility(i, arrPokeAbi), fillWeightAndHeight(i, arrPoke)])
 }
+//     document.getElementById('card1' + i).innerHTML = '';
+//     for (let j = 0; j < aboutRowIds.length; j++) {
+//         document.getElementById('card1' + i).innerHTML += await generateHTMLAbout(i, aboutRowIds[j], aboutNameIds[j], aboutValueIds[j], aboutTitles[j]);
+//     }
+//     await Promise.all([fillGenera(i, arrPokeSpec), fillAbility(i, arrPokeAbi), fillWeightAndHeight(i, arrPoke)])
+// }
 
 
 async function renderPokemonDetailsBaseStats(i, arrPoke) {
@@ -614,32 +589,23 @@ function setAllSliderToDefault(i, slot1) {
 }
 
 
-async function stylePokeTop(i) {
+function stylePokeTop(i) {
     let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
     let bgnType = 'bgn-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
     stylePokeSlot1(i, bgnSlotType);
     if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
         let pokeSlot2 = allPokes[i]['pokemon'][0]['pokeType2En'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-        stylePokeSlot2(i,bgnSlotType);
+        stylePokeSlot2(i, bgnSlotType);
     }
-    // renderPokeFavorite(i, bgnType);
+    renderPokeFavorite(i, bgnType);
 }
 
 
-// async function renderPokeTop(i, arrPoke) {
-//     let pokeSlot1 = arrPoke['types'][0]['type']['name'];
-//     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
-//     let bgnType = 'bgn-type-' + pokeSlot1;
-//     renderPokeSlot1(i, bgnSlotType);
-//     if (arrPoke['types'].length == 2) {
-//         let pokeSlot2 = arrPoke['types'][1]['type']['name'];
-//         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-//         renderPokeSlot2(i, arrPoke, bgnSlotType);
-//     }
-//     renderPokeFavorite(i, bgnType);
-//     renderPokeToBlack(i);
-// }
+function stylePokeBottom(i) {
+    stylePokeNavigation(i);
+
+}
 
 
 function renderPokeFavorite(i, bgnType) {
@@ -665,13 +631,6 @@ function stylePokeSlot2(i, bgnSlotType) {
 }
 
 
-// function renderPokeSlot2(i, arrPoke, bgnSlotType) {
-//     if (arrPoke['types'].length == 2) {
-//         document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
-//     }
-// }
-
-
 function changeToBlack(i, pokeSlot1) {
     let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
     document.getElementById('pokeImgFavFill0' + i).classList.add(`${bgnSlotType}`);
@@ -685,10 +644,9 @@ function changeToBlack(i, pokeSlot1) {
 }
 
 
-async function renderPokeNavigation(i, arrayPokemon) {
-    let pokeSlot1 = arrayPokemon['types'][0]['type']['name'];
-    let bgnSlotType = 'bgn-' + pokeSlot1;
-    let bgnActiveType = 'bgn-slot-type-' + pokeSlot1;
+async function stylePokeNavigation(i) {
+    let bgnSlotType = 'bgn-' + allPokes[i]['pokemon'][0]['pokeType1En'];
+    let bgnActiveType = 'bgn-slot-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
     for (let cardNr = 1; cardNr <= 2; cardNr++) {
         document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnSlotType}`);
     }
@@ -847,24 +805,7 @@ function generateHTMLPokeMini(i, id, name, type, img) {
 }
 
 
-// function generateHTMLPokeMini(i) {
-//     return /*html*/`
-//       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
-//           <div id="pokeMini${i}" class="pokeMini">
-//               <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
-//                   <div id="pokeMiniId${i}" class="pokeMiniId"></div>
-//                   <div id="pokeMiniName${i}" class="pokeMiniName"></div>
-//                   </div>
-//                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
-//                     <img id="pokeMiniImg${i}" class="pokeMiniImg" src="">
-//                   </div>
-//           </div>
-//       </button>
-//       `
-// }
-
-
-function generateHTMLPokeMax(i, name, id, type1, type2, slot1) {
+function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
     return /*html*/`
       <div id="pokedex${i}" class="pokedex display-none">
         <div id="pokedex-top${i}" class="pokedex-top">
@@ -891,7 +832,7 @@ function generateHTMLPokeMax(i, name, id, type1, type2, slot1) {
               </div>
               <div id="pokedex-image-place${i}" class="pokedex-image-place">
                   <div id="pokedex-image${i}" class="pokedex-image">
-                  <img id="pokedex-img${i}" class="pokedex-img" src="">
+                  <img id="pokedex-img${i}" class="pokedex-img" src="${img}">
                 </div>
               </div>
           </div>
@@ -909,60 +850,37 @@ function generateHTMLPokeMax(i, name, id, type1, type2, slot1) {
       </div> 
       `
 }
-// function generateHTMLPokeCard(i, slot1) {
-//     return /*html*/`
-//       <div id="pokedex${i}" class="pokedex display-none">
-//         <div id="pokedex-top${i}" class="pokedex-top">
-//         <div>
-//             <button onclick="switchContent(${i})" class="btn-back">
-//                       <img src="./img/backspace.png">
-//                       </button>
-//                       </div>
-//               <div class="pokedex-above">
-//                   <div id="pokedex-name${i}" class="pokedex-name">
-//                   </div>
-//                   <div id="pokedex-id${i}" class="pokedex-id">
-//                   </div>
-//                   </div>
-//               <div class="slot-line">
-//                   <div id="pokedex-slots${i}" class="pokedex-slots">
-//                     <div id="base-type1${i}" class="slot"></div>
-//                     <div id="base-type2${i}" class="slot display-none"></div>
-//                   </div>
-//                   <div class="favorite">
-//                       <div id="fill0${i}"><button id="btn-fill0${i}" class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill0${i}" src="./img/favorite_FILL0.png"></button></div>
-//                       <div id="fill1${i}" class="display-none"><button id="btn-fill1${i}"class="btn-fav" onclick="setFavorite(${i})"><img id="pokeImgFavFill1${i}" src="./img/favorite_FILL1.png"></button></div>
-//                   </div>
-//               </div>
-//               <div id="pokedex-image-place${i}" class="pokedex-image-place">
-//                   <div id="pokedex-image${i}" class="pokedex-image">
-//                   <img id="pokedex-img${i}" class="pokedex-img" src="">
-//                 </div>
-//               </div>
-//           </div>
-//           <div id="pokedex-bottom${i}" class="pokedex-bottom">
-//           <div class="navigationPoke">
-//               <div onmouseover="hoverNavigationOver(1, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(1, ${i}, '${slot1}')">
-//                   <button onclick="showCurrentCardById('card1${i}', ${i}, '${slot1}')" id="btn-card1${i}">Über</button>
-//               </div>
-//               <div onmouseover="hoverNavigationOver(2, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(2, ${i}, '${slot1}')">
-//                   <button onclick="showCurrentCardById('card2${i}', ${i}, '${slot1}')" id="btn-card2${i}">Basis Werte</button>
-//               </div>
-//           </div>
-//           <div id="card1${i}" class="cards"></div>
-//           <div id="card2${i}" class="cards display-none"></div>
-//       </div> 
-//       `
-// }
 
 
-async function generateHTMLAbout(i, aboutRowId, aboutNameId, aboutValueId, aboutTitle) {
+function generateHTMLAbout(i, genera, weight, height, ability, text) {
     return /*html*/`
-    <div id="${aboutRowId}${i}" class="aboutRow">
-      <div id="${aboutNameId}${i}"class="aboutName">${aboutTitle}</div>
-      <div id="${aboutValueId}${i}"class="aboutValue"></div>
+    <div id="genera${i}" class="aboutRow">
+      <div id="generaName${i}"class="aboutName">Klasse:</div>
+      <div id="generaValue${i}"class="aboutValue">${genera}</div>
+    </div>
+    <div id="weight${i}" class="aboutRow">
+      <div id="weightName${i}"class="aboutName">Gewicht:</div>
+      <div id="weightValue${i}"class="aboutValue">${weight}</div>
+    </div>
+    <div id="height${i}" class="aboutRow">
+      <div id="heightName${i}"class="aboutName">Höhe:</div>
+      <div id="heightValue${i}"class="aboutValue">${height}</div>
+    </div>
+    <div id="ability${i}" class="aboutRow">
+      <div id="abilityName${i}"class="aboutName">Fähigkeit:</div>
+      <div id="abilityValue${i}"class="aboutValue">${ability}</div>
+    </div>
+    <div id="text${i}" class="aboutRow">
+      <div id="textName${i}"class="aboutName"></div>
+      <div id="textValue${i}"class="aboutValue">${text}</div>
     </div>
       `}
+
+
+// let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
+// let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
+// let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
+// let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 
 
 async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
