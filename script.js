@@ -1,5 +1,5 @@
 let allPokes = [];
-let initEnd = 5;
+let initEnd = 19;
 let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 19;
 let endPokeNr = nextPokeNr + stepPokeNrs;
@@ -17,10 +17,10 @@ let amountCards = 2
 let statNames = ['Kraftpunkte:', 'Angriff:', 'Verteidigung:', 'Spezialangriff:', 'Spezialverteid.:', 'Initiative'];
 let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
 let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
-let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
-let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
-let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
-let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
+// let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
+// let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
+// let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
+// let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 let counter = 0;
 let scrollCounter = 0;
 
@@ -47,11 +47,10 @@ async function getData(begin, end) {
         generateHTML(begin - 1, end);
         stylePokes(begin - 1, end);
         updateCountNrs(end);
+        fillBaseStats(begin - 1, end);
         functionRunning = false;
     }
 }
-
-
 
 
 function generateHTML(begin, end) {
@@ -82,10 +81,21 @@ function generateHTML(begin, end) {
                 allPokes[i]['pokemon'][0]['pokeHeight'],
                 allPokes[i]['pokemon'][0]['pokeAbi'],
                 allPokes[i]['pokemon'][0]['pokeAbiTxt'],
-                );
+            );
+        document.getElementById('card2' + i).innerHTML +=
+            generateHTMLStats(
+                i,
+                allPokes[i]['pokemon'][0]['pokeStat1stValue'],
+                allPokes[i]['pokemon'][0]['pokeStat2ndValue'],
+                allPokes[i]['pokemon'][0]['pokeStat3rdValue'],
+                allPokes[i]['pokemon'][0]['pokeStat4thValue'],
+                allPokes[i]['pokemon'][0]['pokeStat5thValue'],
+                allPokes[i]['pokemon'][0]['pokeStat6thValue'],
+            );
     }
 }
 
+// generateHTMLStats(i, hp, att, def, specAtt, specDef, speed)
 
 function stylePokes(begin, end) {
     for (let i = begin; i < end; i++) {
@@ -301,13 +311,13 @@ async function renderPokemonDetailsAbout(i) {
 // }
 
 
-async function renderPokemonDetailsBaseStats(i, arrPoke) {
-    document.getElementById('card2' + i).innerHTML = '';
-    for (let j = 0; j < statIds.length; j++) {
-        document.getElementById('card2' + i).innerHTML += await generateHTMLStats(i, statIds[j], `stat-name${j + 1}`, `stat-value${j + 1}`, `progress-about-bar-inner${j + 1}`, statNames[j]);
-    }
-    await fillBaseStats(i, arrPoke);
-}
+// async function renderPokemonDetailsBaseStats(i, arrPoke) {
+//     document.getElementById('card2' + i).innerHTML = '';
+//     for (let j = 0; j < statIds.length; j++) {
+//         document.getElementById('card2' + i).innerHTML += await generateHTMLStats(i, statIds[j], `stat-name${j + 1}`, `stat-value${j + 1}`, `progress-about-bar-inner${j + 1}`, statNames[j]);
+//     }
+//     await fillBaseStats(i, arrPoke);
+// }
 
 
 
@@ -694,11 +704,13 @@ function hoverNavigationOut(cardNr, i, slot1) {
 
 
 // fill BaseStats
-async function fillBaseStats(i, arrayPokemon) {
-    for (let j = 1; j <= arrayPokemon['stats'].length; j++) {
-        let value = arrayPokemon['stats'][j - 1]['base_stat'];
-        let valuePerCent = perCent(value);
-        renderStatsAndProgressLine(i, value, valuePerCent, j);
+async function fillBaseStats(begin, end) {
+    for (let k = begin; k < end; k++) {
+        for (let j = 1; j <= allPokes[k]['arrPoke'][0]['stats'].length; j++) {
+            let value = allPokes[k]['arrPoke'][0]['stats'][j - 1]['base_stat'];
+            let valuePerCent = perCent(value);
+            renderProgressLine(k, valuePerCent, j);
+        }
     }
 }
 
@@ -709,14 +721,8 @@ function perCent(value) {
 }
 
 
-function renderStatsAndProgressLine(i, value, valuePerCent, j) {
-    renderStatsLine(i, value, j);
+function renderProgressLine(i, valuePerCent, j) {
     renderProgressLine(i, valuePerCent, j);
-}
-
-
-function renderStatsLine(i, value, j) {
-    document.getElementById('stat-value' + j + i).innerHTML = `${value}`;
 }
 
 
@@ -877,21 +883,74 @@ function generateHTMLAbout(i, genera, weight, height, ability, text) {
       `}
 
 
-// let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
-// let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
-// let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
-// let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
+
+// async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
+//     return /*html*/`
+//         <div id="${id1st}${i}" class="statRow">
+//           <div id="${id2nd}${i}" class="statName">Kraftpunkte:</div>
+//           <div class="statValueAndProgress">
+//             <div id="${id3rd}${i}" class="statValue"></div>
+//             <div class="progress-about-bar">
+//               <div id="${id4th}${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+//             </div>
+//           </div>
+//         </div>
 
 
-async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
+function generateHTMLStats(i, hp, att, def, specAtt, specDef, speed) {
     return /*html*/`
-        <div id="${id1st}${i}" class="statRow">
-          <div id="${id2nd}${i}" class="statName">${title}</div>
-          <div class="statValueAndProgress">
-            <div id="${id3rd}${i}" class="statValue"></div>
+   <div id="hp${i}" class="statRow">
+        <div id="hpName${i}" class="statName">Kraftpunkte:</div>
+        <div class="statValueAndProgress">
+            <div id="hpValue${i}" class="statValue">${hp}</div>
             <div class="progress-about-bar">
-              <div id="${id4th}${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+                <div id="progress-about-bar-inner1${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
             </div>
-          </div>
         </div>
+    </div>
+    <div id="attack${i}" class="statRow">
+        <div id="attackName${i}" class="statName">Angriff:</div>
+        <div class="statValueAndProgress">
+            <div id="attackValue${i}" class="statValue">${att}</div>
+            <div class="progress-about-bar">
+                <div id="progress-about-bar-inner2${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <div id="defence${i}" class="statRow">
+        <div id="defenceName${i}" class="statName">Verteidigung:</div>
+        <div class="statValueAndProgress">
+            <div id="defenceValue${i}" class="statValue">${def}</div>
+            <div class="progress-about-bar">
+                <div id="progress-about-bar-inner3${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <div id="specAttack${i}" class="statRow">
+        <div id="specAttackName${i}" class="statName">Spezialangriff:</div>
+        <div class="statValueAndProgress">
+            <div id="specAttackValue${i}" class="statValue">${specAtt}</div>
+            <div class="progress-about-bar">
+                <div id="progress-about-bar-inner4${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <div id="specDef${i}" class="statRow">
+        <div id="specDefName${i}" class="statName">Spezialverteid.:</div>
+        <div class="statValueAndProgress">
+            <div id="specDefValue${i}" class="statValue">${specDef}</div>
+            <div class="progress-about-bar">
+                <div id="progress-about-bar-inner5${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+    <div id="speed${i}" class="statRow">
+        <div id="speedName${i}" class="statName">Initiative:</div>
+        <div class="statValueAndProgress">
+            <div id="speedValue${i}" class="statValue">${speed}</div>
+            <div class="progress-about-bar">
+                <div id="progress-about-bar-inner6${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
     `}
