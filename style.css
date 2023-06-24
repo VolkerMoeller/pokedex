@@ -2,6 +2,7 @@ body {
     margin: 0px;
     font-family: 'Comic Neue';
     font-weight: bolder;
+    font-size: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -90,7 +91,7 @@ body {
 
 /* myPlace */
 .myPlace {
-    margin-top: 170px;
+    margin-top: 204px;
     padding: 8px;
     width: 100%;
     display: grid;
@@ -102,6 +103,7 @@ body {
     border-radius: 15px;
     padding: 8px;
     letter-spacing: 0px;
+    font-size: 20px;
     color: white;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
     border: 1px solid black;
@@ -129,6 +131,7 @@ body {
 
 .pokeMini1stLine {
     display: flex;
+    flex-direction: column;
     gap: 8px;
     margin-bottom: 8px;
 }
@@ -617,6 +620,19 @@ td {
 }
 
 @media (max-width: 420px) {
+    .pokedex-slots {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pokedex-above {
+        justify-content: space-around;
+    }
+
+    .aboutRow {
+        flex-wrap: wrap;
+    }
+
     .statRow {
         flex-direction: column;
         align-items: start;

@@ -1,7 +1,7 @@
 let allPokes = [];
 let initEnd = 19;
 let nextPokeNr = initEnd + 1;
-let stepPokeNrs = 19;
+let stepPokeNrs = 9;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
@@ -17,10 +17,6 @@ let amountCards = 2
 let statNames = ['Kraftpunkte:', 'Angriff:', 'Verteidigung:', 'Spezialangriff:', 'Spezialverteid.:', 'Initiative'];
 let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
 let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
-// let aboutRowIds = ['genera', 'weight', 'height', 'ability', 'text'];
-// let aboutNameIds = ['generaName', 'weightName', 'heightName', 'abilityName', 'textName'];
-// let aboutValueIds = ['generaValue', 'weightValue', 'heightValue', 'abilityValue', 'textValue'];
-// let aboutTitles = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit:', ''];
 let counter = 0;
 let scrollCounter = 0;
 
@@ -114,6 +110,12 @@ function initNext() {
     getData(nextPokeNr, endPokeNr);
 }
 
+function initShowNext() {
+    hidePokeMinis();
+    showPokeMinis();
+    initNext();
+}
+
 
 function updateCountNrs(end) {
     nextPokeNr = end + 1;
@@ -175,8 +177,8 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
     }
 }
 
-// second: push the data
 
+// second: push the data
 async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd, arrStat1st, arrStat2nd, arrStat3rd, arrStat4th, arrStat5th, arrStat6th) {
     allPokes.push(
         {
@@ -195,7 +197,6 @@ async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd, a
         }
     );
     await Promise.all([noticeData(arrPoke, arrSpec)]);
-    // await Promise.all([noticeData(arrPoke, arrSpec), render(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd), fill(i, arrPoke)]);
 }
 
 function pushData() {
@@ -256,21 +257,6 @@ async function noticeData(arrPoke, arrSpec) {
 }
 
 
-// function renderPokeCard(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeType1st, arrPokeType2nd) {
-//     let slot = arrPoke['types'][0]['type']['name'];
-//     document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeCard(i, slot);
-//     stylePokeBgn(i, arrPoke, 'pokedex');
-//     changeCardToBlack(i, arrPoke);
-//     renderPokeTop(i, arrPoke);
-//     renderSlots(i, arrPoke, arrPokeType1st, arrPokeType2nd);
-
-
-// renderPokeNavigation(i, arrPoke);
-
-
-// }
-
-
 function fillSlot1(i, slot1) {
     document.getElementById('base-type1' + i).innerHTML = slot1;
 }
@@ -290,12 +276,6 @@ function renderPokemonDetails(i) {
 }
 
 
-// async function renderPokemonDetails(i, arrPoke, arrPokeAbi, arrPokeSpec, arrPokeEvol) {
-//     renderPokemonDetailsAbout(i, arrPoke, arrPokeAbi, arrPokeSpec);
-//     renderPokemonDetailsBaseStats(i, arrPoke);
-// }
-
-
 async function renderPokemonDetailsAbout(i) {
     document.getElementById('card1' + i).innerHTML = '';
     for (let j = 0; j < aboutRowIds.length; j++) {
@@ -303,23 +283,6 @@ async function renderPokemonDetailsAbout(i) {
     }
     await Promise.all([fillGenera(i, arrPokeSpec), fillAbility(i, arrPokeAbi), fillWeightAndHeight(i, arrPoke)])
 }
-//     document.getElementById('card1' + i).innerHTML = '';
-//     for (let j = 0; j < aboutRowIds.length; j++) {
-//         document.getElementById('card1' + i).innerHTML += await generateHTMLAbout(i, aboutRowIds[j], aboutNameIds[j], aboutValueIds[j], aboutTitles[j]);
-//     }
-//     await Promise.all([fillGenera(i, arrPokeSpec), fillAbility(i, arrPokeAbi), fillWeightAndHeight(i, arrPoke)])
-// }
-
-
-// async function renderPokemonDetailsBaseStats(i, arrPoke) {
-//     document.getElementById('card2' + i).innerHTML = '';
-//     for (let j = 0; j < statIds.length; j++) {
-//         document.getElementById('card2' + i).innerHTML += await generateHTMLStats(i, statIds[j], `stat-name${j + 1}`, `stat-value${j + 1}`, `progress-about-bar-inner${j + 1}`, statNames[j]);
-//     }
-//     await fillBaseStats(i, arrPoke);
-// }
-
-
 
 
 async function renderSlots(i, arr, arrType1st, arrType2nd) {
@@ -469,7 +432,7 @@ function searchBy(array, searchIndex, pushIndex) {
         let compareElement = getCompareElementBy(i, searchIndex, array);
         let result = compareElement.startsWith(searchElement);
         if (result == true) {
-            document.getElementById(pushIndex + loadedPokeIds[i]).classList.remove('display-none')
+            document.getElementById(pushIndex + i).classList.remove('display-none')
         }
     }
 }
@@ -502,7 +465,14 @@ function getCompareElementBy(i, searchIndex, array) {
 // hide PokeMinis
 function hidePokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
-        document.getElementById('pokeMiniButton' + loadedPokeIds[i]).classList.add('display-none')
+        document.getElementById('pokeMiniButton' + i).classList.add('display-none')
+    }
+}
+
+
+function showPokeMinis() {
+    for (let i = 0; i < allPokes.length; i++) {
+        document.getElementById('pokeMiniButton' + i).classList.remove('display-none')
     }
 }
 
@@ -777,14 +747,14 @@ function clearSearchInput() {
 }
 
 
-// onscroll
-// window.onscroll = function () { scrollFunction() };
+onscroll
+window.onscroll = function () { scrollFunction() };
 
 
 async function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollCounter++;
-        let interval = 5;
+        let interval = 1;
         let tester = scrollCounter % interval;
         if (tester == 0) {
             initNext();
@@ -797,10 +767,10 @@ function generateHTMLPokeMini(i, id, name, type, img) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
           <div id="pokeMini${i}" class="pokeMini">
-              <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
-                  <div id="pokeMiniId${i}" class="pokeMiniId">#${id}</div>
-                  <div id="pokeMiniName${i}" class="pokeMiniName">${name}</div>
-                  <div id="pokeMiniType1${i}" class="pokeMiniType1">${type}</div>
+            <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
+                <div id="pokeMiniName${i}" class="pokeMiniName">${name}</div>
+                <div id="pokeMiniId${i}" class="pokeMiniId">#${id}</div>
+                <div id="pokeMiniType1${i}" class="pokeMiniType1">${type}</div>
                   </div>
                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
                     <img id="pokeMiniImg${i}" class="pokeMiniImg" src="${img}">
@@ -878,23 +848,9 @@ function generateHTMLAbout(i, genera, weight, height, ability, text) {
     </div>
     <div id="text${i}" class="aboutRow">
       <div id="textName${i}"class="aboutName"></div>
-      <div id="textValue${i}"class="aboutValue">${text}</div>
+      <div id="textValue${i}"class="aboutValue"><i>${text}</i></div>
     </div>
       `}
-
-
-
-// async function generateHTMLStats(i, id1st, id2nd, id3rd, id4th, title) {
-//     return /*html*/`
-//         <div id="${id1st}${i}" class="statRow">
-//           <div id="${id2nd}${i}" class="statName">Kraftpunkte:</div>
-//           <div class="statValueAndProgress">
-//             <div id="${id3rd}${i}" class="statValue"></div>
-//             <div class="progress-about-bar">
-//               <div id="${id4th}${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-//             </div>
-//           </div>
-//         </div>
 
 
 function generateHTMLStats(i, hp, att, def, specAtt, specDef, speed) {
