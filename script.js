@@ -7,21 +7,14 @@ let maxPokeNr = 1010;
 let currentPokeNr = 0
 let indexOfGermanData;
 let functionRunning = false;
-let loadedPokeIds = [];
 let loadedPokeNames = [];
-let loadedPokeSlots1 = [];
-let loadedPokeSlots2 = [];
-let pokesFavorites = [];
-let lastCard = 0;
-let amountCards = 2
-let statNames = ['Kraftpunkte:', 'Angriff:', 'Verteidigung:', 'Spezialangriff:', 'Spezialverteid.:', 'Initiative'];
-let statIds = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
+let amountSlides = 2
 let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
 let counter = 0;
 let scrollCounter = 0;
+let arrStats = [];
 
 
-// first catch all datas from server
 async function init() {
     loadFavorites();
     allPokes = [];
@@ -50,15 +43,8 @@ async function getData(begin, end) {
 
 
 function generateHTML(begin, end) {
+    generatePokeMini(begin, end);
     for (let i = begin; i < end; i++) {
-        document.getElementById('myPlace').innerHTML +=
-            generateHTMLPokeMini(
-                i,
-                format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
-                allPokes[i]['pokemon'][0]['pokeName'],
-                allPokes[i]['pokemon'][0]['pokeType1'],
-                allPokes[i]['pokemon'][0]['pokeImg'],
-            );
         document.getElementById('pokeCardPlace').innerHTML +=
             generateHTMLPokeMax(
                 i,
@@ -68,8 +54,8 @@ function generateHTML(begin, end) {
                 allPokes[i]['pokemon'][0]['pokeType2'],
                 allPokes[i]['pokemon'][0]['pokeImg'],
                 allPokes[i]['pokemon'][0]['pokeType1En'],
-            );
-        document.getElementById('card1' + i).innerHTML +=
+                );
+                document.getElementById('card1' + i).innerHTML +=
             generateHTMLAbout(
                 i,
                 allPokes[i]['pokemon'][0]['pokeSpec'],
@@ -77,10 +63,10 @@ function generateHTML(begin, end) {
                 allPokes[i]['pokemon'][0]['pokeHeight'],
                 allPokes[i]['pokemon'][0]['pokeAbi'],
                 allPokes[i]['pokemon'][0]['pokeAbiTxt'],
-            );
-        document.getElementById('card2' + i).innerHTML +=
-            generateHTMLStats(
-                i,
+                );
+                document.getElementById('card2' + i).innerHTML +=
+                generateHTMLStats(
+                    i,
                 allPokes[i]['pokemon'][0]['pokeStat1stValue'],
                 allPokes[i]['pokemon'][0]['pokeStat2ndValue'],
                 allPokes[i]['pokemon'][0]['pokeStat3rdValue'],
@@ -91,7 +77,20 @@ function generateHTML(begin, end) {
     }
 }
 
-// generateHTMLStats(i, hp, att, def, specAtt, specDef, speed)
+
+function generatePokeMini(begin, end) {
+    for (let i = begin; i < end; i++) {
+        document.getElementById('myPlace').innerHTML +=
+        generateHTMLPokeMini(
+            i,
+            format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
+                allPokes[i]['pokemon'][0]['pokeName'],
+                allPokes[i]['pokemon'][0]['pokeType1'],
+                allPokes[i]['pokemon'][0]['pokeImg'],
+            );
+    }
+}
+
 
 function stylePokes(begin, end) {
     for (let i = begin; i < end; i++) {
@@ -140,13 +139,10 @@ async function getDataByDynamikUrl(i, arr, arrSpec) {
     if (arr['types'].length == 2) {
         arrType2nd = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
     }
-    let arrStat1st = await fetchDataByDynamikUrl(arr, 'stats', 0, 'stat');
-    let arrStat2nd = await fetchDataByDynamikUrl(arr, 'stats', 1, 'stat');
-    let arrStat3rd = await fetchDataByDynamikUrl(arr, 'stats', 2, 'stat');
-    let arrStat4th = await fetchDataByDynamikUrl(arr, 'stats', 3, 'stat');
-    let arrStat5th = await fetchDataByDynamikUrl(arr, 'stats', 4, 'stat');
-    let arrStat6th = await fetchDataByDynamikUrl(arr, 'stats', 5, 'stat');
-    pushArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd, arrStat1st, arrStat2nd, arrStat3rd, arrStat4th, arrStat5th, arrStat6th);
+    for (let i = 0; i < 6; i++) {
+        arrStats.push(await fetchDataByDynamikUrl(arr, 'stats', i, 'stat'));
+    }
+    pushArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
 }
 
 
@@ -178,8 +174,7 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 }
 
 
-// second: push the data
-async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd, arrStat1st, arrStat2nd, arrStat3rd, arrStat4th, arrStat5th, arrStat6th) {
+async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd) {
     allPokes.push(
         {
             "arrPoke": [arrPoke],
@@ -187,16 +182,16 @@ async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd, a
             "arrSpec": [arrSpec],
             "arrType1st": [arrType1st],
             "arrType2nd": [arrType2nd],
-            "arrStats1st": [arrStat1st],
-            "arrStats2nd": [arrStat2nd],
-            "arrStats3rd": [arrStat3rd],
-            "arrStats4th": [arrStat4th],
-            "arrStats5th": [arrStat5th],
-            "arrStats6th": [arrStat6th],
+            "arrStatsHp": [arrStats[0]],
+            "arrStatsAtt": [arrStats[1]],
+            "arrStatsDef": [arrStats[2]],
+            "arrStatsSpAtt": [arrStats[3]],
+            "arrStatsSpDef": [arrStats[4]],
+            "arrStatsSpeed": [arrStats[5]],
             "pokemon": []
         }
     );
-    await Promise.all([noticeData(arrPoke, arrSpec)]);
+    noticeData(arrSpec);
 }
 
 function pushData() {
@@ -216,17 +211,17 @@ function pushData() {
                 "pokeSpecTxt": getGermanData(allPokes[j]['arrSpec'][0], 'flavor_text_entries', 'flavor_text'),
                 "pokeAbi": getGermanData(allPokes[j]['arrAbi'][0], 'names', 'name'),
                 "pokeAbiTxt": getGermanData(allPokes[j]['arrAbi'][0], 'flavor_text_entries', 'flavor_text'),
-                "pokeStat1stName": getGermanData(allPokes[j]['arrStats1st'][0], 'names', 'name'),
+                "pokeStat1stName": getGermanData(allPokes[j]['arrStatsHp'][0], 'names', 'name'),
                 "pokeStat1stValue": allPokes[j]['arrPoke'][0]['stats'][0]['base_stat'],
-                "pokeStat2ndName": getGermanData(allPokes[j]['arrStats2nd'][0], 'names', 'name'),
+                "pokeStat2ndName": getGermanData(allPokes[j]['arrStatsAtt'][0], 'names', 'name'),
                 "pokeStat2ndValue": allPokes[j]['arrPoke'][0]['stats'][1]['base_stat'],
-                "pokeStat3rdName": getGermanData(allPokes[j]['arrStats3rd'][0], 'names', 'name'),
+                "pokeStat3rdName": getGermanData(allPokes[j]['arrStatsDef'][0], 'names', 'name'),
                 "pokeStat3rdValue": allPokes[j]['arrPoke'][0]['stats'][2]['base_stat'],
-                "pokeStat4thName": getGermanData(allPokes[j]['arrStats4th'][0], 'names', 'name'),
+                "pokeStat4thName": getGermanData(allPokes[j]['arrStatsSpAtt'][0], 'names', 'name'),
                 "pokeStat4thValue": allPokes[j]['arrPoke'][0]['stats'][3]['base_stat'],
-                "pokeStat5thName": getGermanData(allPokes[j]['arrStats5th'][0], 'names', 'name'),
+                "pokeStat5thName": getGermanData(allPokes[j]['arrStatsSpDef'][0], 'names', 'name'),
                 "pokeStat5thValue": allPokes[j]['arrPoke'][0]['stats'][4]['base_stat'],
-                "pokeStat6thName": getGermanData(allPokes[j]['arrStats6th'][0], 'names', 'name'),
+                "pokeStat6thName": getGermanData(allPokes[j]['arrStatsSpeed'][0], 'names', 'name'),
                 "pokeStat6thValue": allPokes[j]['arrPoke'][0]['stats'][5]['base_stat'],
             }
         )
@@ -250,9 +245,7 @@ function checkIfSlot2En(i) {
 }
 
 
-// render
-async function noticeData(arrPoke, arrSpec) {
-    loadedPokeIds.push(arrPoke['id'].toString());
+function noticeData(arrSpec) {
     loadedPokeNames.push(getGermanData(arrSpec, 'names', 'name'));
 }
 
@@ -534,7 +527,7 @@ function showCurrentCardById(cardId, i, slot1) {
 
 
 function setAllCardsToDefault(i) {
-    for (let k = 1; k <= amountCards; k++) {
+    for (let k = 1; k <= amountSlides; k++) {
         let cardToHide = 'card' + k + i;
         document.getElementById(cardToHide).classList.add('display-none');
     }
@@ -560,7 +553,7 @@ function setAllSliderToDefault(i, slot1) {
     let bgnActiveType = 'bgn-slot-type-' + slot1;
     let bgnDefaultType = 'bgn-' + slot1;
     let bgnHoverType = 'bgn-hover-type-' + slot1;
-    for (let j = 1; j <= amountCards; j++) {
+    for (let j = 1; j <= amountSlides; j++) {
         let sliderId = 'btn-card' + j + i;
         document.getElementById(sliderId).classList.remove(`${bgnActiveType}`);
         document.getElementById(sliderId).classList.remove(`${bgnHoverType}`);
