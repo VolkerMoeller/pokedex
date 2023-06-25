@@ -9,17 +9,25 @@ let indexOfGermanData;
 let functionRunning = false;
 let loadedPokeNames = [];
 let amountSlides = 2
-let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
 let counter = 0;
 let scrollCounter = 0;
 let arrStats = [];
+let colorBlackIds = [
+    'pokeMiniName',
+    'pokeMiniId',
+    'pokeMiniType1',
+    'pokedex-name',
+    'pokedex-id',
+    'base-type1',
+    'base-type2',
+    'btn-card1',
+    'btn-card2'
+];
 
 
 async function init() {
-    loadFavorites();
     allPokes = [];
     loadedPokeNames = [];
-    loadedPokeIds = [];
     document.getElementById('myPlace').innerHTML = '';
     await getData(1, initEnd);
 }
@@ -54,8 +62,8 @@ function generateHTML(begin, end) {
                 allPokes[i]['pokemon'][0]['pokeType2'],
                 allPokes[i]['pokemon'][0]['pokeImg'],
                 allPokes[i]['pokemon'][0]['pokeType1En'],
-                );
-                document.getElementById('card1' + i).innerHTML +=
+            );
+        document.getElementById('card1' + i).innerHTML +=
             generateHTMLAbout(
                 i,
                 allPokes[i]['pokemon'][0]['pokeSpec'],
@@ -63,10 +71,10 @@ function generateHTML(begin, end) {
                 allPokes[i]['pokemon'][0]['pokeHeight'],
                 allPokes[i]['pokemon'][0]['pokeAbi'],
                 allPokes[i]['pokemon'][0]['pokeAbiTxt'],
-                );
-                document.getElementById('card2' + i).innerHTML +=
-                generateHTMLStats(
-                    i,
+            );
+        document.getElementById('card2' + i).innerHTML +=
+            generateHTMLStats(
+                i,
                 allPokes[i]['pokemon'][0]['pokeStat1stValue'],
                 allPokes[i]['pokemon'][0]['pokeStat2ndValue'],
                 allPokes[i]['pokemon'][0]['pokeStat3rdValue'],
@@ -81,9 +89,9 @@ function generateHTML(begin, end) {
 function generatePokeMini(begin, end) {
     for (let i = begin; i < end; i++) {
         document.getElementById('myPlace').innerHTML +=
-        generateHTMLPokeMini(
-            i,
-            format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
+            generateHTMLPokeMini(
+                i,
+                format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
                 allPokes[i]['pokemon'][0]['pokeName'],
                 allPokes[i]['pokemon'][0]['pokeType1'],
                 allPokes[i]['pokemon'][0]['pokeImg'],
@@ -228,6 +236,7 @@ function pushData() {
     }
 }
 
+
 function checkIfSlot2(i) {
     if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
         return getGermanData(allPokes[i]['arrType2nd'][0], 'names', 'name');
@@ -235,6 +244,7 @@ function checkIfSlot2(i) {
         return '';
     }
 }
+
 
 function checkIfSlot2En(i) {
     if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
@@ -263,54 +273,6 @@ function showSlot2(i) {
 }
 
 
-function renderPokemonDetails(i) {
-    renderPokemonDetailsAbout(i);
-    renderPokemonDetailsBaseStats(i);
-}
-
-
-async function renderPokemonDetailsAbout(i) {
-    document.getElementById('card1' + i).innerHTML = '';
-    for (let j = 0; j < aboutRowIds.length; j++) {
-        document.getElementById('card1' + i).innerHTML += await generateHTMLAbout(i, aboutRowIds[j], aboutNameIds[j], aboutValueIds[j], aboutTitles[j]);
-    }
-    await Promise.all([fillGenera(i, arrPokeSpec), fillAbility(i, arrPokeAbi), fillWeightAndHeight(i, arrPoke)])
-}
-
-
-async function renderSlots(i, arr, arrType1st, arrType2nd) {
-    if (arr['types'].length == 1) {
-        getSlot1(i, arrType1st);
-        emptySlot2(i, arr, arrType2nd);
-    } else
-        if (arr['types'].length == 2) {
-            getSlot1(i, arrType1st);
-            getSlot2(i, arr, arrType2nd);
-        }
-}
-
-
-async function getSlot1(i, arrType1st) {
-    let slot1 = getGermanData(arrType1st, 'names', 'name');
-    fillSlot1(i, slot1);
-    loadedPokeSlots1.push(slot1);
-}
-
-
-async function getSlot2(i, arrayPokemon, arrType2nd) {
-    let slot2 = getGermanData(arrType2nd, 'names', 'name');
-    fillSlot2(i, slot2);
-    loadedPokeSlots2.push(slot2);
-}
-
-
-function emptySlot2(i) {
-    let slot2 = '';
-    fillSlot2(i, slot2);
-    loadedPokeSlots2.push(slot2);
-}
-
-
 function showPokeCard(i) {
     switchContent(i);
     document.getElementById('pokedex' + i).classList.remove('display-none');
@@ -334,7 +296,6 @@ async function changePokesToBlack(i) {
 }
 
 
-// progressBar Homepage
 function updateAmountPokesAndProgress(currentPokeNr) {
     renderAmountLoadedPokes(currentPokeNr);
     updateProgress(currentPokeNr);
@@ -416,7 +377,6 @@ function topFunction() {
 }
 
 
-// searchBy(loadedPokeIds, 'searchId', 'pokeMiniButton');
 function searchBy(array, searchIndex, pushIndex) {
     hidePokeMinis();
     for (let i = 0; i < array.length; i++) {
@@ -436,20 +396,12 @@ function handleSearchElementBy(searchIndex, searchElement) {
         searchElement = searchElement.toLowerCase();
         return searchElement;
     }
-    if (searchIndex == 'searchId') {
-        let searchElement = searchElement.toString();
-        return searchElement;
-    }
 }
 
 
 function getCompareElementBy(i, searchIndex, array) {
     if (searchIndex == 'searchName') {
         let compareElement = array[i].toLowerCase();
-        return compareElement;
-    }
-    if (searchIndex == 'searchId') {
-        let compareElement = array[i];
         return compareElement;
     }
 }
@@ -472,49 +424,8 @@ function showPokeMinis() {
 
 // favorites
 function setFavorite(i) {
-    let hidden = document.getElementById(`fill0${i}`).classList.contains('display-none');
-    if (hidden == true) {
-        document.getElementById(`fill0${i}`).classList.remove('display-none');
-        document.getElementById(`fill1${i}`).classList.add('display-none');
-        removeFavorite(i);
-        saveFavorites();
-
-    } else {
-        document.getElementById(`fill0${i}`).classList.add('display-none');
-        document.getElementById(`fill1${i}`).classList.remove('display-none');
-        addFavorite(i);
-        saveFavorites();
-    }
-}
-
-
-function addFavorite(i) {
-    pokesFavorites.push(i);
-    pokesFavorites.sort(function (a, b) { return a - b });
-    saveFavorites();
-    loadFavorites();
-}
-
-
-function removeFavorite(i) {
-    let index = pokesFavorites.indexOf(i);
-    pokesFavorites.splice(index, 1);
-    saveFavorites();
-    loadFavorites();
-}
-
-
-function saveFavorites() {
-    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
-    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
-}
-
-
-function loadFavorites() {
-    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
-    if (pokesFavoritesAsText) {
-        pokesFavorites = JSON.parse(pokesFavoritesAsText);
-    }
+    document.getElementById(`fill0${i}`).classList.toggle('display-none');
+    document.getElementById(`fill1${i}`).classList.toggle('display-none');
 }
 
 
@@ -577,7 +488,6 @@ function stylePokeTop(i) {
 
 function stylePokeBottom(i) {
     stylePokeNavigation(i);
-
 }
 
 
@@ -629,26 +539,26 @@ async function stylePokeNavigation(i) {
 
 
 // render about
-async function fillGenera(i, arrPokeSpec) {
-    let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
-    document.getElementById(aboutValueIds[0] + i).innerHTML = `${pokeGenera}`;
-}
+// async function fillGenera(i, arrPokeSpec) {
+//     let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
+//     document.getElementById(aboutValueIds[0] + i).innerHTML = `${pokeGenera}`;
+// }
 
 
-async function fillAbility(i, arrPokeAbi) {
-    let pokeAbility = getGermanData(arrPokeAbi, 'names', 'name');
-    document.getElementById(aboutValueIds[3] + i).innerHTML = `${pokeAbility}:`;
-    let pokeAbiText = getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
-    document.getElementById(aboutValueIds[4] + i).innerHTML = `<i>${pokeAbiText}</i>`;
-}
+// async function fillAbility(i, arrPokeAbi) {
+//     let pokeAbility = getGermanData(arrPokeAbi, 'names', 'name');
+//     document.getElementById(aboutValueIds[3] + i).innerHTML = `${pokeAbility}:`;
+//     let pokeAbiText = getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
+//     document.getElementById(aboutValueIds[4] + i).innerHTML = `<i>${pokeAbiText}</i>`;
+// }
 
 
-async function fillWeightAndHeight(i, arrPoke) {
-    let pokeWeight = arrPoke['weight'];
-    document.getElementById(aboutValueIds[1] + i).innerHTML = `${pokeWeight} Poke-Einheiten`;
-    let pokeHeight = arrPoke['height'];
-    document.getElementById(aboutValueIds[2] + i).innerHTML = `${pokeHeight} Poke-Einheiten`;
-};
+// async function fillWeightAndHeight(i, arrPoke) {
+//     let pokeWeight = arrPoke['weight'];
+//     document.getElementById(aboutValueIds[1] + i).innerHTML = `${pokeWeight} Poke-Einheiten`;
+//     let pokeHeight = arrPoke['height'];
+//     document.getElementById(aboutValueIds[2] + i).innerHTML = `${pokeHeight} Poke-Einheiten`;
+// };
 
 
 
@@ -710,20 +620,6 @@ function searchIndexOfGermanData(array, index) {
             j = array[index].length;
             return indexGermanData;
         }
-    }
-}
-
-
-function saveFavorites() {
-    let pokesFavoritesAsText = JSON.stringify(pokesFavorites);
-    localStorage.setItem('pokesFavorites', pokesFavoritesAsText);
-}
-
-
-function loadFavorites() {
-    let pokesFavoritesAsText = localStorage.getItem('pokesFavorites');
-    if (pokesFavoritesAsText) {
-        pokesFavorites = JSON.parse(pokesFavoritesAsText);
     }
 }
 
