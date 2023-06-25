@@ -11,6 +11,7 @@ let loadedPokeNames = [];
 let amountSlides = 2
 let counter = 0;
 let scrollCounter = 0;
+let arrs = [];
 let arrStats = [];
 let colorBlackIds = [
     'pokeMiniName',
@@ -56,31 +57,31 @@ function generateHTML(begin, end) {
         document.getElementById('pokeCardPlace').innerHTML +=
             generateHTMLPokeMax(
                 i,
-                allPokes[i]['pokemon'][0]['pokeName'],
-                format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
-                allPokes[i]['pokemon'][0]['pokeType1'],
-                allPokes[i]['pokemon'][0]['pokeType2'],
-                allPokes[i]['pokemon'][0]['pokeImg'],
-                allPokes[i]['pokemon'][0]['pokeType1En'],
+                allPokes[i]['pokeName'],
+                format3LeftHandZeros(allPokes[i]['pokeId']),
+                allPokes[i]['pokeType1'],
+                allPokes[i]['pokeType2'],
+                allPokes[i]['pokeImg'],
+                allPokes[i]['pokeType1En'],
             );
         document.getElementById('card1' + i).innerHTML +=
             generateHTMLAbout(
                 i,
-                allPokes[i]['pokemon'][0]['pokeSpec'],
-                allPokes[i]['pokemon'][0]['pokeWeight'],
-                allPokes[i]['pokemon'][0]['pokeHeight'],
-                allPokes[i]['pokemon'][0]['pokeAbi'],
-                allPokes[i]['pokemon'][0]['pokeAbiTxt'],
+                allPokes[i]['pokeSpec'],
+                allPokes[i]['pokeWeight'],
+                allPokes[i]['pokeHeight'],
+                allPokes[i]['pokeAbi'],
+                allPokes[i]['pokeAbiTxt'],
             );
         document.getElementById('card2' + i).innerHTML +=
             generateHTMLStats(
                 i,
-                allPokes[i]['pokemon'][0]['pokeStat1stValue'],
-                allPokes[i]['pokemon'][0]['pokeStat2ndValue'],
-                allPokes[i]['pokemon'][0]['pokeStat3rdValue'],
-                allPokes[i]['pokemon'][0]['pokeStat4thValue'],
-                allPokes[i]['pokemon'][0]['pokeStat5thValue'],
-                allPokes[i]['pokemon'][0]['pokeStat6thValue'],
+                allPokes[i]['pokeStat1stValue'],
+                allPokes[i]['pokeStat2ndValue'],
+                allPokes[i]['pokeStat3rdValue'],
+                allPokes[i]['pokeStat4thValue'],
+                allPokes[i]['pokeStat5thValue'],
+                allPokes[i]['pokeStat6thValue'],
             );
     }
 }
@@ -91,10 +92,10 @@ function generatePokeMini(begin, end) {
         document.getElementById('myPlace').innerHTML +=
             generateHTMLPokeMini(
                 i,
-                format3LeftHandZeros(allPokes[i]['pokemon'][0]['pokeId']),
-                allPokes[i]['pokemon'][0]['pokeName'],
-                allPokes[i]['pokemon'][0]['pokeType1'],
-                allPokes[i]['pokemon'][0]['pokeImg'],
+                format3LeftHandZeros(allPokes[i]['pokeId']),
+                allPokes[i]['pokeName'],
+                allPokes[i]['pokeType1'],
+                allPokes[i]['pokeImg'],
             );
     }
 }
@@ -133,26 +134,41 @@ function updateCountNrs(end) {
 async function performServerRequests(i) {
     let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
     let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
-    let arr = await fetchDataFromServer(url1);
-    let arrSpec = await fetchDataFromServer(url2);
-    await getDataByDynamikUrl(i, arr, arrSpec);
+    arrs.push({
+        "arrPoke": await fetchDataFromServer(url1),
+        "arrSpec": await fetchDataFromServer(url2),
+        "arrAbi": '',
+        'arrType1': '',
+        'arrType2': '',
+        'arrStat1': '',
+        'arrStat2': '',
+        'arrStat3': '',
+        'arrStat4': '',
+        'arrStat5': '',
+        'arrStat6': '',
+
+    });
+    await getDataByDynamikUrl(i);
 }
 
 
-
-async function getDataByDynamikUrl(i, arr, arrSpec) {
+async function getDataByDynamikUrl(i) {
+    let arr = arrs[i - 1]['arrPoke'];
     let arrAbi = await fetchDataByDynamikUrl(arr, 'abilities', '', 'ability');
+    arrs[i - 1]['arrAbi'] = await fetchDataByDynamikUrl(arr, 'abilities', '', 'ability');
     let arrType1st = await fetchDataByDynamikUrl(arr, 'types', 0, 'type');
+    arrs[i - 1]['arrType1'] = await fetchDataByDynamikUrl(arr, 'types', 0, 'type');
     let arrType2nd = '';
     if (arr['types'].length == 2) {
         arrType2nd = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
+        arrs[i - 1]['arrType2'] = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
     }
-    for (let i = 0; i < 6; i++) {
-        arrStats.push(await fetchDataByDynamikUrl(arr, 'stats', i, 'stat'));
+    for (let j = 0; j < 6; j++) {
+        arrStats.push(await fetchDataByDynamikUrl(arr, 'stats', j, 'stat'));
+        arrs[i - 1]['arrStat' + (j + 1)] = await fetchDataByDynamikUrl(arr, 'stats', j, 'stat');
     }
-    pushArrays(i, arr, arrAbi, arrSpec, arrType1st, arrType2nd);
+    pushArrays(arr, arrAbi, arrs[i - 1]['arrSpec'], arrType1st, arrType2nd);
 }
-
 
 
 async function fetchDataFromServer(url) {
@@ -182,55 +198,44 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 }
 
 
-async function pushArrays(i, arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd) {
+async function pushArrays(arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd) {
     allPokes.push(
         {
-            "arrPoke": [arrPoke],
-            "arrAbi": [arrAbi],
-            "arrSpec": [arrSpec],
-            "arrType1st": [arrType1st],
-            "arrType2nd": [arrType2nd],
-            "arrStatsHp": [arrStats[0]],
-            "arrStatsAtt": [arrStats[1]],
-            "arrStatsDef": [arrStats[2]],
-            "arrStatsSpAtt": [arrStats[3]],
-            "arrStatsSpDef": [arrStats[4]],
-            "arrStatsSpeed": [arrStats[5]],
             "pokemon": []
         }
     );
-    noticeData(arrSpec);
+    noticeNameForSearch(arrSpec);
 }
 
 function pushData() {
     for (let j = 0; j < allPokes.length; j++) {
-        allPokes[j]['pokemon'].push(
+        allPokes[j] = (
             {
-                "pokeId": allPokes[j]['arrPoke'][0]['id'],
-                "pokeName": getGermanData(allPokes[j]['arrSpec'][0], 'names', 'name'),
-                "pokeType1": getGermanData(allPokes[j]['arrType1st'][0], 'names', 'name'),
+                "pokeId": arrs[j]['arrPoke']['id'],
+                "pokeName": getGermanData(arrs[j]['arrSpec'], 'names', 'name'),
+                "pokeType1": getGermanData(arrs[j]['arrType1'], 'names', 'name'),
                 "pokeType2": checkIfSlot2(j),
-                "pokeType1En": allPokes[j]['arrType1st'][0]['name'],
+                "pokeType1En": arrs[j]['arrType1']['name'],
                 "pokeType2En": checkIfSlot2En(j),
-                "pokeImg": allPokes[j]['arrPoke'][0]['sprites']['other']['dream_world']['front_default'],
-                "pokeWeight": allPokes[j]['arrPoke'][0]['weight'],
-                "pokeHeight": allPokes[j]['arrPoke'][0]['height'],
-                "pokeSpec": getGermanData(allPokes[j]['arrSpec'][0], 'genera', 'genus'),
-                "pokeSpecTxt": getGermanData(allPokes[j]['arrSpec'][0], 'flavor_text_entries', 'flavor_text'),
-                "pokeAbi": getGermanData(allPokes[j]['arrAbi'][0], 'names', 'name'),
-                "pokeAbiTxt": getGermanData(allPokes[j]['arrAbi'][0], 'flavor_text_entries', 'flavor_text'),
-                "pokeStat1stName": getGermanData(allPokes[j]['arrStatsHp'][0], 'names', 'name'),
-                "pokeStat1stValue": allPokes[j]['arrPoke'][0]['stats'][0]['base_stat'],
-                "pokeStat2ndName": getGermanData(allPokes[j]['arrStatsAtt'][0], 'names', 'name'),
-                "pokeStat2ndValue": allPokes[j]['arrPoke'][0]['stats'][1]['base_stat'],
-                "pokeStat3rdName": getGermanData(allPokes[j]['arrStatsDef'][0], 'names', 'name'),
-                "pokeStat3rdValue": allPokes[j]['arrPoke'][0]['stats'][2]['base_stat'],
-                "pokeStat4thName": getGermanData(allPokes[j]['arrStatsSpAtt'][0], 'names', 'name'),
-                "pokeStat4thValue": allPokes[j]['arrPoke'][0]['stats'][3]['base_stat'],
-                "pokeStat5thName": getGermanData(allPokes[j]['arrStatsSpDef'][0], 'names', 'name'),
-                "pokeStat5thValue": allPokes[j]['arrPoke'][0]['stats'][4]['base_stat'],
-                "pokeStat6thName": getGermanData(allPokes[j]['arrStatsSpeed'][0], 'names', 'name'),
-                "pokeStat6thValue": allPokes[j]['arrPoke'][0]['stats'][5]['base_stat'],
+                "pokeImg": arrs[j]['arrPoke']['sprites']['other']['dream_world']['front_default'],
+                "pokeWeight": arrs[j]['arrPoke']['weight'],
+                "pokeHeight": arrs[j]['arrPoke']['height'],
+                "pokeSpec": getGermanData(arrs[j]['arrSpec'], 'genera', 'genus'),
+                "pokeSpecTxt": getGermanData(arrs[j]['arrSpec'], 'flavor_text_entries', 'flavor_text'),
+                "pokeAbi": getGermanData(arrs[j]['arrAbi'], 'names', 'name'),
+                "pokeAbiTxt": getGermanData(arrs[j]['arrAbi'], 'flavor_text_entries', 'flavor_text'),
+                "pokeStat1stName": getGermanData(arrs[j]['arrStat1'], 'names', 'name'),
+                "pokeStat1stValue": arrs[j]['arrPoke']['stats'][0]['base_stat'],
+                "pokeStat2ndName": getGermanData(arrs[j]['arrStat2'], 'names', 'name'),
+                "pokeStat2ndValue": arrs[j]['arrPoke']['stats'][1]['base_stat'],
+                "pokeStat3rdName": getGermanData(arrs[j]['arrStat3'], 'names', 'name'),
+                "pokeStat3rdValue": arrs[j]['arrPoke']['stats'][2]['base_stat'],
+                "pokeStat4thName": getGermanData(arrs[j]['arrStat4'], 'names', 'name'),
+                "pokeStat4thValue": arrs[j]['arrPoke']['stats'][3]['base_stat'],
+                "pokeStat5thName": getGermanData(arrs[j]['arrStat5'], 'names', 'name'),
+                "pokeStat5thValue": arrs[j]['arrPoke']['stats'][4]['base_stat'],
+                "pokeStat6thName": getGermanData(arrs[j]['arrStat6'], 'names', 'name'),
+                "pokeStat6thValue": arrs[j]['arrPoke']['stats'][5]['base_stat'],
             }
         )
     }
@@ -238,8 +243,8 @@ function pushData() {
 
 
 function checkIfSlot2(i) {
-    if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
-        return getGermanData(allPokes[i]['arrType2nd'][0], 'names', 'name');
+    if (arrs[i]['arrPoke']['types'].length == 2) {
+        return getGermanData(arrs[i]['arrType2'], 'names', 'name');
     } else {
         return '';
     }
@@ -247,15 +252,15 @@ function checkIfSlot2(i) {
 
 
 function checkIfSlot2En(i) {
-    if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
-        return allPokes[i]['arrType2nd'][0]['name'];
+    if (arrs[i]['arrPoke']['types'].length == 2) {
+        return arrs[i]['arrType2']['name'];
     } else {
         return '';
     }
 }
 
 
-function noticeData(arrSpec) {
+function noticeNameForSearch(arrSpec) {
     loadedPokeNames.push(getGermanData(arrSpec, 'names', 'name'));
 }
 
@@ -266,10 +271,10 @@ function fillSlot1(i, slot1) {
 
 
 function showSlot2(i) {
-    if (allPokes[i]['pokemon'][0]['pokeType2'] !== '') {
+    if (allPokes[i]['pokeType2'] !== '') {
         document.getElementById('base-type2' + i).classList.remove('display-none');
     }
-    document.getElementById('base-type2' + i).innerHTML = allPokes[i]['pokemon'][0]['pokeType2'];
+    document.getElementById('base-type2' + i).innerHTML = allPokes[i]['pokeType2'];
 }
 
 
@@ -287,7 +292,7 @@ function hideAllPokeCards() {
 
 
 async function changePokesToBlack(i) {
-    let type1 = allPokes[i]['pokemon'][0]['pokeType1En'];
+    let type1 = allPokes[i]['pokeType1En'];
     if (type1 == 'electric' || type1 == 'ice') {
         for (let j = 0; j < colorBlackIds.length; j++) {
             document.getElementById(colorBlackIds[j] + i).classList.add(`color-black`);
@@ -319,9 +324,8 @@ function updateProgress(currentPokeNr) {
 }
 
 
-// background-color
 async function stylePokeBgn(i, index) {
-    let pokeType = allPokes[i]['pokemon'][0]['pokeType1En'];
+    let pokeType = allPokes[i]['pokeType1En'];
     setBgnByType(i, index, pokeType);
 }
 
@@ -331,7 +335,7 @@ function setBgnByType(i, index, pokeType) {
 }
 
 
-// switch PokeCard-Overlay 
+// program flow
 function switchContent(i) {
     let overlay = document.getElementById('overlay');
     let pokeCardContent = document.getElementById('pokeCardContent');
@@ -377,32 +381,17 @@ function topFunction() {
 }
 
 
+// search
 function searchBy(array, searchIndex, pushIndex) {
     hidePokeMinis();
     for (let i = 0; i < array.length; i++) {
         let searchElement = document.getElementById(searchIndex).value;
-        searchElement = handleSearchElementBy(searchIndex, searchElement);
-        let compareElement = getCompareElementBy(i, searchIndex, array);
+        searchElement = searchElement.toLowerCase();
+        let compareElement = array[i].toLowerCase();
         let result = compareElement.startsWith(searchElement);
         if (result == true) {
             document.getElementById(pushIndex + i).classList.remove('display-none')
         }
-    }
-}
-
-
-function handleSearchElementBy(searchIndex, searchElement) {
-    if (searchIndex == 'searchName') {
-        searchElement = searchElement.toLowerCase();
-        return searchElement;
-    }
-}
-
-
-function getCompareElementBy(i, searchIndex, array) {
-    if (searchIndex == 'searchName') {
-        let compareElement = array[i].toLowerCase();
-        return compareElement;
     }
 }
 
@@ -429,7 +418,7 @@ function setFavorite(i) {
 }
 
 
-// show cards from navigation
+// show pokeMax-cards
 function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
     setCurrentCardToActiv(cardId);
@@ -474,11 +463,11 @@ function setAllSliderToDefault(i, slot1) {
 
 
 function stylePokeTop(i) {
-    let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
-    let bgnType = 'bgn-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
+    let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokeType1En'];
+    let bgnType = 'bgn-type-' + allPokes[i]['pokeType1En'];
     stylePokeSlot1(i, bgnSlotType);
-    if (allPokes[i]['arrPoke'][0]['types'].length == 2) {
-        let pokeSlot2 = allPokes[i]['pokemon'][0]['pokeType2En'];
+    if (arrs[i]['arrPoke']['types'].length == 2) {
+        let pokeSlot2 = allPokes[i]['pokeType2En'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         stylePokeSlot2(i, bgnSlotType);
     }
@@ -497,13 +486,6 @@ function renderPokeFavorite(i, bgnType) {
 };
 
 
-function renderPokeToBlack(i, pokeSlot1) {
-    if (pokeSlot1 == 'electric' || pokeSlot1 == 'ice') {
-        changeToBlack(i, pokeSlot1);
-    }
-}
-
-
 function stylePokeSlot1(i, bgnSlotType) {
     document.getElementById('base-type1' + i).classList.add(`${bgnSlotType}`);
 }
@@ -514,53 +496,15 @@ function stylePokeSlot2(i, bgnSlotType) {
 }
 
 
-function changeToBlack(i, pokeSlot1) {
-    let bgnSlotType = 'bgn-slot-type-' + pokeSlot1;
-    document.getElementById('pokeImgFavFill0' + i).classList.add(`${bgnSlotType}`);
-    document.getElementById('pokeImgFavFill1' + i).classList.add(`${bgnSlotType}`);
-    document.getElementById('pokedex-name' + i).classList.add('color-black');
-    document.getElementById('pokedex-id' + i).classList.add('color-black');
-    document.getElementById('pokedex-slots' + i).classList.add('color-black');
-    for (let cardNr = 1; cardNr <= 4; cardNr++) {
-        document.getElementById('btn-card' + cardNr + i).classList.add('color-black');
-    }
-}
-
-
 async function stylePokeNavigation(i) {
-    let bgnSlotType = 'bgn-' + allPokes[i]['pokemon'][0]['pokeType1En'];
-    let bgnActiveType = 'bgn-slot-type-' + allPokes[i]['pokemon'][0]['pokeType1En'];
+    let bgnSlotType = 'bgn-' + allPokes[i]['pokeType1En'];
+    let bgnActiveType = 'bgn-slot-type-' + allPokes[i]['pokeType1En'];
     for (let cardNr = 1; cardNr <= 2; cardNr++) {
         document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnSlotType}`);
     }
     document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
     document.getElementById('btn-card' + 1 + i).classList.add(`${bgnActiveType}`);
 }
-
-
-// render about
-// async function fillGenera(i, arrPokeSpec) {
-//     let pokeGenera = getGermanData(arrPokeSpec, 'genera', 'genus');
-//     document.getElementById(aboutValueIds[0] + i).innerHTML = `${pokeGenera}`;
-// }
-
-
-// async function fillAbility(i, arrPokeAbi) {
-//     let pokeAbility = getGermanData(arrPokeAbi, 'names', 'name');
-//     document.getElementById(aboutValueIds[3] + i).innerHTML = `${pokeAbility}:`;
-//     let pokeAbiText = getGermanData(arrPokeAbi, 'flavor_text_entries', 'flavor_text');
-//     document.getElementById(aboutValueIds[4] + i).innerHTML = `<i>${pokeAbiText}</i>`;
-// }
-
-
-// async function fillWeightAndHeight(i, arrPoke) {
-//     let pokeWeight = arrPoke['weight'];
-//     document.getElementById(aboutValueIds[1] + i).innerHTML = `${pokeWeight} Poke-Einheiten`;
-//     let pokeHeight = arrPoke['height'];
-//     document.getElementById(aboutValueIds[2] + i).innerHTML = `${pokeHeight} Poke-Einheiten`;
-// };
-
-
 
 
 // navigation pokeCard
@@ -579,8 +523,8 @@ function hoverNavigationOut(cardNr, i, slot1) {
 // fill BaseStats
 async function fillBaseStats(begin, end) {
     for (let k = begin; k < end; k++) {
-        for (let j = 1; j <= allPokes[k]['arrPoke'][0]['stats'].length; j++) {
-            let value = allPokes[k]['arrPoke'][0]['stats'][j - 1]['base_stat'];
+        for (let j = 1; j <= arrs[k]['arrPoke']['stats'].length; j++) {
+            let value = arrs[k]['arrPoke']['stats'][j - 1]['base_stat'];
             let valuePerCent = perCent(value);
             renderProgressLine(k, valuePerCent, j);
         }
@@ -635,7 +579,7 @@ function clearSearchInput() {
     document.getElementById('searchName').value = '';
 }
 
-
+// 
 onscroll
 window.onscroll = function () { scrollFunction() };
 
