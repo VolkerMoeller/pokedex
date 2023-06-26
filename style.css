@@ -473,25 +473,6 @@ td {
     align-items: center;
 }
 
-.moveRow {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 8px;
-}
-
-.moveName {
-    font-weight: normal;
-}
-
-
-.moveText {
-    font-weight: normal;
-}
-
-.moveNameAndValue {
-    display: flex;
-}
-
 .aboutRow {
     width: 100%;
     display: flex;
@@ -507,29 +488,6 @@ td {
     width: 75%;
     display: flex;
 }
-
-.evolStage {
-    width: 100%;
-    display: flex;
-}
-
-.evolName {
-    font-weight: normal;
-    width: 10%;
-    display: flex;
-    justify-content: end;
-    padding-right: 8px;
-}
-
-.evolValue {
-    width: 93%;
-}
-
-.evolNr {
-    font-weight: normal;
-}
-
-
 
 .openMenu {
     display: none;

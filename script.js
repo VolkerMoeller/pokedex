@@ -1,18 +1,15 @@
+let arrs = [];
 let allPokes = [];
+let loadedPokeNames = [];
 let initEnd = 19;
 let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 9;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
 let currentPokeNr = 0
-let indexOfGermanData;
 let functionRunning = false;
-let loadedPokeNames = [];
 let amountSlides = 2
-let counter = 0;
 let scrollCounter = 0;
-let arrs = [];
-let arrStats = [];
 let colorBlackIds = [
     'pokeMiniName',
     'pokeMiniId',
@@ -51,39 +48,46 @@ async function getData(begin, end) {
 }
 
 
+function pushData() {
+    for (let j = 0; j < allPokes.length; j++) {
+        allPokes[j] = (
+            {
+                "pokeId": arrs[j]['arrPoke']['id'],
+                "pokeName": getGermanData(arrs[j]['arrSpec'], 'names', 'name'),
+                "pokeType1": getGermanData(arrs[j]['arrType1'], 'names', 'name'),
+                "pokeType2": checkIfSlot2(j),
+                "pokeType1En": arrs[j]['arrType1']['name'],
+                "pokeType2En": checkIfSlot2En(j),
+                "pokeImg": arrs[j]['arrPoke']['sprites']['other']['dream_world']['front_default'],
+                "pokeWeight": arrs[j]['arrPoke']['weight'],
+                "pokeHeight": arrs[j]['arrPoke']['height'],
+                "pokeSpec": getGermanData(arrs[j]['arrSpec'], 'genera', 'genus'),
+                "pokeSpecTxt": getGermanData(arrs[j]['arrSpec'], 'flavor_text_entries', 'flavor_text'),
+                "pokeAbi": getGermanData(arrs[j]['arrAbi'], 'names', 'name'),
+                "pokeAbiTxt": getGermanData(arrs[j]['arrAbi'], 'flavor_text_entries', 'flavor_text'),
+                "pokeStat1Name": getGermanData(arrs[j]['arrStat1'], 'names', 'name'),
+                "pokeStat1": arrs[j]['arrPoke']['stats'][0]['base_stat'],
+                "pokeStat2Name": getGermanData(arrs[j]['arrStat2'], 'names', 'name'),
+                "pokeStat2": arrs[j]['arrPoke']['stats'][1]['base_stat'],
+                "pokeStat3Name": getGermanData(arrs[j]['arrStat3'], 'names', 'name'),
+                "pokeStat3": arrs[j]['arrPoke']['stats'][2]['base_stat'],
+                "pokeStat4Name": getGermanData(arrs[j]['arrStat4'], 'names', 'name'),
+                "pokeStat4": arrs[j]['arrPoke']['stats'][3]['base_stat'],
+                "pokeStat5Name": getGermanData(arrs[j]['arrStat5'], 'names', 'name'),
+                "pokeStat5": arrs[j]['arrPoke']['stats'][4]['base_stat'],
+                "pokeStat6Name": getGermanData(arrs[j]['arrStat6'], 'names', 'name'),
+                "pokeStat6": arrs[j]['arrPoke']['stats'][5]['base_stat'],
+            }
+        )
+    }
+}
+
+
 function generateHTML(begin, end) {
     generatePokeMini(begin, end);
-    for (let i = begin; i < end; i++) {
-        document.getElementById('pokeCardPlace').innerHTML +=
-            generateHTMLPokeMax(
-                i,
-                allPokes[i]['pokeName'],
-                format3LeftHandZeros(allPokes[i]['pokeId']),
-                allPokes[i]['pokeType1'],
-                allPokes[i]['pokeType2'],
-                allPokes[i]['pokeImg'],
-                allPokes[i]['pokeType1En'],
-            );
-        document.getElementById('card1' + i).innerHTML +=
-            generateHTMLAbout(
-                i,
-                allPokes[i]['pokeSpec'],
-                allPokes[i]['pokeWeight'],
-                allPokes[i]['pokeHeight'],
-                allPokes[i]['pokeAbi'],
-                allPokes[i]['pokeAbiTxt'],
-            );
-        document.getElementById('card2' + i).innerHTML +=
-            generateHTMLStats(
-                i,
-                allPokes[i]['pokeStat1stValue'],
-                allPokes[i]['pokeStat2ndValue'],
-                allPokes[i]['pokeStat3rdValue'],
-                allPokes[i]['pokeStat4thValue'],
-                allPokes[i]['pokeStat5thValue'],
-                allPokes[i]['pokeStat6thValue'],
-            );
-    }
+    generatePokeMax(begin, end);
+    generatePokeAbout(begin, end);
+    generatePokeStats(begin, end);
 }
 
 
@@ -96,6 +100,53 @@ function generatePokeMini(begin, end) {
                 allPokes[i]['pokeName'],
                 allPokes[i]['pokeType1'],
                 allPokes[i]['pokeImg'],
+            );
+    }
+}
+
+
+function generatePokeMax(begin, end) {
+    for (let i = begin; i < end; i++) {
+        document.getElementById('pokeCardPlace').innerHTML +=
+            generateHTMLPokeMax(
+                i,
+                allPokes[i]['pokeName'],
+                format3LeftHandZeros(allPokes[i]['pokeId']),
+                allPokes[i]['pokeType1'],
+                allPokes[i]['pokeType2'],
+                allPokes[i]['pokeImg'],
+                allPokes[i]['pokeType1En'],
+            );
+    }
+}
+
+
+function generatePokeAbout(begin, end) {
+    for (let i = begin; i < end; i++) {
+        document.getElementById('card1' + i).innerHTML +=
+            generateHTMLAbout(
+                i,
+                allPokes[i]['pokeSpec'],
+                allPokes[i]['pokeWeight'],
+                allPokes[i]['pokeHeight'],
+                allPokes[i]['pokeAbi'],
+                allPokes[i]['pokeAbiTxt'],
+            );
+    }
+}
+
+
+function generatePokeStats(begin, end) {
+    for (let i = begin; i < end; i++) {
+        document.getElementById('card2' + i).innerHTML +=
+            generateHTMLStats(
+                i,
+                allPokes[i]['pokeStat1'],
+                allPokes[i]['pokeStat2'],
+                allPokes[i]['pokeStat3'],
+                allPokes[i]['pokeStat4'],
+                allPokes[i]['pokeStat5'],
+                allPokes[i]['pokeStat6'],
             );
     }
 }
@@ -146,28 +197,24 @@ async function performServerRequests(i) {
         'arrStat4': '',
         'arrStat5': '',
         'arrStat6': '',
-
     });
     await getDataByDynamikUrl(i);
 }
 
 
 async function getDataByDynamikUrl(i) {
-    let arr = arrs[i - 1]['arrPoke'];
-    let arrAbi = await fetchDataByDynamikUrl(arr, 'abilities', '', 'ability');
-    arrs[i - 1]['arrAbi'] = await fetchDataByDynamikUrl(arr, 'abilities', '', 'ability');
-    let arrType1st = await fetchDataByDynamikUrl(arr, 'types', 0, 'type');
-    arrs[i - 1]['arrType1'] = await fetchDataByDynamikUrl(arr, 'types', 0, 'type');
-    let arrType2nd = '';
-    if (arr['types'].length == 2) {
-        arrType2nd = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
-        arrs[i - 1]['arrType2'] = await fetchDataByDynamikUrl(arr, 'types', 1, 'type');
+    let j = i - 1;
+    arrs[j]['arrAbi'] = await fetchDataByDynamikUrl(arrs[j]['arrPoke'], 'abilities', '', 'ability');
+    arrs[j]['arrType1'] = await fetchDataByDynamikUrl(arrs[j]['arrPoke'], 'types', 0, 'type');
+    if (arrs[j]['arrPoke']['types'].length == 2) {
+        arrs[j]['arrType2'] = await fetchDataByDynamikUrl(arrs[j]['arrPoke'], 'types', 1, 'type');
     }
-    for (let j = 0; j < 6; j++) {
-        arrStats.push(await fetchDataByDynamikUrl(arr, 'stats', j, 'stat'));
-        arrs[i - 1]['arrStat' + (j + 1)] = await fetchDataByDynamikUrl(arr, 'stats', j, 'stat');
+    for (let k = 0; k < 6; k++) {
+        let l = k + 1;
+        arrs[j]['arrStat' + l] = await fetchDataByDynamikUrl(arrs[j]['arrPoke'], 'stats', k, 'stat');
     }
-    pushArrays(arr, arrAbi, arrs[i - 1]['arrSpec'], arrType1st, arrType2nd);
+    noticeNameForSearch(j);
+    allPokes.push({});
 }
 
 
@@ -198,50 +245,6 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 }
 
 
-async function pushArrays(arrPoke, arrAbi, arrSpec, arrType1st, arrType2nd) {
-    allPokes.push(
-        {
-            "pokemon": []
-        }
-    );
-    noticeNameForSearch(arrSpec);
-}
-
-function pushData() {
-    for (let j = 0; j < allPokes.length; j++) {
-        allPokes[j] = (
-            {
-                "pokeId": arrs[j]['arrPoke']['id'],
-                "pokeName": getGermanData(arrs[j]['arrSpec'], 'names', 'name'),
-                "pokeType1": getGermanData(arrs[j]['arrType1'], 'names', 'name'),
-                "pokeType2": checkIfSlot2(j),
-                "pokeType1En": arrs[j]['arrType1']['name'],
-                "pokeType2En": checkIfSlot2En(j),
-                "pokeImg": arrs[j]['arrPoke']['sprites']['other']['dream_world']['front_default'],
-                "pokeWeight": arrs[j]['arrPoke']['weight'],
-                "pokeHeight": arrs[j]['arrPoke']['height'],
-                "pokeSpec": getGermanData(arrs[j]['arrSpec'], 'genera', 'genus'),
-                "pokeSpecTxt": getGermanData(arrs[j]['arrSpec'], 'flavor_text_entries', 'flavor_text'),
-                "pokeAbi": getGermanData(arrs[j]['arrAbi'], 'names', 'name'),
-                "pokeAbiTxt": getGermanData(arrs[j]['arrAbi'], 'flavor_text_entries', 'flavor_text'),
-                "pokeStat1stName": getGermanData(arrs[j]['arrStat1'], 'names', 'name'),
-                "pokeStat1stValue": arrs[j]['arrPoke']['stats'][0]['base_stat'],
-                "pokeStat2ndName": getGermanData(arrs[j]['arrStat2'], 'names', 'name'),
-                "pokeStat2ndValue": arrs[j]['arrPoke']['stats'][1]['base_stat'],
-                "pokeStat3rdName": getGermanData(arrs[j]['arrStat3'], 'names', 'name'),
-                "pokeStat3rdValue": arrs[j]['arrPoke']['stats'][2]['base_stat'],
-                "pokeStat4thName": getGermanData(arrs[j]['arrStat4'], 'names', 'name'),
-                "pokeStat4thValue": arrs[j]['arrPoke']['stats'][3]['base_stat'],
-                "pokeStat5thName": getGermanData(arrs[j]['arrStat5'], 'names', 'name'),
-                "pokeStat5thValue": arrs[j]['arrPoke']['stats'][4]['base_stat'],
-                "pokeStat6thName": getGermanData(arrs[j]['arrStat6'], 'names', 'name'),
-                "pokeStat6thValue": arrs[j]['arrPoke']['stats'][5]['base_stat'],
-            }
-        )
-    }
-}
-
-
 function checkIfSlot2(i) {
     if (arrs[i]['arrPoke']['types'].length == 2) {
         return getGermanData(arrs[i]['arrType2'], 'names', 'name');
@@ -260,8 +263,8 @@ function checkIfSlot2En(i) {
 }
 
 
-function noticeNameForSearch(arrSpec) {
-    loadedPokeNames.push(getGermanData(arrSpec, 'names', 'name'));
+function noticeNameForSearch(j) {
+    loadedPokeNames.push(getGermanData(arrs[j]['arrSpec'], 'names', 'name'));
 }
 
 
@@ -335,7 +338,6 @@ function setBgnByType(i, index, pokeType) {
 }
 
 
-// program flow
 function switchContent(i) {
     let overlay = document.getElementById('overlay');
     let pokeCardContent = document.getElementById('pokeCardContent');
@@ -362,7 +364,6 @@ function switchToPokeMinis(overlay, pokeCardContent) {
 }
 
 
-// display OnOff
 function displayOn(element) {
     element.classList.remove('display-none');
     element.classList.add('display-flex');
@@ -375,13 +376,11 @@ function displayOff(element) {
 }
 
 
-//  onTop
 function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
 
-// search
 function searchBy(array, searchIndex, pushIndex) {
     hidePokeMinis();
     for (let i = 0; i < array.length; i++) {
@@ -396,7 +395,6 @@ function searchBy(array, searchIndex, pushIndex) {
 }
 
 
-// hide PokeMinis
 function hidePokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
         document.getElementById('pokeMiniButton' + i).classList.add('display-none')
@@ -411,14 +409,12 @@ function showPokeMinis() {
 }
 
 
-// favorites
 function setFavorite(i) {
     document.getElementById(`fill0${i}`).classList.toggle('display-none');
     document.getElementById(`fill1${i}`).classList.toggle('display-none');
 }
 
 
-// show pokeMax-cards
 function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
     setCurrentCardToActiv(cardId);
@@ -507,7 +503,6 @@ async function stylePokeNavigation(i) {
 }
 
 
-// navigation pokeCard
 function hoverNavigationOver(cardNr, i, slot1) {
     let bgnHoverType = 'bgn-hover-type-' + slot1;
     document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
@@ -520,7 +515,6 @@ function hoverNavigationOut(cardNr, i, slot1) {
 }
 
 
-// fill BaseStats
 async function fillBaseStats(begin, end) {
     for (let k = begin; k < end; k++) {
         for (let j = 1; j <= arrs[k]['arrPoke']['stats'].length; j++) {
@@ -548,7 +542,6 @@ function renderProgressLine(i, valuePerCent, j) {
 }
 
 
-// helpers:
 function getGermanData(array, index1st, index2nd) {
     let indexGermanData = searchIndexOfGermanData(array, index1st);
     let germanData = array[index1st][indexGermanData][index2nd];
@@ -579,8 +572,6 @@ function clearSearchInput() {
     document.getElementById('searchName').value = '';
 }
 
-// 
-onscroll
 window.onscroll = function () { scrollFunction() };
 
 
