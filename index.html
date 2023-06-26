@@ -16,6 +16,9 @@
 <body onload="init()">
     <div id="content" class="content">
         <div id="header" class="header">
+            <div id="overlayLoad" class="overlayLoad display-none">
+                <div id="infoLoad" class="infoLoad">Pokemons werden gerufen ...</div>
+            </div>
             <div id="headerLine" class="headerLine">
                 <h1>Pokedex</h1>
             </div>
@@ -32,11 +35,12 @@
                 <input id="searchName" placeholder="Name"
                     onkeydown="searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton')">
                 <div id="loadBtns" class="loadBtns">
-                    <button id="loadBtnStart" class="display-flex" onclick="initShowNext()">weitere 20</button>
+                    <button id="loadBtnStart" class="display-flex" onclick="initShowNext()">weitere 10</button>
                 </div>
             </div>
         </div>
         <div id="myPlace" class="myPlace"></div>
+
         <div id="pokeCardContent" class="pokeCardContent display-none">
             <div id="pokeCardPlace" class="pokeCardPlace"></div>
         </div>

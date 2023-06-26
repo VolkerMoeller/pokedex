@@ -1,11 +1,12 @@
 let arrs = [];
 let allPokes = [];
 let loadedPokeNames = [];
-let initEnd = 19;
+let initEnd = 10;
 let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 9;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
+let pokesLoaded = false;
 let currentPokeNr = 0
 let functionRunning = false;
 let amountSlides = 2
@@ -33,6 +34,7 @@ async function init() {
 
 async function getData(begin, end) {
     if (!functionRunning) {
+        pokesLoadedOn();
         functionRunning = true;
         for (let i = begin; i <= end; i++) {
             await performServerRequests(i);
@@ -43,8 +45,29 @@ async function getData(begin, end) {
         stylePokes(begin - 1, end);
         updateCountNrs(end);
         fillBaseStats(begin - 1, end);
+        pokesLoadedOff();
         functionRunning = false;
     }
+}
+
+
+function pokesLoadedOn() {
+    pokesLoaded = false;
+    document.getElementById('loadBtnStart').disabled = true;
+    document.getElementById('searchName').disabled = true;
+    document.getElementById('loadBtnStart').classList.add('disabled');
+    document.getElementById('searchName').classList.add('disabled');
+    document.getElementById('overlayLoad').classList.remove('display-none');
+}
+
+
+function pokesLoadedOff() {
+    pokesLoaded = true;
+    document.getElementById('loadBtnStart').disabled = false;
+    document.getElementById('searchName').disabled = false;
+    document.getElementById('loadBtnStart').classList.remove('disabled');
+    document.getElementById('searchName').classList.remove('disabled');
+    document.getElementById('overlayLoad').classList.add('display-none');
 }
 
 
@@ -164,7 +187,7 @@ function stylePokes(begin, end) {
 }
 
 
-function initNext() {
+async function initNext() {
     clearSearchInput();
     getData(nextPokeNr, endPokeNr);
 }
@@ -282,8 +305,10 @@ function showSlot2(i) {
 
 
 function showPokeCard(i) {
-    switchContent(i);
-    document.getElementById('pokedex' + i).classList.remove('display-none');
+    if (pokesLoaded == true) {
+        switchContent(i);
+        document.getElementById('pokedex' + i).classList.remove('display-none');
+    }
 }
 
 
@@ -578,7 +603,7 @@ window.onscroll = function () { scrollFunction() };
 async function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollCounter++;
-        let interval = 1;
+        let interval = 20;
         let tester = scrollCounter % interval;
         if (tester == 0) {
             initNext();
