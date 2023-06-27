@@ -364,41 +364,22 @@ function setBgnByType(i, index, pokeType) {
 
 
 function switchContent(i) {
-    let overlay = document.getElementById('overlay');
-    let pokeCardContent = document.getElementById('pokeCardContent');
-    if (overlay.classList.contains('display-none') == true) {
-        switchToPokeCard(overlay, pokeCardContent);
-    } else {
-        switchToPokeMinis(overlay, pokeCardContent);
-    }
-}
-
-
-function switchToPokeCard(overlay, pokeCardContent) {
-    displayOn(overlay);
-    displayOn(pokeCardContent);
+    document.getElementById('overlay').classList.toggle('display-none');
+    document.getElementById('pokeCardContent').classList.toggle('display-none');
     topFunction();
 }
 
 
-function switchToPokeMinis(overlay, pokeCardContent) {
-    displayOff(overlay);
-    displayOff(pokeCardContent);
-    hideAllPokeCards();
-    topFunction();
-}
+// function displayOn(element, remIndex, addIndex) {
+//     element.classList.remove(remIndex);
+//     element.classList.add(addIndex);
+// }
 
 
-function displayOn(element) {
-    element.classList.remove('display-none');
-    element.classList.add('display-flex');
-}
-
-
-function displayOff(element) {
-    element.classList.add('display-none');
-    element.classList.remove('display-flex');
-}
+// function displayOff(element) {
+//     element.classList.add('display-none');
+//     element.classList.remove('display-flex');
+// }
 
 
 function topFunction() {
