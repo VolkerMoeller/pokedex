@@ -99,8 +99,8 @@ body {
 
 /* myPlace */
 .myPlace {
-    margin-top: 224px;
-    padding: 8px;
+    margin-top: 234px;
+    padding: 16px;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -228,17 +228,23 @@ body {
     left: 0px;
     width: 100%;
     min-height: 100%;
+    backdrop-filter: blur(8px);
     z-index: 9;
     display: flex;
     justify-content: center;
     align-items: start;
 }
 
+
+.info{
+    display: flex;
+    justify-content: center;
+}
+
 .infoLoad {
-    display: block;
-    position: fixed;
-    top: 130px;
-    z-index: 99;
+    color: rgba(234, 19, 105);
+    position: absolute;
+    top: 132px;
 }
 
 .overlayLoad2 {
@@ -258,7 +264,7 @@ body {
     top: 16px;
     width: 480px;
     height: 858px;
-    background-color: white;
+    /* background-color: white; */
     z-index: 40;
 }
 

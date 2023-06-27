@@ -34,7 +34,7 @@ async function init() {
 
 async function getData(begin, end) {
     if (!functionRunning) {
-        pokesLoadedOn();
+        pokesLoadedOn(false, true);
         functionRunning = true;
         for (let i = begin; i <= end; i++) {
             await performServerRequests(i);
@@ -51,13 +51,14 @@ async function getData(begin, end) {
 }
 
 
-function pokesLoadedOn() {
-    pokesLoaded = false;
-    document.getElementById('loadBtnStart').disabled = true;
-    document.getElementById('searchName').disabled = true;
+function pokesLoadedOn(status1st, status2nd) {
+    pokesLoaded = status1st;
+    document.getElementById('loadBtnStart').disabled = status2nd;
+    document.getElementById('searchName').disabled = status2nd;
     document.getElementById('loadBtnStart').classList.add('disabled');
     document.getElementById('searchName').classList.add('disabled');
     document.getElementById('overlayLoad').classList.remove('display-none');
+    document.getElementById('infoLoad').classList.toggle('display-none');
 }
 
 
@@ -68,6 +69,7 @@ function pokesLoadedOff() {
     document.getElementById('loadBtnStart').classList.remove('disabled');
     document.getElementById('searchName').classList.remove('disabled');
     document.getElementById('overlayLoad').classList.add('display-none');
+    document.getElementById('infoLoad').classList.toggle('display-none');
 }
 
 
@@ -193,8 +195,9 @@ async function initNext() {
 }
 
 function initShowNext() {
-    hidePokeMinis();
-    showPokeMinis();
+    document.getElementById('overlayLoad').classList.toggle('display-none');
+
+    // togglePokeMinis();
     initNext();
 }
 
@@ -312,13 +315,6 @@ function showPokeCard(i) {
 }
 
 
-function hideAllPokeCards() {
-    for (let i = 1; i < allPokes.length; i++) {
-        document.getElementById('pokedex' + i).classList.add('display-none');
-    }
-}
-
-
 async function changePokesToBlack(i) {
     let type1 = allPokes[i]['pokeType1En'];
     if (type1 == 'electric' || type1 == 'ice') {
@@ -364,23 +360,11 @@ function setBgnByType(i, index, pokeType) {
 
 
 function switchContent(i) {
+    document.getElementById('pokedex' + i).classList.toggle('display-none');
     document.getElementById('overlay').classList.toggle('display-none');
     document.getElementById('pokeCardContent').classList.toggle('display-none');
     topFunction();
 }
-
-
-// function displayOn(element, remIndex, addIndex) {
-//     element.classList.remove(remIndex);
-//     element.classList.add(addIndex);
-// }
-
-
-// function displayOff(element) {
-//     element.classList.add('display-none');
-//     element.classList.remove('display-flex');
-// }
-
 
 function topFunction() {
     document.documentElement.scrollTop = 0;
@@ -388,7 +372,7 @@ function topFunction() {
 
 
 function searchBy(array, searchIndex, pushIndex) {
-    hidePokeMinis();
+    togglePokeMinis();
     for (let i = 0; i < array.length; i++) {
         let searchElement = document.getElementById(searchIndex).value;
         searchElement = searchElement.toLowerCase();
@@ -401,16 +385,9 @@ function searchBy(array, searchIndex, pushIndex) {
 }
 
 
-function hidePokeMinis() {
+function togglePokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
-        document.getElementById('pokeMiniButton' + i).classList.add('display-none')
-    }
-}
-
-
-function showPokeMinis() {
-    for (let i = 0; i < allPokes.length; i++) {
-        document.getElementById('pokeMiniButton' + i).classList.remove('display-none')
+        document.getElementById('pokeMiniButton' + i).classList.toggle('display-none')
     }
 }
 
@@ -467,11 +444,11 @@ function setAllSliderToDefault(i, slot1) {
 function stylePokeTop(i) {
     let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokeType1En'];
     let bgnType = 'bgn-type-' + allPokes[i]['pokeType1En'];
-    stylePokeSlot1(i, bgnSlotType);
+    stylePokeSlot(i, bgnSlotType, 'base-type1');
     if (arrs[i]['arrPoke']['types'].length == 2) {
         let pokeSlot2 = allPokes[i]['pokeType2En'];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
-        stylePokeSlot2(i, bgnSlotType);
+        stylePokeSlot(i, bgnSlotType, 'base-type2');
     }
     renderPokeFavorite(i, bgnType);
 }
@@ -488,13 +465,8 @@ function renderPokeFavorite(i, bgnType) {
 };
 
 
-function stylePokeSlot1(i, bgnSlotType) {
-    document.getElementById('base-type1' + i).classList.add(`${bgnSlotType}`);
-}
-
-
-function stylePokeSlot2(i, bgnSlotType) {
-    document.getElementById('base-type2' + i).classList.add(`${bgnSlotType}`);
+function stylePokeSlot(i, bgnSlotType, index) {
+    document.getElementById(index + i).classList.add(`${bgnSlotType}`);
 }
 
 
@@ -509,15 +481,9 @@ async function stylePokeNavigation(i) {
 }
 
 
-function hoverNavigationOver(cardNr, i, slot1) {
+function hoverNavigation(cardNr, i, slot1) {
     let bgnHoverType = 'bgn-hover-type-' + slot1;
-    document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnHoverType}`);
-}
-
-
-function hoverNavigationOut(cardNr, i, slot1) {
-    let bgnHoverType = 'bgn-hover-type-' + slot1;
-    document.getElementById('btn-card' + cardNr + i).classList.remove(`${bgnHoverType}`);
+    document.getElementById('btn-card' + cardNr + i).classList.toggle(`${bgnHoverType}`);
 }
 
 
@@ -535,11 +501,6 @@ async function fillBaseStats(begin, end) {
 function perCent(value) {
     let valuePerCent = value / 255 * 100;
     return valuePerCent;
-}
-
-
-function renderProgressLine(i, valuePerCent, j) {
-    renderProgressLine(i, valuePerCent, j);
 }
 
 
@@ -584,7 +545,7 @@ window.onscroll = function () { scrollFunction() };
 async function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollCounter++;
-        let interval = 20;
+        let interval = 100;
         let tester = scrollCounter % interval;
         if (tester == 0) {
             initNext();
@@ -596,18 +557,18 @@ async function scrollFunction() {
 function generateHTMLPokeMini(i, id, name, type, img) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
-          <div id="pokeMini${i}" class="pokeMini">
+        <div id="pokeMini${i}" class="pokeMini">
             <div id="pokeMini1stLine${i}" class="pokeMini1stLine">
                 <div id="pokeMiniName${i}" class="pokeMiniName">${name}</div>
                 <div id="pokeMiniId${i}" class="pokeMiniId">#${id}</div>
                 <div id="pokeMiniType1${i}" class="pokeMiniType1">${type}</div>
-                  </div>
+            </div>
                   <div id="pokeMiniImgDiv${i}" class="pokeMiniImgDiv">
                     <img id="pokeMiniImg${i}" class="pokeMiniImg" src="${img}">
                   </div>
-          </div>
-      </button>
-      `
+                </div>
+            </button>
+            `
 }
 
 
@@ -644,10 +605,10 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
           </div>
           <div id="pokedex-bottom${i}" class="pokedex-bottom">
           <div class="navigationPoke">
-              <div onmouseover="hoverNavigationOver(1, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(1, ${i}, '${slot1}')">
+              <div onmouseover="hoverNavigation(1, ${i}, '${slot1}')" onmouseout="hoverNavigation(1, ${i}, '${slot1}')">
                   <button onclick="showCurrentCardById('card1${i}', ${i}, '${slot1}')" id="btn-card1${i}">Über</button>
               </div>
-              <div onmouseover="hoverNavigationOver(2, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(2, ${i}, '${slot1}')">
+              <div onmouseover="hoverNavigation(2, ${i}, '${slot1}')" onmouseout="hoverNavigation(2, ${i}, '${slot1}')">
                   <button onclick="showCurrentCardById('card2${i}', ${i}, '${slot1}')" id="btn-card2${i}">Basis Werte</button>
               </div>
           </div>
