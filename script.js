@@ -12,6 +12,8 @@ let amountSlides = 2
 let pokesLoaded = false;
 let functionRunning = false;
 let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
+let aboutNames = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit', ''];
+let aboutValues = [];
 
 
 async function init() {
@@ -97,8 +99,10 @@ function generateHTML(begin, end) {
             generateHTMLPokeMini(i, format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeName'], allPokes[i]['pokeType1'], allPokes[i]['pokeImg'],);
         document.getElementById('pokeCardPlace').innerHTML +=
             generateHTMLPokeMax(i, allPokes[i]['pokeName'], format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeType1'], allPokes[i]['pokeType2'], allPokes[i]['pokeImg'], allPokes[i]['pokeType1En'],);
-        document.getElementById('card1' + i).innerHTML +=
-            generateHTMLAbout(i, allPokes[i]['pokeSpec'], allPokes[i]['pokeWeight'], allPokes[i]['pokeHeight'], allPokes[i]['pokeAbi'], allPokes[i]['pokeAbiTxt'],);
+            aboutValues.push(allPokes[i]['pokeSpec'], allPokes[i]['pokeWeight']);
+            document.getElementById('card1' + i).innerHTML +=
+            generateHTMLAbout(aboutValues[0], allPokes[i]['pokeWeight'], allPokes[i]['pokeHeight'], allPokes[i]['pokeAbi'], allPokes[i]['pokeAbiTxt'],);
+            // generateHTMLAbout(allPokes[i]['pokeSpec'], allPokes[i]['pokeWeight'], allPokes[i]['pokeHeight'], allPokes[i]['pokeAbi'], allPokes[i]['pokeAbiTxt'],);
         document.getElementById('card2' + i).innerHTML +=
             generateHTMLStats(i, allPokes[i]['pokeStat1'], allPokes[i]['pokeStat2'], allPokes[i]['pokeStat3'], allPokes[i]['pokeStat4'], allPokes[i]['pokeStat5'], allPokes[i]['pokeStat6'],);
     }
@@ -528,28 +532,29 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
 }
 
 
-function generateHTMLAbout(i, genera, weight, height, ability, text) {
+
+function generateHTMLAbout(aboutValue0, aboutValue1, aboutValue2, aboutValue3, aboutValue4) {
     return /*html*/`
-    <div id="genera${i}" class="aboutRow">
-      <div id="generaName${i}"class="aboutName">Klasse:</div>
-      <div id="generaValue${i}"class="aboutValue">${genera}</div>
-    </div>
-    <div id="weight${i}" class="aboutRow">
-      <div id="weightName${i}"class="aboutName">Gewicht:</div>
-      <div id="weightValue${i}"class="aboutValue">${weight}</div>
-    </div>
-    <div id="height${i}" class="aboutRow">
-      <div id="heightName${i}"class="aboutName">Höhe:</div>
-      <div id="heightValue${i}"class="aboutValue">${height}</div>
-    </div>
-    <div id="ability${i}" class="aboutRow">
-      <div id="abilityName${i}"class="aboutName">Fähigkeit:</div>
-      <div id="abilityValue${i}"class="aboutValue">${ability}</div>
-    </div>
-    <div id="text${i}" class="aboutRow">
-      <div id="textName${i}"class="aboutName"></div>
-      <div id="textValue${i}"class="aboutValue"><i>${text}</i></div>
-    </div>
+        <div class="aboutRow">
+            <div class="aboutName">${aboutNames[0]}</div>
+            <div class="aboutValue">${aboutValue0}</div>
+        </div>
+        <div class="aboutRow">
+            <div class="aboutName">${aboutNames[1]}</div>
+            <div class="aboutValue">${aboutValue1}</div>
+        </div>
+        <div class="aboutRow">
+            <div class="aboutName">${aboutNames[2]}</div>
+            <div class="aboutValue">${aboutValue2}</div>
+        </div>
+        <div class="aboutRow">
+            <div class="aboutName">${aboutNames[3]}</div>
+            <div class="aboutValue">${aboutValue3}</div>
+        </div>
+        <div class="aboutRow">
+            <div class="aboutName">${aboutNames[4]}</div>
+            <div class="aboutValue"><i>${aboutValue4}</i></div>
+        </div>
       `}
 
 
