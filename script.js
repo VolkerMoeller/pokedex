@@ -6,22 +6,12 @@ let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 9;
 let endPokeNr = nextPokeNr + stepPokeNrs;
 let maxPokeNr = 1010;
-let pokesLoaded = false;
 let currentPokeNr = 0
-let functionRunning = false;
-let amountSlides = 2
 let scrollCounter = 0;
-let colorBlackIds = [
-    'pokeMiniName',
-    'pokeMiniId',
-    'pokeMiniType1',
-    'pokedex-name',
-    'pokedex-id',
-    'base-type1',
-    'base-type2',
-    'btn-card1',
-    'btn-card2'
-];
+let amountSlides = 2
+let pokesLoaded = false;
+let functionRunning = false;
+let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
 
 
 async function init() {
@@ -34,7 +24,7 @@ async function init() {
 
 async function getData(begin, end) {
     if (!functionRunning) {
-        pokesLoadedOn(false, true);
+        statusLoadingPokes(false, true);
         functionRunning = true;
         for (let i = begin; i <= end; i++) {
             await performServerRequests(i);
@@ -45,31 +35,24 @@ async function getData(begin, end) {
         stylePokes(begin - 1, end);
         updateCountNrs(end);
         fillBaseStats(begin - 1, end);
-        pokesLoadedOff();
+        statusLoadingPokes(true, false);
         functionRunning = false;
     }
 }
 
 
-function pokesLoadedOn(status1st, status2nd) {
+function statusLoadingPokes(status1st, status2nd) {
     pokesLoaded = status1st;
     document.getElementById('loadBtnStart').disabled = status2nd;
     document.getElementById('searchName').disabled = status2nd;
-    document.getElementById('loadBtnStart').classList.add('disabled');
-    document.getElementById('searchName').classList.add('disabled');
-    document.getElementById('overlayLoad').classList.remove('display-none');
+    document.getElementById('loadBtnStart').classList.toggle('disabled');
+    document.getElementById('searchName').classList.toggle('disabled');
     document.getElementById('infoLoad').classList.toggle('display-none');
-}
-
-
-function pokesLoadedOff() {
-    pokesLoaded = true;
-    document.getElementById('loadBtnStart').disabled = false;
-    document.getElementById('searchName').disabled = false;
-    document.getElementById('loadBtnStart').classList.remove('disabled');
-    document.getElementById('searchName').classList.remove('disabled');
-    document.getElementById('overlayLoad').classList.add('display-none');
-    document.getElementById('infoLoad').classList.toggle('display-none');
+    if (status1st == false) {
+        document.getElementById('overlayLoad').classList.remove('display-none');
+    } else {
+        document.getElementById('overlayLoad').classList.add('display-none');
+    }
 }
 
 
@@ -109,70 +92,15 @@ function pushData() {
 
 
 function generateHTML(begin, end) {
-    generatePokeMini(begin, end);
-    generatePokeMax(begin, end);
-    generatePokeAbout(begin, end);
-    generatePokeStats(begin, end);
-}
-
-
-function generatePokeMini(begin, end) {
     for (let i = begin; i < end; i++) {
         document.getElementById('myPlace').innerHTML +=
-            generateHTMLPokeMini(
-                i,
-                format3LeftHandZeros(allPokes[i]['pokeId']),
-                allPokes[i]['pokeName'],
-                allPokes[i]['pokeType1'],
-                allPokes[i]['pokeImg'],
-            );
-    }
-}
-
-
-function generatePokeMax(begin, end) {
-    for (let i = begin; i < end; i++) {
+            generateHTMLPokeMini(i, format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeName'], allPokes[i]['pokeType1'], allPokes[i]['pokeImg'],);
         document.getElementById('pokeCardPlace').innerHTML +=
-            generateHTMLPokeMax(
-                i,
-                allPokes[i]['pokeName'],
-                format3LeftHandZeros(allPokes[i]['pokeId']),
-                allPokes[i]['pokeType1'],
-                allPokes[i]['pokeType2'],
-                allPokes[i]['pokeImg'],
-                allPokes[i]['pokeType1En'],
-            );
-    }
-}
-
-
-function generatePokeAbout(begin, end) {
-    for (let i = begin; i < end; i++) {
+            generateHTMLPokeMax(i, allPokes[i]['pokeName'], format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeType1'], allPokes[i]['pokeType2'], allPokes[i]['pokeImg'], allPokes[i]['pokeType1En'],);
         document.getElementById('card1' + i).innerHTML +=
-            generateHTMLAbout(
-                i,
-                allPokes[i]['pokeSpec'],
-                allPokes[i]['pokeWeight'],
-                allPokes[i]['pokeHeight'],
-                allPokes[i]['pokeAbi'],
-                allPokes[i]['pokeAbiTxt'],
-            );
-    }
-}
-
-
-function generatePokeStats(begin, end) {
-    for (let i = begin; i < end; i++) {
+            generateHTMLAbout(i, allPokes[i]['pokeSpec'], allPokes[i]['pokeWeight'], allPokes[i]['pokeHeight'], allPokes[i]['pokeAbi'], allPokes[i]['pokeAbiTxt'],);
         document.getElementById('card2' + i).innerHTML +=
-            generateHTMLStats(
-                i,
-                allPokes[i]['pokeStat1'],
-                allPokes[i]['pokeStat2'],
-                allPokes[i]['pokeStat3'],
-                allPokes[i]['pokeStat4'],
-                allPokes[i]['pokeStat5'],
-                allPokes[i]['pokeStat6'],
-            );
+            generateHTMLStats(i, allPokes[i]['pokeStat1'], allPokes[i]['pokeStat2'], allPokes[i]['pokeStat3'], allPokes[i]['pokeStat4'], allPokes[i]['pokeStat5'], allPokes[i]['pokeStat6'],);
     }
 }
 
@@ -183,7 +111,7 @@ function stylePokes(begin, end) {
         stylePokeBgn(i, 'pokedex');
         showSlot2(i);
         stylePokeTop(i);
-        stylePokeBottom(i);
+        stylePokeNavigation(i);
         changePokesToBlack(i);
     }
 }
@@ -192,13 +120,6 @@ function stylePokes(begin, end) {
 async function initNext() {
     clearSearchInput();
     getData(nextPokeNr, endPokeNr);
-}
-
-function initShowNext() {
-    document.getElementById('overlayLoad').classList.toggle('display-none');
-
-    // togglePokeMinis();
-    initNext();
 }
 
 
@@ -214,15 +135,7 @@ async function performServerRequests(i) {
     arrs.push({
         "arrPoke": await fetchDataFromServer(url1),
         "arrSpec": await fetchDataFromServer(url2),
-        "arrAbi": '',
-        'arrType1': '',
-        'arrType2': '',
-        'arrStat1': '',
-        'arrStat2': '',
-        'arrStat3': '',
-        'arrStat4': '',
-        'arrStat5': '',
-        'arrStat6': '',
+        "arrAbi": '', 'arrType1': '', 'arrType2': '', 'arrStat1': '', 'arrStat2': '', 'arrStat3': '', 'arrStat4': '', 'arrStat5': '', 'arrStat6': '',
     });
     await getDataByDynamikUrl(i);
 }
@@ -454,11 +367,6 @@ function stylePokeTop(i) {
 }
 
 
-function stylePokeBottom(i) {
-    stylePokeNavigation(i);
-}
-
-
 function renderPokeFavorite(i, bgnType) {
     document.getElementById('btn-fill0' + i).classList.add(`${bgnType}`);
     document.getElementById('btn-fill1' + i).classList.add(`${bgnType}`);
@@ -538,6 +446,7 @@ function format3LeftHandZeros(value) {
 function clearSearchInput() {
     document.getElementById('searchName').value = '';
 }
+
 
 window.onscroll = function () { scrollFunction() };
 

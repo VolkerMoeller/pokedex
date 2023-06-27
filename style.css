@@ -230,9 +230,6 @@ body {
     min-height: 100%;
     backdrop-filter: blur(8px);
     z-index: 9;
-    display: flex;
-    justify-content: center;
-    align-items: start;
 }
 
 
