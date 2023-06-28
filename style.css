@@ -233,7 +233,7 @@ body {
 }
 
 
-.info{
+.info {
     display: flex;
     justify-content: center;
 }
@@ -506,7 +506,7 @@ td {
 }
 
 .statValueAndProgress {
-    width: 80%;
+    width: 61%;
     gap: 8px;
     display: flex;
     align-items: center;
@@ -613,6 +613,17 @@ td {
     .pokedex-bottom {
         min-height: 570px
     }
+
+    .statRow {
+        flex-direction: column;
+        align-items: start;
+        gap: 0px;
+    }
+
+    .statValueAndProgress {
+        width: 100%;
+        display: flex;
+    }
 }
 
 @media (max-width: 420px) {
@@ -629,16 +640,6 @@ td {
         flex-wrap: wrap;
     }
 
-    .statRow {
-        flex-direction: column;
-        align-items: start;
-        gap: 0px;
-    }
-
-    .statValueAndProgress {
-        width: 100%;
-        display: flex;
-    }
 }
 
 @media (max-width: 370px) {

@@ -12,8 +12,6 @@ let amountSlides = 2
 let pokesLoaded = false;
 let functionRunning = false;
 let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
-let aboutNames = ['Klasse:', 'Gewicht:', 'Höhe:', 'Fähigkeit', ''];
-let aboutValues = [];
 
 
 async function init() {
@@ -36,7 +34,6 @@ async function getData(begin, end) {
         generateHTML(begin - 1, end);
         stylePokes(begin - 1, end);
         updateCountNrs(end);
-        fillBaseStats(begin - 1, end);
         statusLoadingPokes(true, false);
         functionRunning = false;
     }
@@ -64,29 +61,13 @@ function pushData() {
             {
                 "pokeId": arrs[j]['arrPoke']['id'],
                 "pokeName": getGermanData(arrs[j]['arrSpec'], 'names', 'name'),
-                "pokeType1": getGermanData(arrs[j]['arrType1'], 'names', 'name'),
-                "pokeType2": checkIfSlot2(j),
-                "pokeType1En": arrs[j]['arrType1']['name'],
-                "pokeType2En": checkIfSlot2En(j),
                 "pokeImg": arrs[j]['arrPoke']['sprites']['other']['dream_world']['front_default'],
-                "pokeWeight": arrs[j]['arrPoke']['weight'],
-                "pokeHeight": arrs[j]['arrPoke']['height'],
-                "pokeSpec": getGermanData(arrs[j]['arrSpec'], 'genera', 'genus'),
-                "pokeSpecTxt": getGermanData(arrs[j]['arrSpec'], 'flavor_text_entries', 'flavor_text'),
-                "pokeAbi": getGermanData(arrs[j]['arrAbi'], 'names', 'name'),
-                "pokeAbiTxt": getGermanData(arrs[j]['arrAbi'], 'flavor_text_entries', 'flavor_text'),
-                "pokeStat1Name": getGermanData(arrs[j]['arrStat1'], 'names', 'name'),
-                "pokeStat1": arrs[j]['arrPoke']['stats'][0]['base_stat'],
-                "pokeStat2Name": getGermanData(arrs[j]['arrStat2'], 'names', 'name'),
-                "pokeStat2": arrs[j]['arrPoke']['stats'][1]['base_stat'],
-                "pokeStat3Name": getGermanData(arrs[j]['arrStat3'], 'names', 'name'),
-                "pokeStat3": arrs[j]['arrPoke']['stats'][2]['base_stat'],
-                "pokeStat4Name": getGermanData(arrs[j]['arrStat4'], 'names', 'name'),
-                "pokeStat4": arrs[j]['arrPoke']['stats'][3]['base_stat'],
-                "pokeStat5Name": getGermanData(arrs[j]['arrStat5'], 'names', 'name'),
-                "pokeStat5": arrs[j]['arrPoke']['stats'][4]['base_stat'],
-                "pokeStat6Name": getGermanData(arrs[j]['arrStat6'], 'names', 'name'),
-                "pokeStat6": arrs[j]['arrPoke']['stats'][5]['base_stat'],
+                "pokeTypes": [getGermanData(arrs[j]['arrType1'], 'names', 'name'), checkIfSlot2(j, 'de')],
+                "pokeTypesEn": [arrs[j]['arrType1']['name'], checkIfSlot2(j, 'en')],
+                "pokeStatNames": [getGermanData(arrs[j]['arrStat1'], 'names', 'name'), getGermanData(arrs[j]['arrStat2'], 'names', 'name'), getGermanData(arrs[j]['arrStat3'], 'names', 'name'), getGermanData(arrs[j]['arrStat4'], 'names', 'name'), getGermanData(arrs[j]['arrStat5'], 'names', 'name')],
+                "pokeStatValues": [arrs[j]['arrPoke']['stats'][0]['base_stat'], arrs[j]['arrPoke']['stats'][1]['base_stat'], arrs[j]['arrPoke']['stats'][2]['base_stat'], arrs[j]['arrPoke']['stats'][3]['base_stat'], arrs[j]['arrPoke']['stats'][4]['base_stat']],
+                "pokeAboutNames": ['Klasse', 'Gewicht', 'Höhe', 'Fähigkeit', ''],
+                "pokeAboutValues": [getGermanData(arrs[j]['arrSpec'], 'genera', 'genus'), arrs[j]['arrPoke']['weight'], arrs[j]['arrPoke']['height'], getGermanData(arrs[j]['arrAbi'], 'names', 'name'), getGermanData(arrs[j]['arrAbi'], 'flavor_text_entries', 'flavor_text')],
             }
         )
     }
@@ -95,16 +76,14 @@ function pushData() {
 
 function generateHTML(begin, end) {
     for (let i = begin; i < end; i++) {
-        document.getElementById('myPlace').innerHTML +=
-            generateHTMLPokeMini(i, format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeName'], allPokes[i]['pokeType1'], allPokes[i]['pokeImg'],);
-        document.getElementById('pokeCardPlace').innerHTML +=
-            generateHTMLPokeMax(i, allPokes[i]['pokeName'], format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeType1'], allPokes[i]['pokeType2'], allPokes[i]['pokeImg'], allPokes[i]['pokeType1En'],);
-            aboutValues.push(allPokes[i]['pokeSpec'], allPokes[i]['pokeWeight']);
-            document.getElementById('card1' + i).innerHTML +=
-            generateHTMLAbout(aboutValues[0], allPokes[i]['pokeWeight'], allPokes[i]['pokeHeight'], allPokes[i]['pokeAbi'], allPokes[i]['pokeAbiTxt'],);
-            // generateHTMLAbout(allPokes[i]['pokeSpec'], allPokes[i]['pokeWeight'], allPokes[i]['pokeHeight'], allPokes[i]['pokeAbi'], allPokes[i]['pokeAbiTxt'],);
-        document.getElementById('card2' + i).innerHTML +=
-            generateHTMLStats(i, allPokes[i]['pokeStat1'], allPokes[i]['pokeStat2'], allPokes[i]['pokeStat3'], allPokes[i]['pokeStat4'], allPokes[i]['pokeStat5'], allPokes[i]['pokeStat6'],);
+        document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeName'], allPokes[i]['pokeTypes'][0], allPokes[i]['pokeImg'],);
+        document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeMax(i, allPokes[i]['pokeName'], format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeTypes'][0], allPokes[i]['pokeTypes'][1], allPokes[i]['pokeImg'], allPokes[i]['pokeTypesEn'][0],);
+        for (let j = 0; j < allPokes[i].pokeAboutValues.length; j++) {
+            document.getElementById('card1' + i).innerHTML += generateHTMLAbout(allPokes[i].pokeAboutNames[j], allPokes[i].pokeAboutValues[j]);
+        }
+        for (let j = 0; j < allPokes[i].pokeStatValues.length; j++) {
+            document.getElementById('card2' + i).innerHTML += generateHTMLStats(i, j, allPokes[i].pokeStatNames[j], allPokes[i].pokeStatValues[j], perCent(allPokes[i].pokeStatValues[j]));
+        }
     }
 }
 
@@ -188,18 +167,13 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 }
 
 
-function checkIfSlot2(i) {
+function checkIfSlot2(i, index) {
     if (arrs[i]['arrPoke']['types'].length == 2) {
-        return getGermanData(arrs[i]['arrType2'], 'names', 'name');
-    } else {
-        return '';
-    }
-}
-
-
-function checkIfSlot2En(i) {
-    if (arrs[i]['arrPoke']['types'].length == 2) {
-        return arrs[i]['arrType2']['name'];
+        if (index == 'de') {
+            return getGermanData(arrs[i]['arrType2'], 'names', 'name');
+        } else {
+            return arrs[i]['arrType2']['name'];
+        }
     } else {
         return '';
     }
@@ -217,10 +191,10 @@ function fillSlot1(i, slot1) {
 
 
 function showSlot2(i) {
-    if (allPokes[i]['pokeType2'] !== '') {
+    if (allPokes[i]['pokeTypes'][1] !== '') {
         document.getElementById('base-type2' + i).classList.remove('display-none');
     }
-    document.getElementById('base-type2' + i).innerHTML = allPokes[i]['pokeType2'];
+    document.getElementById('base-type2' + i).innerHTML = allPokes[i]['pokeTypes'][1];
 }
 
 
@@ -233,7 +207,7 @@ function showPokeCard(i) {
 
 
 async function changePokesToBlack(i) {
-    let type1 = allPokes[i]['pokeType1En'];
+    let type1 = allPokes[i]['pokeTypesEn'][0];
     if (type1 == 'electric' || type1 == 'ice') {
         for (let j = 0; j < colorBlackIds.length; j++) {
             document.getElementById(colorBlackIds[j] + i).classList.add(`color-black`);
@@ -266,7 +240,7 @@ function updateProgress(currentPokeNr) {
 
 
 async function stylePokeBgn(i, index) {
-    let pokeType = allPokes[i]['pokeType1En'];
+    let pokeType = allPokes[i]['pokeTypesEn'][0];
     setBgnByType(i, index, pokeType);
 }
 
@@ -337,11 +311,8 @@ function setCurrentCardToActiv(cardId) {
 
 function setCurrentSlideOnActiv(cardId, i, slot1) {
     setAllSliderToDefault(i, slot1);
-    let bgnActiveType = 'bgn-slot-type-' + slot1;
-    let bgnDefaultType = 'bgn-' + slot1;
-    let currentSlide = 'btn-' + cardId;
-    document.getElementById(currentSlide).classList.remove(`${bgnDefaultType}`);
-    document.getElementById(currentSlide).classList.add(`${bgnActiveType}`);
+    document.getElementById('btn-' + cardId).classList.remove('bgn-' + slot1);
+    document.getElementById('btn-' + cardId).classList.add('bgn-slot-type-' + slot1);
 }
 
 
@@ -359,11 +330,11 @@ function setAllSliderToDefault(i, slot1) {
 
 
 function stylePokeTop(i) {
-    let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokeType1En'];
-    let bgnType = 'bgn-type-' + allPokes[i]['pokeType1En'];
+    let bgnSlotType = 'bgn-slot-type-' + allPokes[i]['pokeTypesEn'][0];
+    let bgnType = 'bgn-type-' + allPokes[i]['pokeTypesEn'][0];
     stylePokeSlot(i, bgnSlotType, 'base-type1');
     if (arrs[i]['arrPoke']['types'].length == 2) {
-        let pokeSlot2 = allPokes[i]['pokeType2En'];
+        let pokeSlot2 = allPokes[i]['pokeTypesEn'][1];
         let bgnSlotType = 'bgn-slot-type-' + pokeSlot2;
         stylePokeSlot(i, bgnSlotType, 'base-type2');
     }
@@ -383,30 +354,21 @@ function stylePokeSlot(i, bgnSlotType, index) {
 
 
 async function stylePokeNavigation(i) {
-    let bgnSlotType = 'bgn-' + allPokes[i]['pokeType1En'];
-    let bgnActiveType = 'bgn-slot-type-' + allPokes[i]['pokeType1En'];
     for (let cardNr = 1; cardNr <= 2; cardNr++) {
-        document.getElementById('btn-card' + cardNr + i).classList.add(`${bgnSlotType}`);
+        document.getElementById('btn-card' + cardNr + i).classList.add('bgn-' + allPokes[i]['pokeTypesEn'][0]);
     }
-    document.getElementById('btn-card' + 1 + i).classList.remove(`${bgnSlotType}`);
-    document.getElementById('btn-card' + 1 + i).classList.add(`${bgnActiveType}`);
+    document.getElementById('btn-card' + 1 + i).classList.remove('bgn-' + allPokes[i]['pokeTypesEn'][0]);
+    document.getElementById('btn-card' + 1 + i).classList.add('bgn-slot-type-' + allPokes[i]['pokeTypesEn'][0]);
 }
 
 
-function hoverNavigation(cardNr, i, slot1) {
-    let bgnHoverType = 'bgn-hover-type-' + slot1;
-    document.getElementById('btn-card' + cardNr + i).classList.toggle(`${bgnHoverType}`);
+function hoverNavigationOver(cardNr, i, slot1) {
+    document.getElementById('btn-card' + cardNr + i).classList.add('bgn-hover-type-' + slot1);
 }
 
 
-async function fillBaseStats(begin, end) {
-    for (let k = begin; k < end; k++) {
-        for (let j = 1; j <= arrs[k]['arrPoke']['stats'].length; j++) {
-            let value = arrs[k]['arrPoke']['stats'][j - 1]['base_stat'];
-            let valuePerCent = perCent(value);
-            renderProgressLine(k, valuePerCent, j);
-        }
-    }
+function hoverNavigationOut(cardNr, i, slot1) {
+    document.getElementById('btn-card' + cardNr + i).classList.remove('bgn-hover-type-' + slot1);
 }
 
 
@@ -430,7 +392,7 @@ function getGermanData(array, index1st, index2nd) {
 
 function searchIndexOfGermanData(array, index) {
     for (let j = 0; j < array[index].length; j++) {
-        const language = array[index][j]['language']['name'];
+        let language = array[index][j]['language']['name'];
         if (language == 'de') {
             let indexGermanData = j;
             j = array[index].length;
@@ -466,7 +428,10 @@ async function scrollFunction() {
     }
 }
 
-// generate HTML
+
+
+// später in eigener Datei:
+
 function generateHTMLPokeMini(i, id, name, type, img) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
@@ -518,10 +483,10 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
           </div>
           <div id="pokedex-bottom${i}" class="pokedex-bottom">
           <div class="navigationPoke">
-              <div onmouseover="hoverNavigation(1, ${i}, '${slot1}')" onmouseout="hoverNavigation(1, ${i}, '${slot1}')">
+              <div onmouseover="hoverNavigationOver(1, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(1, ${i}, '${slot1}')">
                   <button onclick="showCurrentCardById('card1${i}', ${i}, '${slot1}')" id="btn-card1${i}">Über</button>
               </div>
-              <div onmouseover="hoverNavigation(2, ${i}, '${slot1}')" onmouseout="hoverNavigation(2, ${i}, '${slot1}')">
+              <div onmouseover="hoverNavigationOver(2, ${i}, '${slot1}')" onmouseout="hoverNavigationOut(2, ${i}, '${slot1}')">
                   <button onclick="showCurrentCardById('card2${i}', ${i}, '${slot1}')" id="btn-card2${i}">Basis Werte</button>
               </div>
           </div>
@@ -532,85 +497,23 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
 }
 
 
-
-function generateHTMLAbout(aboutValue0, aboutValue1, aboutValue2, aboutValue3, aboutValue4) {
+function generateHTMLAbout(name, value) {
     return /*html*/`
         <div class="aboutRow">
-            <div class="aboutName">${aboutNames[0]}</div>
-            <div class="aboutValue">${aboutValue0}</div>
-        </div>
-        <div class="aboutRow">
-            <div class="aboutName">${aboutNames[1]}</div>
-            <div class="aboutValue">${aboutValue1}</div>
-        </div>
-        <div class="aboutRow">
-            <div class="aboutName">${aboutNames[2]}</div>
-            <div class="aboutValue">${aboutValue2}</div>
-        </div>
-        <div class="aboutRow">
-            <div class="aboutName">${aboutNames[3]}</div>
-            <div class="aboutValue">${aboutValue3}</div>
-        </div>
-        <div class="aboutRow">
-            <div class="aboutName">${aboutNames[4]}</div>
-            <div class="aboutValue"><i>${aboutValue4}</i></div>
+            <div class="aboutName">${name}</div>
+            <div class="aboutValue">${value}</div>
         </div>
       `}
 
 
-function generateHTMLStats(i, hp, att, def, specAtt, specDef, speed) {
+function generateHTMLStats(i, j, name, value, valuePerCent) {
     return /*html*/`
-   <div id="hp${i}" class="statRow">
-        <div id="hpName${i}" class="statName">Kraftpunkte:</div>
+   <div class="statRow">
+        <div class="statName">${name}</div>
         <div class="statValueAndProgress">
-            <div id="hpValue${i}" class="statValue">${hp}</div>
+            <div class="statValue">${value}</div>
             <div class="progress-about-bar">
-                <div id="progress-about-bar-inner1${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-            </div>
-        </div>
-    </div>
-    <div id="attack${i}" class="statRow">
-        <div id="attackName${i}" class="statName">Angriff:</div>
-        <div class="statValueAndProgress">
-            <div id="attackValue${i}" class="statValue">${att}</div>
-            <div class="progress-about-bar">
-                <div id="progress-about-bar-inner2${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-            </div>
-        </div>
-    </div>
-    <div id="defence${i}" class="statRow">
-        <div id="defenceName${i}" class="statName">Verteidigung:</div>
-        <div class="statValueAndProgress">
-            <div id="defenceValue${i}" class="statValue">${def}</div>
-            <div class="progress-about-bar">
-                <div id="progress-about-bar-inner3${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-            </div>
-        </div>
-    </div>
-    <div id="specAttack${i}" class="statRow">
-        <div id="specAttackName${i}" class="statName">Spezialangriff:</div>
-        <div class="statValueAndProgress">
-            <div id="specAttackValue${i}" class="statValue">${specAtt}</div>
-            <div class="progress-about-bar">
-                <div id="progress-about-bar-inner4${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-            </div>
-        </div>
-    </div>
-    <div id="specDef${i}" class="statRow">
-        <div id="specDefName${i}" class="statName">Spezialverteid.:</div>
-        <div class="statValueAndProgress">
-            <div id="specDefValue${i}" class="statValue">${specDef}</div>
-            <div class="progress-about-bar">
-                <div id="progress-about-bar-inner5${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
-            </div>
-        </div>
-    </div>
-    <div id="speed${i}" class="statRow">
-        <div id="speedName${i}" class="statName">Initiative:</div>
-        <div class="statValueAndProgress">
-            <div id="speedValue${i}" class="statValue">${speed}</div>
-            <div class="progress-about-bar">
-                <div id="progress-about-bar-inner6${i}" class="progress-about-bar-inner" style="width: 0%;"></div>
+                <div id="progress-about-bar-inner${j}${i}" class="progress-about-bar-inner" style="width: ${valuePerCent}%;"></div>
             </div>
         </div>
     </div>
