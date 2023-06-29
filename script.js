@@ -202,7 +202,7 @@ function showSlot2(i) {
 
 function showPokeCard(i) {
     currentPokeNr = i + 1;
-    document.getElementById('myPlace').style = 'overflow: hidden; height: 0px; padding: 0px';
+    document.getElementById('myPlace').style = 'overflow: hidden; height: 250px; padding: 0px';
     if (pokesLoaded == true) {
         switchContent(i);
         document.getElementById('pokedex' + i).classList.remove('display-none');

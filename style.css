@@ -259,7 +259,7 @@ body {
 .pokeCardContent {
     border-radius: 30px;
     position: absolute;
-    top: 16px;
+    /* top: 16px; */
     width: 480px;
     height: 858px;
     /* background-color: white; */
@@ -646,7 +646,7 @@ td {
     }
 
     .pokedex-bottom {
-        min-height: 390px
+        min-height: 430px
     }
 
     .statRow {
@@ -680,7 +680,7 @@ td {
     }
 
     .pokedex-above {
-        justify-content: space-around;
+        justify-content: space-between;
     }
 
     .aboutRow {
