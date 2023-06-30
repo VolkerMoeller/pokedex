@@ -1,6 +1,6 @@
 let arrs = [];
 let allPokes = [];
-let loadedPokeNames = [];
+let pokesFavorites = [];
 let initEnd = 10;
 let nextPokeNr = initEnd + 1;
 let stepPokeNrs = 9;
@@ -12,7 +12,8 @@ let amountSlides = 2
 let pokesLoaded = false;
 let functionRunning = false;
 let colorBlackIds = ['pokeMiniName', 'pokeMiniId', 'pokeMiniType1', 'pokedex-name', 'pokedex-id', 'base-type1', 'base-type2', 'btn-card1', 'btn-card2'];
-let pokesFavorites = [];
+let baseStats = 255;
+
 
 async function init() {
     allPokes = [];
@@ -20,6 +21,12 @@ async function init() {
     loadFavorites();
     document.getElementById('myPlace').innerHTML = '';
     await getData(1, initEnd);
+}
+
+
+async function initNext() {
+    clearSearchInput('searchName');
+    getData(nextPokeNr, endPokeNr);
 }
 
 
@@ -33,6 +40,7 @@ async function getData(begin, end) {
         }
         pushData();
         generateHTML(begin - 1, end);
+        // genertateHTML.js
         stylePokes(begin - 1, end);
         updateCountNrs(end);
         setFavMini();
@@ -42,19 +50,23 @@ async function getData(begin, end) {
 }
 
 
-function statusLoadingPokes(status1st, status2nd) {
-    pokesLoaded = status1st;
-    document.getElementById('loadBtnStart').disabled = status2nd;
-    document.getElementById('searchName').disabled = status2nd;
-    document.getElementById('loadBtnStart').classList.toggle('disabled');
-    document.getElementById('searchName').classList.toggle('disabled');
-    document.getElementById('infoLoad').classList.toggle('display-none');
-    if (status1st == false) {
-        document.getElementById('overlayLoad').classList.remove('display-none');
-    } else {
-        document.getElementById('overlayLoad').classList.add('display-none');
-    }
+async function performServerRequests(i) {
+    let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
+    let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
+    arrs.push({
+        "arrPoke": await fetchDataFromServer(url1),
+        "arrSpec": await fetchDataFromServer(url2),
+        "arrAbi": '', 'arrType1': '', 'arrType2': '', 'arrStat1': '', 'arrStat2': '', 'arrStat3': '', 'arrStat4': '', 'arrStat5': '', 'arrStat6': '',
+    });
+    await getDataByDynamikUrl(i);
 }
+
+
+function updateAmountPokesAndProgress(currentPokeNr) {
+    renderAmountLoadedPokes(currentPokeNr);
+    updateProgress(currentPokeNr);
+}
+
 
 
 function pushData() {
@@ -76,20 +88,6 @@ function pushData() {
 }
 
 
-function generateHTML(begin, end) {
-    for (let i = begin; i < end; i++) {
-        document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeName'], allPokes[i]['pokeTypes'][0], allPokes[i]['pokeImg'],);
-        document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeMax(i, allPokes[i]['pokeName'], format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeTypes'][0], allPokes[i]['pokeTypes'][1], allPokes[i]['pokeImg'], allPokes[i]['pokeTypesEn'][0],);
-        for (let j = 0; j < allPokes[i].pokeAboutValues.length; j++) {
-            document.getElementById('card1' + i).innerHTML += generateHTMLAbout(allPokes[i].pokeAboutNames[j], allPokes[i].pokeAboutValues[j]);
-        }
-        for (let j = 0; j < allPokes[i].pokeStatValues.length; j++) {
-            document.getElementById('card2' + i).innerHTML += generateHTMLStats(i, j, allPokes[i].pokeStatNames[j], allPokes[i].pokeStatValues[j], perCent(allPokes[i].pokeStatValues[j]));
-        }
-    }
-}
-
-
 function stylePokes(begin, end) {
     for (let i = begin; i < end; i++) {
         stylePokeBgn(i, 'pokeMini');
@@ -102,27 +100,25 @@ function stylePokes(begin, end) {
 }
 
 
-async function initNext() {
-    clearSearchInput();
-    getData(nextPokeNr, endPokeNr);
-}
-
-
 function updateCountNrs(end) {
     nextPokeNr = end + 1;
     endPokeNr = nextPokeNr + stepPokeNrs;
 }
 
 
-async function performServerRequests(i) {
-    let url1 = `https://pokeapi.co/api/v2/pokemon/${i}/`;
-    let url2 = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
-    arrs.push({
-        "arrPoke": await fetchDataFromServer(url1),
-        "arrSpec": await fetchDataFromServer(url2),
-        "arrAbi": '', 'arrType1': '', 'arrType2': '', 'arrStat1': '', 'arrStat2': '', 'arrStat3': '', 'arrStat4': '', 'arrStat5': '', 'arrStat6': '',
-    });
-    await getDataByDynamikUrl(i);
+
+function statusLoadingPokes(status1st, status2nd) {
+    pokesLoaded = status1st;
+    document.getElementById('loadBtnStart').disabled = status2nd;
+    document.getElementById('searchName').disabled = status2nd;
+    document.getElementById('loadBtnStart').classList.toggle('disabled');
+    document.getElementById('searchName').classList.toggle('disabled');
+    document.getElementById('infoLoad').classList.toggle('display-none');
+    if (status1st == false) {
+        document.getElementById('overlayLoad').classList.remove('display-none');
+    } else {
+        document.getElementById('overlayLoad').classList.add('display-none');
+    }
 }
 
 
@@ -137,15 +133,7 @@ async function getDataByDynamikUrl(i) {
         let l = k + 1;
         arrs[j]['arrStat' + l] = await fetchDataByDynamikUrl(arrs[j]['arrPoke'], 'stats', k, 'stat');
     }
-    noticeNameForSearch(j);
     allPokes.push({});
-}
-
-
-async function fetchDataFromServer(url) {
-    let response = await fetch(url);
-    let data = await response.json();
-    return data;
 }
 
 
@@ -169,6 +157,14 @@ function takeDynamikUrl(array, index1st, position, index2nd) {
 }
 
 
+async function fetchDataFromServer(url) {
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
+}
+
+
+
 function checkIfSlot2(i, index) {
     if (arrs[i]['arrPoke']['types'].length == 2) {
         if (index == 'de') {
@@ -179,11 +175,6 @@ function checkIfSlot2(i, index) {
     } else {
         return '';
     }
-}
-
-
-function noticeNameForSearch(j) {
-    loadedPokeNames.push(getGermanData(arrs[j]['arrSpec'], 'names', 'name'));
 }
 
 
@@ -217,12 +208,6 @@ async function changePokesToBlack(i) {
             document.getElementById(colorBlackIds[j] + i).classList.add(`color-black`);
         }
     }
-}
-
-
-function updateAmountPokesAndProgress(currentPokeNr) {
-    renderAmountLoadedPokes(currentPokeNr);
-    updateProgress(currentPokeNr);
 }
 
 
@@ -269,32 +254,8 @@ function switchContent(i) {
     topFunction();
 }
 
-function topFunction() {
-    document.documentElement.scrollTop = 0;
-}
 
-
-function searchBy(array, searchIndex, pushIndex) {
-    togglePokeMinis();
-    for (let i = 0; i < array.length; i++) {
-        let searchElement = document.getElementById(searchIndex).value;
-        searchElement = searchElement.toLowerCase();
-        let compareElement = array[i].toLowerCase();
-        let result = compareElement.startsWith(searchElement);
-        if (result == true) {
-            document.getElementById(pushIndex + i).classList.remove('display-none')
-        }
-    }
-}
-
-
-function togglePokeMinis() {
-    for (let i = 0; i < allPokes.length; i++) {
-        document.getElementById('pokeMiniButton' + i).classList.toggle('display-none')
-    }
-}
-
-
+// show current card
 function showCurrentCardById(cardId, i, slot1) {
     setAllCardsToDefault(i);
     setCurrentCardToActiv(cardId);
@@ -331,7 +292,7 @@ function setAllSliderToDefault(i, slot1) {
     }
 }
 
-
+// style pokeTop
 function stylePokeTop(i) {
     stylePokeSlot(i, 'bgn-slot-type-' + allPokes[i]['pokeTypesEn'][0], 'base-type1');
     if (arrs[i]['arrPoke']['types'].length == 2) {
@@ -347,6 +308,7 @@ function stylePokeSlot(i, bgnSlotType, index) {
 }
 
 
+// style card navigation
 async function stylePokeNavigation(i) {
     for (let cardNr = 1; cardNr <= 2; cardNr++) {
         document.getElementById('btn-card' + cardNr + i).classList.add('bgn-' + allPokes[i]['pokeTypesEn'][0]);
@@ -366,82 +328,14 @@ function hoverNavigationOut(cardNr, i, slot1) {
 }
 
 
-function perCent(value) {
-    let valuePerCent = value / 255 * 100;
-    return valuePerCent;
-}
-
-
-function renderProgressLine(i, valuePerCent, j) {
-    document.getElementById('progress-about-bar-inner' + j + i).style = `width: ${valuePerCent}%`;
-}
-
-
-function getGermanData(array, index1st, index2nd) {
-    let indexGermanData = searchIndexOfGermanData(array, index1st);
-    let germanData = array[index1st][indexGermanData][index2nd];
-    return germanData;
-}
-
-
-function searchIndexOfGermanData(array, index) {
-    for (let j = 0; j < array[index].length; j++) {
-        let language = array[index][j]['language']['name'];
-        if (language == 'de') {
-            let indexGermanData = j;
-            j = array[index].length;
-            return indexGermanData;
-        }
-    }
-}
-
-
-function format3LeftHandZeros(value) {
-    value = value.toString();
-    let formatValue = value.padStart(4, '0');
-    return formatValue;
-}
-
-
-function clearSearchInput() {
-    document.getElementById('searchName').value = '';
-}
-
-
-// "easy loading"
-
-window.onscroll = function () {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20) {
-        initNext();
-    }
-}
-
-
-
-
-// show next Poke
-function showNextPoke(i, direction) {
-    if (direction == 'left' && i > 0) {
-        document.getElementById('pokedex' + i).classList.toggle('display-none');
-        document.getElementById('pokedex' + (i - 1)).classList.toggle('display-none');
-        currentPokeNr = currentPokeNr - 1;
-    }
-    if (direction == 'right' && i < allPokes.length - 1) {
-        document.getElementById('pokedex' + i).classList.toggle('display-none');
-        document.getElementById('pokedex' + (i + 1)).classList.toggle('display-none');
-        currentPokeNr = currentPokeNr + 1;
-    }
-}
-
-
 // set favorite
 function setFavMini() {
     for (let i = 0; i < allPokes.length; i++) {
         let tester = pokesFavorites.includes(i);
         if (tester == true) {
-        document.getElementById('miniFill0' + (i - 1)).classList.toggle('display-none');
-        document.getElementById('miniFill1' + (i - 1)).classList.toggle('display-none');
-    }
+            document.getElementById('miniFill0' + (i - 1)).classList.toggle('display-none');
+            document.getElementById('miniFill1' + (i - 1)).classList.toggle('display-none');
+        }
     }
 }
 

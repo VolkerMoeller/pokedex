@@ -1,3 +1,16 @@
+function generateHTML(begin, end) {
+    for (let i = begin; i < end; i++) {
+        document.getElementById('myPlace').innerHTML += generateHTMLPokeMini(i, format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeName'], allPokes[i]['pokeTypes'][0], allPokes[i]['pokeImg'],);
+        document.getElementById('pokeCardPlace').innerHTML += generateHTMLPokeMax(i, allPokes[i]['pokeName'], format3LeftHandZeros(allPokes[i]['pokeId']), allPokes[i]['pokeTypes'][0], allPokes[i]['pokeTypes'][1], allPokes[i]['pokeImg'], allPokes[i]['pokeTypesEn'][0],);
+        for (let j = 0; j < allPokes[i].pokeAboutValues.length; j++) {
+            document.getElementById('card1' + i).innerHTML += generateHTMLAbout(allPokes[i].pokeAboutNames[j], allPokes[i].pokeAboutValues[j]);
+        }
+        for (let j = 0; j < allPokes[i].pokeStatValues.length; j++) {
+            document.getElementById('card2' + i).innerHTML += generateHTMLStats(i, j, allPokes[i].pokeStatNames[j], allPokes[i].pokeStatValues[j], perCent(allPokes[i].pokeStatValues[j]));
+        }
+    }
+}
+
 function generateHTMLPokeMini(i, id, name, type, img) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
@@ -26,7 +39,6 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
     <div id="pokedex-top${i}" class="pokedex-top">
         <div>
             <button onclick="backToContent(${i})" class="btn-back">
-            <!-- <button onclick="switchContent(${i})" class="btn-back"> -->
                 <img src="./img/backspace.png">
             </button>
         </div>

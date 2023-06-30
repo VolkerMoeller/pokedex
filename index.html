@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js"></script>
+    <script src="helpers.js"></script>
     <script src="generateHTML.js"></script>
     <link rel="stylesheet" href="src/colors.css">
     <link rel="stylesheet" href="fonts.css">
@@ -34,7 +35,7 @@
             <div id="searchLine" class="searchLine">
                 <span>Suche</span>
                 <input id="searchName" placeholder="Name"
-                    onkeydown="searchBy(loadedPokeNames, 'searchName', 'pokeMiniButton')">
+                    onkeydown="searchBy(allPokes, 'searchName', 'pokeMiniButton', 'pokeName')">
                 <div id="loadBtns" class="loadBtns">
                     <button id="loadBtnStart" class="display-flex" onclick="initNext()">weitere 10</button>
                 </div>
