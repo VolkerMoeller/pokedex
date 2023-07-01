@@ -47,12 +47,6 @@ function perCent(value) {
 }
 
 
-// go to top 
-function topFunction() {
-    document.documentElement.scrollTop = 0;
-}
-
-
 // update progress line stats   
 function renderProgressLine(i, valuePerCent, j) {
     document.getElementById('progress-about-bar-inner' + j + i).style = `width: ${valuePerCent}%`;
@@ -61,23 +55,37 @@ function renderProgressLine(i, valuePerCent, j) {
 
 // search by
 function searchBy(array, searchIndex, pushIndex, path) {
-    togglePokeMinis();
+    hidePokeMinis();
     for (let i = 0; i < array.length; i++) {
         let searchElement = document.getElementById(searchIndex).value;
         searchElement = searchElement.toLowerCase();
         let compareElement = array[i][path].toLowerCase();
         let result = compareElement.startsWith(searchElement);
         if (result == true) {
-            document.getElementById(pushIndex + i).classList.remove('display-none')
+            document.getElementById(pushIndex + i).classList.remove('display-none');
         }
     }
 }
 
 
-// toggle pokeMinis
+// pokeMinis toggel show hide
 function togglePokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
-        document.getElementById('pokeMiniButton' + i).classList.toggle('display-none')
+        document.getElementById('pokeMiniButton' + i).classList.toggle('display-none');
+    }
+}
+
+// show PokeMinis
+function showPokeMinis() {
+    for (let i = 0; i < allPokes.length; i++) {
+        document.getElementById('pokeMiniButton' + i).classList.remove('display-none');
+    }
+}
+
+// hide pokeMinis
+function hidePokeMinis() {
+    for (let i = 0; i < allPokes.length; i++) {
+        document.getElementById('pokeMiniButton' + i).classList.add('display-none');
     }
 }
 
@@ -94,4 +102,21 @@ function showNextPoke(i, direction) {
         document.getElementById('pokedex' + (i + 1)).classList.toggle('display-none');
         currentPokeNr = currentPokeNr + 1;
     }
+}
+
+// workflow
+function goToPokeMinis() {
+    switchContent(currentPokeNr);
+}
+
+function backToContent(i) {
+    document.getElementById('myPlace').classList.remove('display-none');
+    switchContent(i);
+}
+
+function switchContent(i) {
+    document.getElementById('pokedex' + i).classList.toggle('display-none');
+    document.getElementById('overlay').classList.toggle('display-none');
+    document.getElementById('pokeCardContent').classList.toggle('display-none');
+    getFav();
 }

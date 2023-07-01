@@ -17,36 +17,44 @@ let baseStats = 255;
 
 async function init() {
     allPokes = [];
-    loadedPokeNames = [];
     loadFavorites();
     document.getElementById('myPlace').innerHTML = '';
     await getData(1, initEnd);
+    getFav();
 }
 
 
 async function initNext() {
     clearSearchInput('searchName');
-    getData(nextPokeNr, endPokeNr);
+    await getData(nextPokeNr, endPokeNr);
+    getFav();
 }
 
 
+// begin get data and render pokemons
 async function getData(begin, end) {
     if (!functionRunning) {
+        showPokeMinis();
         statusLoadingPokes(false, true);
         functionRunning = true;
         for (let i = begin; i <= end; i++) {
             await performServerRequests(i);
             updateAmountPokesAndProgress(i);
         }
-        pushData();
-        generateHTML(begin - 1, end);
-        // genertateHTML.js
-        stylePokes(begin - 1, end);
-        updateCountNrs(end);
-        setFavMini();
+        performData(begin, end);
         statusLoadingPokes(true, false);
         functionRunning = false;
     }
+}
+
+
+function performData(begin, end) {
+    pushData();
+    generateHTML(begin - 1, end);
+    // --> genertateHTML.js
+    stylePokes(begin - 1, end);
+    updateCountNrs(end);
+    getFav();
 }
 
 
@@ -66,7 +74,6 @@ function updateAmountPokesAndProgress(currentPokeNr) {
     renderAmountLoadedPokes(currentPokeNr);
     updateProgress(currentPokeNr);
 }
-
 
 
 function pushData() {
@@ -104,7 +111,6 @@ function updateCountNrs(end) {
     nextPokeNr = end + 1;
     endPokeNr = nextPokeNr + stepPokeNrs;
 }
-
 
 
 function statusLoadingPokes(status1st, status2nd) {
@@ -164,7 +170,6 @@ async function fetchDataFromServer(url) {
 }
 
 
-
 function checkIfSlot2(i, index) {
     if (arrs[i]['arrPoke']['types'].length == 2) {
         if (index == 'de') {
@@ -193,7 +198,7 @@ function showSlot2(i) {
 
 function showPokeCard(i) {
     currentPokeNr = i + 1;
-    document.getElementById('myPlace').style = 'overflow: hidden; height: 250px; padding: 0px';
+    document.getElementById('myPlace').classList.add('display-none');
     if (pokesLoaded == true) {
         switchContent(i);
         document.getElementById('pokedex' + i).classList.remove('display-none');
@@ -201,7 +206,7 @@ function showPokeCard(i) {
 }
 
 
-async function changePokesToBlack(i) {
+function changePokesToBlack(i) {
     let type1 = allPokes[i]['pokeTypesEn'][0];
     if (type1 == 'electric' || type1 == 'ice') {
         for (let j = 0; j < colorBlackIds.length; j++) {
@@ -237,22 +242,7 @@ async function stylePokeBgn(i, index) {
 function setBgnByType(i, index, pokeType) {
     document.getElementById(index + i).classList.add('bgn-type-' + pokeType);
 }
-
-function showPokeMinis() {
-    switchContent(currentPokeNr);
-}
-
-function backToContent(i) {
-    document.getElementById('myPlace').style = 'overflow: auto; height: 100%; padding: 16px';
-    switchContent(i);
-}
-
-function switchContent(i) {
-    document.getElementById('pokedex' + i).classList.toggle('display-none');
-    document.getElementById('overlay').classList.toggle('display-none');
-    document.getElementById('pokeCardContent').classList.toggle('display-none');
-    topFunction();
-}
+// end get data and render pokemons
 
 
 // show current card
@@ -292,6 +282,7 @@ function setAllSliderToDefault(i, slot1) {
     }
 }
 
+
 // style pokeTop
 function stylePokeTop(i) {
     stylePokeSlot(i, 'bgn-slot-type-' + allPokes[i]['pokeTypesEn'][0], 'base-type1');
@@ -329,15 +320,18 @@ function hoverNavigationOut(cardNr, i, slot1) {
 
 
 // set favorite
-function setFavMini() {
+function getFav() {
     for (let i = 0; i < allPokes.length; i++) {
         let tester = pokesFavorites.includes(i);
         if (tester == true) {
-            document.getElementById('miniFill0' + (i - 1)).classList.toggle('display-none');
-            document.getElementById('miniFill1' + (i - 1)).classList.toggle('display-none');
+            document.getElementById('miniFill1' + i).classList.remove('display-none');
+            document.getElementById('miniFill0' + i).classList.add('display-none');
+            document.getElementById('fill1' + i).classList.remove('display-none');
+            document.getElementById('fill0' + i).classList.add('display-none');
         }
     }
 }
+
 
 function setFavorite(i) {
     document.getElementById(`fill0${i}`).classList.toggle('display-none');
@@ -346,9 +340,9 @@ function setFavorite(i) {
     document.getElementById(`miniFill1${i}`).classList.toggle('display-none');
     let tester = document.getElementById(`fill0${i}`).classList.contains('display-none');
     if (tester == true) {
-        addFavorite(i + 1);
+        addFavorite(i);
     } else {
-        removeFavorite(i + 1);
+        removeFavorite(i);
     }
 }
 
