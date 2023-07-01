@@ -11,6 +11,7 @@ function generateHTML(begin, end) {
     }
 }
 
+
 function generateHTMLPokeMini(i, id, name, type, img) {
     return /*html*/`
       <button id="pokeMiniButton${i}" class="pokeMiniButton" onclick="showPokeCard(${i})">
@@ -64,8 +65,8 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
                 <img id="pokedex-img${i}" class="pokedex-img" src="${img}">
             </div>
             <div class="panel">
-            <button class='btn-back' onclick="showNextPoke(${i}, 'left')"><img src="./img/arrow_left.png"></button>
-            <button class='btn-back' onclick="showNextPoke(${i}, 'right')"><img src="./img/arrow_right.png"></button>
+            <button id="btn-back${i}" class="btn-back" onclick="showNextPoke(${i}, 'left')"><img src="./img/arrow_left.png"></button>
+            <button id="btn-forward${i}" class="btn-back" onclick="showNextPoke(${i}, 'right')"><img src="./img/arrow_right.png"></button>
         </div>
         </div>
     </div>
@@ -81,8 +82,7 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
         <div id="card1${i}" class="cards"></div>
         <div id="card2${i}" class="cards display-none"></div>
     </div> 
-      `
-}
+      `}
 
 
 function generateHTMLAbout(name, value) {

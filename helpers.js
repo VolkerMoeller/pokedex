@@ -68,21 +68,21 @@ function searchBy(array, searchIndex, pushIndex, path) {
 }
 
 
-// pokeMinis toggel show hide
+// toggle all pokeMinis
 function togglePokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
         document.getElementById('pokeMiniButton' + i).classList.toggle('display-none');
     }
 }
 
-// show PokeMinis
+// show all pokeMinis
 function showPokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
         document.getElementById('pokeMiniButton' + i).classList.remove('display-none');
     }
 }
 
-// hide pokeMinis
+// hide all pokeMinis
 function hidePokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
         document.getElementById('pokeMiniButton' + i).classList.add('display-none');
@@ -90,8 +90,22 @@ function hidePokeMinis() {
 }
 
 
-// show next Poke
+function initShowNextPoke(i, direction) {
+    for (let j = 0; j < allPokes.length; j++) {
+        
+    }
+}
+
+// show next "PokeMax"
 function showNextPoke(i, direction) {
+    if (direction == 'left' && i == 0) {
+        console.log('endegelände');
+        document.getElementById('btn-back' + i).disabled = true;
+        document.getElementById('btn-back' + i).classList.add('disabled');
+    }
+    if (direction == 'right' && i == allPokes.length - 1) {
+        console.log('endegelände');
+    }
     if (direction == 'left' && i > 0) {
         document.getElementById('pokedex' + i).classList.toggle('display-none');
         document.getElementById('pokedex' + (i - 1)).classList.toggle('display-none');
