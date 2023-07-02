@@ -98,23 +98,33 @@ function initShowNextPoke(i, direction, index) {
 // show next "PokeMax"
 function showNextPoke(i, direction, index) {
     if (direction == 'left' && i == 0) {
-        document.getElementById(index + i).disabled = true;
-        document.getElementById(index + i).classList.add('disabled');
+        switchOff(i, index);
     }
     if (direction == 'right' && i == allPokes.length - 1) {
-        document.getElementById(index + i).disabled = true;
-        document.getElementById(index + i).classList.add('disabled');
+        switchOff(i, index);
     }
     if (direction == 'left' && i > 0) {
-        document.getElementById('pokedex' + i).classList.toggle('display-none');
-        document.getElementById('pokedex' + (i - 1)).classList.toggle('display-none');
+        k = i - 1;
+        toggleCard(i, k);
         currentPokeNr--;
     }
     if (direction == 'right' && i < allPokes.length - 1) {
-        document.getElementById('pokedex' + i).classList.toggle('display-none');
-        document.getElementById('pokedex' + (i + 1)).classList.toggle('display-none');
+        k = i + 1;
+        toggleCard(i, k);
         currentPokeNr++;
     }
+}
+
+
+function toggleCard(i, k){
+    document.getElementById('pokedex' + i).classList.toggle('display-none');
+    document.getElementById('pokedex' + k).classList.toggle('display-none');
+}
+
+
+function switchOff(i, index) {
+    document.getElementById(index + i).disabled = true;
+    document.getElementById(index + i).classList.add('disabled');
 }
 
 
