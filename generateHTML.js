@@ -65,8 +65,8 @@ function generateHTMLPokeMax(i, name, id, type1, type2, img, slot1) {
                 <img id="pokedex-img${i}" class="pokedex-img" src="${img}">
             </div>
             <div class="panel">
-            <button id="btn-back${i}" class="btn-back" onclick="showNextPoke(${i}, 'left')"><img src="./img/arrow_left.png"></button>
-            <button id="btn-forward${i}" class="btn-back" onclick="showNextPoke(${i}, 'right')"><img src="./img/arrow_right.png"></button>
+            <button id="btn-back${i}" class="btn-back" onclick="initShowNextPoke(${i}, 'left', 'btn-back')"><img src="./img/arrow_left.png"></button>
+            <button id="btn-forward${i}" class="btn-back" onclick="initShowNextPoke(${i}, 'right', 'btn-forward')"><img src="./img/arrow_right.png"></button>
         </div>
         </div>
     </div>

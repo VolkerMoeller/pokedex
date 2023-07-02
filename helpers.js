@@ -26,14 +26,6 @@ function format3LeftHandZeros(value) {
 }
 
 
-// "easy loading"
-window.onscroll = function () {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20) {
-        initNext();
-    }
-}
-
-
 // clear search input
 function clearSearchInput(index) {
     document.getElementById(index).value = '';
@@ -75,12 +67,14 @@ function togglePokeMinis() {
     }
 }
 
+
 // show all pokeMinis
 function showPokeMinis() {
     for (let i = 0; i < allPokes.length; i++) {
         document.getElementById('pokeMiniButton' + i).classList.remove('display-none');
     }
 }
+
 
 // hide all pokeMinis
 function hidePokeMinis() {
@@ -90,36 +84,43 @@ function hidePokeMinis() {
 }
 
 
-function initShowNextPoke(i, direction) {
+function initShowNextPoke(i, direction, index) {
     for (let j = 0; j < allPokes.length; j++) {
-        
+        document.getElementById('btn-back' + j).disabled = false;
+        document.getElementById('btn-back' + j).classList.remove('disabled');
+        document.getElementById('btn-forward' + j).disabled = false;
+        document.getElementById('btn-forward' + j).classList.remove('disabled');
     }
+    showNextPoke(i, direction, index);
 }
 
+
 // show next "PokeMax"
-function showNextPoke(i, direction) {
+function showNextPoke(i, direction, index) {
     if (direction == 'left' && i == 0) {
-        console.log('endegelände');
-        document.getElementById('btn-back' + i).disabled = true;
-        document.getElementById('btn-back' + i).classList.add('disabled');
+        document.getElementById(index + i).disabled = true;
+        document.getElementById(index + i).classList.add('disabled');
     }
     if (direction == 'right' && i == allPokes.length - 1) {
-        console.log('endegelände');
+        document.getElementById(index + i).disabled = true;
+        document.getElementById(index + i).classList.add('disabled');
     }
     if (direction == 'left' && i > 0) {
         document.getElementById('pokedex' + i).classList.toggle('display-none');
         document.getElementById('pokedex' + (i - 1)).classList.toggle('display-none');
-        currentPokeNr = currentPokeNr - 1;
+        currentPokeNr--;
     }
     if (direction == 'right' && i < allPokes.length - 1) {
         document.getElementById('pokedex' + i).classList.toggle('display-none');
         document.getElementById('pokedex' + (i + 1)).classList.toggle('display-none');
-        currentPokeNr = currentPokeNr + 1;
+        currentPokeNr++;
     }
 }
 
+
 // workflow
 function goToPokeMinis() {
+    document.getElementById('myPlace').classList.remove('display-none');
     switchContent(currentPokeNr);
 }
 
